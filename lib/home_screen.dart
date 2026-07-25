@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
-import 'package:islamii_app/screens/quran_screen.dart';
+import 'package:islamii_app/quran//quran_screen.dart';
 
 class NavItem {
   final String iconPath;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
-import 'package:islamii_app/screens/sura_model.dart';
+import 'package:islamii_app/modules/sura_model.dart';
 
 class QuranScreen extends StatefulWidget {
   const QuranScreen({super.key});
