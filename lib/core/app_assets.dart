@@ -26,4 +26,9 @@ abstract class AppAssets {
   static const String quranSvgIcon = "assets/images/quran-svgrepo-com 1.svg";
   static const String moshafSvgIcon = "assets/images/img_most_recent.png";
   static const String surNumberIcon = "assets/images/img_sur_number_frame.png";
+
+  static const String leftCorner = "assets/images/img_left_corner.png";
+  static const String rightCorner = "assets/images/img_right_corner.png";
+  static const String bottomDecoration =
+      "assets/images/img_bottom_decoration.png";
 }

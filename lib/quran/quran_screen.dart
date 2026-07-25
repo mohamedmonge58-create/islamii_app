@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
 import 'package:islamii_app/modules/sura_model.dart';
+import 'package:islamii_app/quran/quran_view.dart';
+
 
 class QuranScreen extends StatefulWidget {
   const QuranScreen({super.key});
@@ -13,7 +15,6 @@ class QuranScreen extends StatefulWidget {
 
 class _QuranScreenState extends State<QuranScreen> {
   final List<SuraModel> suraList = SuraModel.suraList;
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -29,12 +30,10 @@ class _QuranScreenState extends State<QuranScreen> {
             ),
           ),
 
-          // 2. المحتوى فقط هو اللي يسكرول فوق الخلفية
           SafeArea(
             child: SingleChildScrollView(
               child: SizedBox(
-                // ارتفاع الـ Stack الممتد ليغطي قائمة السور كاملة مع إمكانية السكرول
-                height: 470 + (suraList.length * 70.0),
+                height: 470 + (suraList.length * 85),
                 child: Stack(
                   children: [
                     Positioned(
@@ -54,7 +53,7 @@ class _QuranScreenState extends State<QuranScreen> {
                       child: TextFormField(
                         decoration: InputDecoration(
                           hintText: "Surah Name",
-                          hintStyle: const TextStyle(
+                          hintStyle: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -71,22 +70,22 @@ class _QuranScreenState extends State<QuranScreen> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: AppColor.gold),
+                            borderSide: BorderSide(color: AppColor.gold),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: AppColor.gold),
+                            borderSide: BorderSide(color: AppColor.gold),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                         ),
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                     Positioned(
                       top: 250,
                       left: 20,
                       right: 20,
-                      child: const Text(
+                      child: Text(
                         "Most Recently",
                         style: TextStyle(
                           color: Colors.white,
@@ -101,116 +100,118 @@ class _QuranScreenState extends State<QuranScreen> {
                       right: 0,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: AppColor.gold,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(17.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
-                                      children: [
-                                        Text(
-                                          "Al-Anbiya",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 24,
+                        child: GestureDetector(
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: AppColor.gold,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.all(17.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        children: [
+                                          Text(
+                                            "Al-Anbiya",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 24,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "الأنبياء",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 24,
+                                          SizedBox(height: 10),
+                                          Text(
+                                            "الأنبياء",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 24,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "112 Verses",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 14,
+                                          SizedBox(height: 10),
+                                          Text(
+                                            "112 Verses",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 130,
-                                    height: 130,
-                                    child: Image.asset(
-                                      AppAssets.moshafSvgIcon,
-                                      fit: BoxFit.cover,
+                                    SizedBox(
+                                      width: 130,
+                                      height: 130,
+                                      child: Image.asset(
+                                        AppAssets.moshafSvgIcon,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            const SizedBox(width: 16),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: AppColor.gold,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(17.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
-                                      children: [
-                                        Text(
-                                          "Al-Fatiha",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 24,
+                              SizedBox(width: 16),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: AppColor.gold,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.all(17.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        children: [
+                                          Text(
+                                            "Al-Fatiha",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 24,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "الفاتحه",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 24,
+                                          SizedBox(height: 10),
+                                          Text(
+                                            "الفاتحه",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 24,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text(
-                                          "7 Verses",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 14,
+                                          SizedBox(height: 10),
+                                          Text(
+                                            "7 Verses",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 150,
-                                    height: 150,
-                                    child: Image.asset(
-                                      AppAssets.moshafSvgIcon,
-                                      fit: BoxFit.cover,
+                                    SizedBox(
+                                      width: 150,
+                                      height: 150,
+                                      child: Image.asset(
+                                        AppAssets.moshafSvgIcon,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -218,7 +219,7 @@ class _QuranScreenState extends State<QuranScreen> {
                       top: 440,
                       left: 20,
                       right: 20,
-                      child: const Text(
+                      child: Text(
                         "Surahs List",
                         style: TextStyle(
                           color: Colors.white,
@@ -235,7 +236,7 @@ class _QuranScreenState extends State<QuranScreen> {
                       right: 20,
                       child: ListView.separated(
                         shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
+                        physics: NeverScrollableScrollPhysics(),
                         // تعطيل السكرول الداخلي للست
                         padding: EdgeInsets.zero,
                         itemCount: suraList.length,
@@ -250,65 +251,80 @@ class _QuranScreenState extends State<QuranScreen> {
                           final sura = suraList[index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 50,
-                                  height: 50,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Image.asset(
-                                        AppAssets.surNumberIcon,
-                                        width: 50,
-                                        height: 50,
-                                      ),
-                                      Positioned(
-                                        top: 13,
-                                        child: Text(
-                                          "${sura.id}",
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        QuranView(
+                                          sura: sura,
+                                        ),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Image.asset(
+                                          AppAssets.surNumberIcon,
+                                          width: 50,
+                                          height: 50,
+                                        ),
+                                        Positioned(
+                                          top: 13,
+                                          child: Text(
+                                            "${sura.id}",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: 16),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      Text(
+                                        sura.englishName,
+                                        style: TextStyle(
+                                          color: AppColor.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        sura.versesCount,
+                                        style: TextStyle(
+                                          color: AppColor.white,
+                                          fontSize: 14,
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                const SizedBox(width: 16),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      sura.englishName,
-                                      style: const TextStyle(
-                                        color: AppColor.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  Spacer(),
+                                  Text(
+                                    sura.arabicName,
+                                    style: TextStyle(
+                                      color: AppColor.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      sura.versesCount,
-                                      style: const TextStyle(
-                                        color: AppColor.white,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Spacer(),
-                                Text(
-                                  sura.arabicName,
-                                  style: const TextStyle(
-                                    color: AppColor.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
