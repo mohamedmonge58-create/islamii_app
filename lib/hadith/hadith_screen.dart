@@ -22,10 +22,11 @@ class HadithScreen extends StatelessWidget {
 
       child: Column(
         children: [
+          SizedBox(height: 40,),
+
           Image.asset(
             AppAssets.logo,
-            width: size.width * .6,
-            height: size.height * .3,
+            width: size.width * .7,
           ),
 
           Container(
@@ -34,7 +35,7 @@ class HadithScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             width: 310,
-            height: 510,
+            height: 560,
 
             child: PageView(
               scrollDirection: Axis.horizontal,

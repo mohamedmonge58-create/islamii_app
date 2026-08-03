@@ -3,8 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
 import 'package:islamii_app/hadith/hadith_screen.dart';
-import 'package:islamii_app/modules/sebha_model.dart';
 import 'package:islamii_app/quran//quran_screen.dart';
+import 'package:islamii_app/radio/radio_screen.dart';
 import 'package:islamii_app/sebha/sebha_screen.dart';
 
 class NavItem {
@@ -28,7 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
     QuranScreen(),
     HadithScreen(),
     SebhaScreen(),
-    Center(child: Text("Radio Screen", style: TextStyle(color: Colors.white, fontSize: 20))),
+    RadioScreen(),
+
     Center(child: Text("Time Screen", style: TextStyle(color: Colors.white, fontSize: 20))),
   ];
 

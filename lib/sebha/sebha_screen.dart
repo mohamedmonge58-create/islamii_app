@@ -42,11 +42,13 @@ class _SebhaScreenState extends State<SebhaScreen> {
         image: DecorationImage(image: AssetImage(AppAssets.sebhaBackground)),
       ),
       child: Column(
+
         children: [
+          SizedBox(height: 40,),
+
           Image.asset(
             AppAssets.logo,
             width: size.width * .7,
-            height: size.height * .3,
           ),
           Align(
             alignment: Alignment.center,
@@ -60,7 +62,7 @@ class _SebhaScreenState extends State<SebhaScreen> {
               ),
             ),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 15),
           GestureDetector(
             onTap: onTasbeeh,
             child: SizedBox(

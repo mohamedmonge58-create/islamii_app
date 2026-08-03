@@ -42,4 +42,9 @@ abstract class AppAssets {
   static const String sebhaBackground = "assets/images/sebha_background.png";
   static const String sebhaBody = "assets/images/SebhaBody.png";
   static const String partSebha = "assets/images/part_sebha.png";
+
+  static const String radioBackground = "assets/images/radio_background.png";
+  static const String voice = "assets/images/voice.png";
+
+  static const String mosqueRadio = "assets/images/mosque_radio.png";
 }
