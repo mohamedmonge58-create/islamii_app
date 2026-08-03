@@ -22,7 +22,6 @@ class _QuranScreenState extends State<QuranScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // 1. الخلفية تفضل ثابته في الشاشة كلها مبتتحركش
           Positioned.fill(
             child: Image.asset(
               AppAssets.backgroundNative,
@@ -229,7 +228,6 @@ class _QuranScreenState extends State<QuranScreen> {
                       ),
                     ),
 
-                    // قائمة السور المترقمة بالكامل تحت عنوان Surahs List
                     Positioned(
                       top: 470,
                       left: 20,

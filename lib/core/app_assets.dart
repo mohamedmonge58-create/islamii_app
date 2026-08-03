@@ -31,4 +31,15 @@ abstract class AppAssets {
   static const String rightCorner = "assets/images/img_right_corner.png";
   static const String bottomDecoration =
       "assets/images/img_bottom_decoration.png";
+
+  static const String hadithBackground = "assets/images/Background (2).png";
+  static const String hadithCardBackground =
+      "assets/images/HadithCardBackGround 1.png";
+  static const String leftCornerBlack = "assets/images/left_corner_black.png";
+  static const String rightCornerBlack = "assets/images/right_corner_black.png";
+  static const String mosqueBlack = "assets/images/Mosque_black.png";
+
+  static const String sebhaBackground = "assets/images/sebha_background.png";
+  static const String sebhaBody = "assets/images/SebhaBody.png";
+  static const String partSebha = "assets/images/part_sebha.png";
 }

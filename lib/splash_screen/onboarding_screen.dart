@@ -6,6 +6,7 @@ import 'package:islamii_app/splash_screen/onboarding_2.dart';
 import 'package:islamii_app/splash_screen/onboarding_3.dart';
 import 'package:islamii_app/splash_screen/onboarding_4.dart';
 import 'package:islamii_app/splash_screen/onboarding_5.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -25,6 +26,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Onboarding4(),
     Onboarding5(),
   ];
+
+  Future<void> _finishOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isSeen', true); // حفظ القيمة كي لا تظهر الشاشة مجدداً
+
+    if (!mounted) return;
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomeScreen()),
+    );
+  }
 
   @override
   void dispose() {
@@ -94,8 +107,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         width: isActive ? 24 : 8,
                         decoration: BoxDecoration(
                           color: isActive
-                              ? AppColor.gold
-                              : const Color(0xFF666666),
+                              ? AppColor.gold : AppColor.gray,
                           borderRadius: BorderRadius.circular(10),
                         ),
                       );
@@ -112,12 +124,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             curve: Curves.easeInOut,
                           );
                         } else {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
-                            ),
-                          );
+                          _finishOnboarding();
                         }
                       },
                       child: Text(
