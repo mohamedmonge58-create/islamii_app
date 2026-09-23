@@ -28,7 +28,7 @@ class RadioScreen extends StatelessWidget {
 
       child: Column(
         children: [
-          SizedBox(height: 40),
+          SizedBox(height: 20),
           Image.asset(AppAssets.logo, width: size.width * .7),
           Expanded(
             child: DefaultTabController(
@@ -36,7 +36,7 @@ class RadioScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Container(
-                    height: 41,
+                    height: 46,
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
                       color: AppColor.gray,

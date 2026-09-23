@@ -1,10 +1,25 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:islamii_app/core/app_assets.dart';
-import 'package:islamii_app/core/app_color.dart';
+import 'package:islamii_app/hadith/hadith_card.dart';
+import 'package:islamii_app/modules/hadith_model.dart';
 
-class HadithScreen extends StatelessWidget {
+class HadithScreen extends StatefulWidget {
   const HadithScreen({super.key});
+
+  @override
+  State<HadithScreen> createState() => _HadithScreenState();
+}
+
+class _HadithScreenState extends State<HadithScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _loadHadithData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,81 +37,64 @@ class HadithScreen extends StatelessWidget {
 
       child: Column(
         children: [
-          SizedBox(height: 40,),
+          SizedBox(height: 20),
 
-          Image.asset(
+          IImage.asset(
             AppAssets.logo,
             width: size.width * .7,
           ),
+          SizedBox(height: 20,),
 
-          Container(
-            decoration: BoxDecoration(
-              color: AppColor.gold,
-              borderRadius: BorderRadius.circular(20),
+          SafeArea(
+            child: CarouselSlider(
+                items:
+                _hadithList
+                    .map((data) => HadithCard(hadithModel: data,))
+                    .toList()
+                ,
+                options: CarouselOptions(
+                  height: size.height * .62,
+                  aspectRatio: 16 / 9,
+                  viewportFraction: 0.8,
+                  initialPage: 0,
+                  enableInfiniteScroll: true,
+                  reverse: false,
+                  autoPlay: false,
+                  autoPlayInterval: Duration(seconds: 800),
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enlargeCenterPage: true,
+                  enlargeFactor: 0.3,
+                  scrollDirection: Axis.horizontal,
+                )
             ),
-            width: 310,
-            height: 560,
+          )
 
-            child: PageView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                        children: [
-                          Image.asset(
-                            AppAssets.leftCornerBlack,
-                            width: 80,
-                            height: 90,
-                          ),
-
-                          Text(
-                            "الحديث الاول",
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: AppColor.black,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-
-                          Image.asset(
-                            AppAssets.rightCornerBlack,
-                            width: 80,
-                            height: 90,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text("الحديث الشريف "),
-                        ),
-                        Image.asset(
-                          AppAssets.hadithCardBackground,
-                          width: 310,
-                          height: 300,
-                        ),
-                      ],
-                    ),
-                    Spacer(),
-
-                    Align(
-                      alignment: Alignment.center,
-                      child: Image.asset(AppAssets.mosqueBlack),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
+
+  List<HadithModel> _hadithList = [];
+
+  Future<void> _loadHadithData() async {
+    for (int i = 1; i <= 50; i++) {
+      final content = await rootBundle.loadString(
+          "assets/files/hadith/h$i.txt");
+      final titleLength = content.indexOf("\n");
+      final hadithTitle = content.substring(0, titleLength);
+      final titleContent = content.substring(titleLength);
+
+      final hadithData = HadithModel(
+          hadithTitle: hadithTitle,
+          hadithContent: titleContent
+      );
+      _hadithList.add(hadithData);
+    }
+    setState(() {
+
+    });
+  }
+
+
 }

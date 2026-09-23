@@ -35,88 +35,93 @@ class _SebhaScreenState extends State<SebhaScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage(AppAssets.sebhaBackground)),
-      ),
-      child: Column(
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage(AppAssets.sebhaBackground,),
+            fit: BoxFit.cover,
 
-        children: [
-          SizedBox(height: 40,),
-
-          Image.asset(
-            AppAssets.logo,
-            width: size.width * .7,
           ),
-          Align(
-            alignment: Alignment.center,
-            child: Text(
-              "سَبِّحِ اسْمَ رَبِّكَ الأعلى",
-              style: TextStyle(
-                fontSize: 36,
-                color: AppColor.white,
-                fontWeight: FontWeight.w700,
-                fontFamily: 'Janna',
+        ),
+        child: Column(
+
+
+          children: [
+            SizedBox(height: 20,),
+
+            Image.asset(
+              AppAssets.logo,
+              width: size.width * .7,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                "سَبِّحِ اسْمَ رَبِّكَ الأعلى",
+                style: TextStyle(
+                  fontSize: 36,
+                  color: AppColor.white,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Janna',
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 15),
-          GestureDetector(
-            onTap: onTasbeeh,
-            child: SizedBox(
-              width: size.width,
-              height: size.height * .5,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    top: 0,
-                    bottom: 335,
-                    child: Image.asset(
-                      AppAssets.partSebha,
-                      width: size.width * .25,
-                      height: size.width * .25,
-                      fit: BoxFit.contain,
+            SizedBox(height: 15),
+            GestureDetector(
+              onTap: onTasbeeh,
+              child: SizedBox(
+                width: size.width,
+                height: size.height * .5,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      top: 0,
+                      bottom: 335,
+                      child: Image.asset(
+                        AppAssets.partSebha,
+                        width: size.width * .25,
+                        height: size.width * .25,
+                        fit: BoxFit.contain,
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    top: 70,
-                    child: Image.asset(
-                      AppAssets.sebhaBody,
-                      width: size.width * .9,
-                      height: size.height * .4,
-                      fit: BoxFit.contain,
+                    Positioned(
+                      top: 70,
+                      child: Image.asset(
+                        AppAssets.sebhaBody,
+                        width: size.width * .9,
+                        height: size.height * .4,
+                        fit: BoxFit.contain,
+                      ),
                     ),
-                  ),
 
-                  Positioned(
-                    top: size.height * .22,
-                    child: Column(
-                      children: [
-                        Text(
-                          sebhaList[currentIndex].arabicName,
+                    Positioned(
+                      top: size.height * .22,
+                      child: Column(
+                        children: [
+                          Text(
+                            sebhaList[currentIndex].arabicName,
 
-                          style: TextStyle(
-                            color: AppColor.white,
-                            fontSize: 36,
-                            fontFamily: 'Janna',
+                            style: TextStyle(
+                              color: AppColor.white,
+                              fontSize: 36,
+                              fontFamily: 'Janna',
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 15),
-                        Text(
-                          "$counter",
-                          style: TextStyle(color: AppColor.white, fontSize: 36),
-                        ),
-                      ],
+                          SizedBox(height: 15),
+                          Text(
+                            "$counter",
+                            style: TextStyle(
+                                color: AppColor.white, fontSize: 36),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

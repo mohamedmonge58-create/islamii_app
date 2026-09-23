@@ -23,24 +23,19 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigateToNextScreen() async {
-    // 1. وقت الانتظار للسبلاش سكرين (مثلاً 2 ثانية)
     await Future.delayed(const Duration(seconds: 3));
 
-    // 2. فحص ذاكرة الهاتف
     final prefs = await SharedPreferences.getInstance();
     final bool isSeen = prefs.getBool('isSeen') ?? false;
 
     if (!mounted) return;
 
-    // 3. التوجيه بناءً على الحالة
     if (isSeen) {
-      // لو فتح التطبيق قبل كده -> يدخل على HomeScreen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     } else {
-      // لو أول مرة يفتحه -> يدخل على OnboardingScreen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => OnboardingScreen()),
@@ -114,9 +109,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 AppAssets.shape1,
                 width: 90,
               ),
-              
+
             ),
-            
+
           ),
           Positioned(
             top: 700,

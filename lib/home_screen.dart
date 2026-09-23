@@ -35,18 +35,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
 
 
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: CustomBottomNavBar(
-        selectedIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+        body: _pages[_selectedIndex],
+        bottomNavigationBar: CustomBottomNavBar(
+          selectedIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+        ),
       ),
     );
   }

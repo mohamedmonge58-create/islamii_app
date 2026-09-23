@@ -29,7 +29,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Future<void> _finishOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isSeen', true); // حفظ القيمة كي لا تظهر الشاشة مجدداً
+    await prefs.setBool('isSeen', true);
 
     if (!mounted) return;
 
@@ -49,44 +49,88 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      backgroundColor: AppColor.black,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: _onboardingPages.length,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-                itemBuilder: (context, index) {
-                  return _onboardingPages[index];
-                },
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColor.black,
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: _onboardingPages.length,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                  itemBuilder: (context, index) {
+                    return _onboardingPages[index];
+                  },
+                ),
               ),
-            ),
 
-            Container(
-              height: size.height * 0.1,
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  if (_currentIndex > 0)
+              Container(
+                height: size.height * 0.1,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    if (_currentIndex > 0)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton(
+                          onPressed: () {
+                            _pageController.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                          child: Text(
+                            "Back",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: AppColor.gold,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(_onboardingPages.length, (index) {
+                        bool isActive = index == _currentIndex;
+                        return AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          height: 8,
+                          width: isActive ? 24 : 8,
+                          decoration: BoxDecoration(
+                            color: isActive ? AppColor.gold : AppColor.gray,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        );
+                      }),
+                    ),
+
                     Align(
-                      alignment: Alignment.centerLeft,
+                      alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          _pageController.previousPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
+                          if (_currentIndex < _onboardingPages.length - 1) {
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          } else {
+                            _finishOnboarding();
+                          }
                         },
                         child: Text(
-                          "Back",
+                          _currentIndex == _onboardingPages.length - 1
+                              ? "Finish"
+                              : "Next",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -95,54 +139,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                       ),
                     ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(_onboardingPages.length, (index) {
-                      bool isActive = index == _currentIndex;
-                      return AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        height: 8,
-                        width: isActive ? 24 : 8,
-                        decoration: BoxDecoration(
-                          color: isActive
-                              ? AppColor.gold : AppColor.gray,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      );
-                    }),
-                  ),
-
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () {
-                        if (_currentIndex < _onboardingPages.length - 1) {
-                          _pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                        } else {
-                          _finishOnboarding();
-                        }
-                      },
-                      child: Text(
-                        _currentIndex == _onboardingPages.length - 1
-                            ? "Finish"
-                            : "Next",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: AppColor.gold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
