@@ -42,8 +42,13 @@ class _SplashScreenState extends State<SplashScreen> {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery
+        .of(context)
+        .size;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -55,75 +60,85 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
 
           Positioned(
-            top: 45,
+            top: size.height * 0.055,
             left: 0,
             right: 0,
             child: Center(
               child: Image.asset(
                 AppAssets.mosque,
-                width: 270,
-                height: 150,
+                width: size.width * 0.69,
+                height: size.height * 0.18,
+                fit: BoxFit.contain,
               ),
             ),
           ),
 
           Positioned(
             top: 0,
-            left: 290,
+            left: size.width * 0.74,
             right: 0,
             child: Center(
               child: Image.asset(
                 AppAssets.glow,
-                width: 70,
-                height: 300,
+                width: size.width * 0.18,
+                height: size.height * 0.37,
+                fit: BoxFit.contain,
               ),
             ),
           ),
 
           Positioned(
-            top: 10,
+            top: size.height * 0.012,
             left: 0,
-            bottom: 170,
-
+            bottom: size.height * 0.21,
             child: Image.asset(
               AppAssets.shape2,
-              width: 90,
+              width: size.width * 0.23,
+              fit: BoxFit.contain,
             ),
           ),
-          Positioned(
-              top:200,
-              left: 120,
-              bottom: 120,
-              right: 120,
 
-              child: Image.asset(
-            AppAssets.islamiiLogo,
-            width: 80,
-
-          )),
           Positioned(
-            bottom: 120,
-            left: 310,
+            top: size.height * 0.25,
+            left: 0,
+            right: 0,
             child: Center(
               child: Image.asset(
-                AppAssets.shape1,
-                width: 90,
+                AppAssets.islamiiLogo,
+                width: size.width * 0.2,
+                fit: BoxFit.contain,
               ),
-
             ),
-
           ),
+
           Positioned(
-            top: 700,
-            bottom: 0,
-            left: 50,
-            right: 50,child:
-            Center(child: Text("Supervised by Mohamed Monge" , style: TextStyle(fontSize: 16 , fontWeight: FontWeight(400) , color: AppColor.white , fontFamily: "poppins"))
-            ,)
+            bottom: size.height * 0.15,
+            left: size.width * 0.79,
+            child: Image.asset(
+              AppAssets.shape1,
+              width: size.width * 0.23,
+              fit: BoxFit.contain,
+            ),
+          ),
 
-
-
-          )],
+          Positioned(
+            bottom: size.height * 0.06,
+            left: size.width * 0.1,
+            right: size.width * 0.1,
+            child: Center(
+              child: Text(
+                "Supervised by Mohamed Monge",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: AppColor.white,
+                  fontFamily: "poppins",
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

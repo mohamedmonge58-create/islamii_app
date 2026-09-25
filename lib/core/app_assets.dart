@@ -47,4 +47,11 @@ abstract class AppAssets {
   static const String voice = "assets/images/voice.png";
 
   static const String mosqueRadio = "assets/images/mosque_radio.png";
+
+  static const String timeBackground = "assets/images/Background_Time.png";
+  static const String morningAzkar = "assets/images/morning_azkar.png";
+  static const String eveningAzkar = "assets/images/evening_azkar.png";
+
+  static const String group1 = "assets/images/group_1.png";
+  static const String group2 = "assets/images/group_2.png";
 }

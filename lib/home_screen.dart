@@ -6,6 +6,7 @@ import 'package:islamii_app/hadith/hadith_screen.dart';
 import 'package:islamii_app/quran//quran_screen.dart';
 import 'package:islamii_app/radio/radio_screen.dart';
 import 'package:islamii_app/sebha/sebha_screen.dart';
+import 'package:islamii_app/timer/time_screen.dart';
 
 class NavItem {
   final String iconPath;
@@ -29,8 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     HadithScreen(),
     SebhaScreen(),
     RadioScreen(),
-
-    Center(child: Text("Time Screen", style: TextStyle(color: Colors.white, fontSize: 20))),
+    TimeScreen(),
   ];
 
   @override
