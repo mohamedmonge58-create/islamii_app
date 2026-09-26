@@ -99,14 +99,14 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
 
           Positioned(
-            top: size.height * 0.25,
+            top: size.height * 0.4,
             left: 0,
             right: 0,
             child: Center(
               child: Image.asset(
                 AppAssets.islamiiLogo,
-                width: size.width * 0.2,
-                fit: BoxFit.contain,
+                width: size.width * 0.35,
+                fit: BoxFit.cover,
               ),
             ),
           ),

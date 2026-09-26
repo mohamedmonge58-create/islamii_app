@@ -5,6 +5,9 @@ import 'package:islamii_app/core/app_color.dart';
 import 'package:islamii_app/timer/widgets/azkar_card.dart';
 import 'package:islamii_app/timer/widgets/prayer_times_widget.dart';
 
+import '../azkar/azkar_screen.dart';
+import '../azkar/modules/azkar_data.dart';
+
 class TimeScreen extends StatelessWidget {
   const TimeScreen({super.key});
 
@@ -67,10 +70,17 @@ class TimeScreen extends StatelessWidget {
                       Expanded(
                         child: AzkarCard(
                           title: 'Evening Azkar',
-                          imagePath: AppAssets
-                              .eveningAzkar, // ضيفها في app_assets.dart
+                          imagePath: AppAssets.eveningAzkar,
                           onTap: () {
-                            // TODO: تنقل لشاشة أذكار المساء
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AzkarScreen(
+                                  title: "أذكار المساء",
+                                  azkarList: AzkarData.eveningAzkar,
+                                ),
+                              ),
+                            );
                           },
                         ),
                       ),
@@ -78,10 +88,17 @@ class TimeScreen extends StatelessWidget {
                       Expanded(
                         child: AzkarCard(
                           title: 'Morning Azkar',
-                          imagePath: AppAssets
-                              .morningAzkar, // ضيفها في app_assets.dart
+                          imagePath: AppAssets.morningAzkar,
                           onTap: () {
-                            // TODO: تنقل لشاشة أذكار الصباح
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AzkarScreen(
+                                  title: "أذكار الصباح",
+                                  azkarList: AzkarData.morningAzkar,
+                                ),
+                              ),
+                            );
                           },
                         ),
                       ),
