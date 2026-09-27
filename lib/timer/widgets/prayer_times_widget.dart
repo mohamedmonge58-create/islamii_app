@@ -1,6 +1,7 @@
 // lib/screens/prayer_times_screen.dart
 import 'dart:async';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:islamii_app/core/app_assets.dart';
@@ -184,18 +185,26 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             right: 0,
             child: SizedBox(
               height: 140,
-              child: ListView(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                children: [
-                  for (int i = 0; i < model.orderedPrayers.length; i++)
-                    _PrayerCard(
-                      name: model.orderedPrayers[i].key,
-                      time: model.orderedPrayers[i].value,
-                      isActive: i == next.index,
-                    ),
-                ],
+              child: CarouselSlider.builder(
+                itemCount: model.orderedPrayers.length,
+                itemBuilder: (context, index, realIndex) {
+                  return _PrayerCard(
+                    name: model.orderedPrayers[index].key,
+                    time: model.orderedPrayers[index].value,
+                    isActive: index == next.index,
+                  );
+                },
+                options: CarouselOptions(
+                  height: 140,
+                  viewportFraction: 0.28,
+                  // اضبطها حسب عدد الكروت اللي عايز تظهر مرة واحدة
+                  initialPage: next.index,
+                  // يبدأ من الصلاة الجاية تلقائيًا (بديل الـ scrollController)
+                  enableInfiniteScroll: false,
+                  enlargeCenterPage: true,
+                  enlargeFactor: 0.25,
+                  scrollDirection: Axis.horizontal,
+                ),
               ),
             ),
           ),
