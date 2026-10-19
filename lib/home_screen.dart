@@ -39,7 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
 
-
         body: _pages[_selectedIndex],
         bottomNavigationBar: CustomBottomNavBar(
           selectedIndex: _selectedIndex,
@@ -90,8 +89,8 @@ class CustomBottomNavBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 AnimatedContainer(
-                  duration:  Duration(milliseconds: 200),
-                  padding:  EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  duration: Duration(milliseconds: 200),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                   decoration: BoxDecoration(
                     color: isSelected ? AppColor.gray : Colors.transparent,
                     borderRadius: BorderRadius.circular(20),
@@ -106,18 +105,18 @@ class CustomBottomNavBar extends StatelessWidget {
                     ),
                   ),
                 ),
-                 SizedBox(height: 2),
+                SizedBox(height: 2),
                 if (isSelected)
                   Text(
                     _items[index].title,
-                    style:  TextStyle(
+                    style: TextStyle(
                       color: AppColor.white,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                   )
                 else
-                   SizedBox(height: 14),
+                  SizedBox(height: 14),
               ],
             ),
           );

@@ -15,15 +15,22 @@ class AzkarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
       child: Container(
-        height: 259,
-        width: 185,
+        height: 220,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: AppColor.gold, width: 1.5),
-          color: Colors.black,
+          color: AppColor.black.withValues(alpha: 0.6),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         clipBehavior: Clip.antiAlias,
         child: Column(
@@ -31,20 +38,23 @@ class AzkarCard extends StatelessWidget {
             Expanded(
               flex: 4,
               child: Padding(
-                padding: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(12),
                 child: Image.asset(imagePath, fit: BoxFit.contain),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Center(
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+              color: AppColor.gold.withValues(alpha: 0.15),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
                 child: Text(
                   title,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20,
+                    color: AppColor.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                     fontFamily: 'Janna',
                   ),
                 ),

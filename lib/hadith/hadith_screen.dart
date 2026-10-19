@@ -85,31 +85,32 @@ class _HadithScreenState extends State<HadithScreen> {
                       ? const Center(child: CircularProgressIndicator())
                       : _hadithList.isEmpty
                       ? const Center(
-                    child: Text(
-                      'لا توجد أحاديث متاحة حاليًا',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  )
+                          child: Text(
+                            'لا توجد أحاديث متاحة حاليًا',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
                       : CarouselSlider(
-                    items: _hadithList
-                        .map((data) => HadithCard(hadithModel: data))
-                        .toList(),
-                    options: CarouselOptions(
-                      height: double.infinity,
-                      viewportFraction: 0.8,
-                      initialPage: 0,
-                      enableInfiniteScroll: true,
-                      reverse: false,
-                      autoPlay: false,
-                      autoPlayInterval: const Duration(seconds: 800),
-                      autoPlayAnimationDuration:
-                      const Duration(milliseconds: 800),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enlargeCenterPage: true,
-                      enlargeFactor: 0.3,
-                      scrollDirection: Axis.horizontal,
-                    ),
-                  ),
+                          items: _hadithList
+                              .map((data) => HadithCard(hadithModel: data))
+                              .toList(),
+                          options: CarouselOptions(
+                            height: double.infinity,
+                            viewportFraction: 0.8,
+                            initialPage: 0,
+                            enableInfiniteScroll: true,
+                            reverse: false,
+                            autoPlay: false,
+                            autoPlayInterval: const Duration(seconds: 800),
+                            autoPlayAnimationDuration: const Duration(
+                              milliseconds: 800,
+                            ),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+                            enlargeFactor: 0.3,
+                            scrollDirection: Axis.horizontal,
+                          ),
+                        ),
                 ),
               ],
             );

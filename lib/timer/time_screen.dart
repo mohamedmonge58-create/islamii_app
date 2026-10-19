@@ -1,4 +1,3 @@
-// lib/screens/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
@@ -13,56 +12,58 @@ class TimeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-              AppAssets.timeBackground,
-            ), // نفس الخلفية بتاعة شاشة الراديو
+            image: AssetImage(AppAssets.timeBackground),
             fit: BoxFit.cover,
-            // colorFilter: ColorFilter.mode(
-            //   AppColor.black.withOpacity(0.55),
-            //   BlendMode.darken,
-            // ),
           ),
         ),
         child: SafeArea(
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // الشعار
+                // Logo Header
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Image.asset(
                       AppAssets.logo,
-                      width: MediaQuery.of(context).size.width * .5,
+                      width: size.width * .45,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
 
-                const PrayerTimesScreen(),
+                // Prayer Times Main Widget
+                const PrayerTimesWidget(),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 24),
 
+                // Azkar Section Header
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     'Azkar',
                     style: TextStyle(
-                      color: AppColor.white,
-                      fontSize: 18,
+                      color: AppColor.gold,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Janna',
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 12),
 
+                // Azkar Cards
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
@@ -106,7 +107,7 @@ class TimeScreen extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
               ],
             ),
           ),

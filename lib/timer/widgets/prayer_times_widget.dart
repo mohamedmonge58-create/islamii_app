@@ -1,7 +1,5 @@
-// lib/screens/prayer_times_screen.dart
 import 'dart:async';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:islamii_app/core/app_assets.dart';
@@ -11,14 +9,14 @@ import 'package:islamii_app/timer/widgets/prayer_times_helper.dart';
 import '../../modules/prayer_times_model.dart';
 import '../../services/prayer_times_service.dart';
 
-class PrayerTimesScreen extends StatefulWidget {
-  const PrayerTimesScreen({super.key});
+class PrayerTimesWidget extends StatefulWidget {
+  const PrayerTimesWidget({super.key});
 
   @override
-  State<PrayerTimesScreen> createState() => _PrayerTimesScreenState();
+  State<PrayerTimesWidget> createState() => _PrayerTimesWidgetState();
 }
 
-class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
+class _PrayerTimesWidgetState extends State<PrayerTimesWidget> {
   final _service = PrayerTimesService();
   final _scrollController = ScrollController();
 
@@ -41,14 +39,17 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         city: 'cairo',
         country: 'egypt',
       );
+      if (!mounted) return;
       setState(() {
         _model = model;
         _nextPrayer = getNextPrayer(model);
         _isLoading = false;
+        _error = null;
       });
       _startCountdown();
       _scrollToCurrentPrayer();
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _error = 'تعذر تحميل مواقيت الصلاة';
         _isLoading = false;
@@ -61,6 +62,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (_model == null) return;
       final next = getNextPrayer(_model!);
+      if (!mounted) return;
       setState(() => _nextPrayer = next);
 
       if (next.remaining.isNegative) {
@@ -72,9 +74,10 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   void _scrollToCurrentPrayer() {
     if (_nextPrayer == null) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_scrollController.hasClients) return;
       final index = _nextPrayer!.index;
-      const cardWidth = 110.0;
-      final offset = (index * cardWidth) - 150;
+      const cardWidth = 92.0;
+      final offset = (index * cardWidth) - 100;
       _scrollController.animateTo(
         offset.clamp(0, _scrollController.position.maxScrollExtent),
         duration: const Duration(milliseconds: 500),
@@ -86,7 +89,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   String _formatDuration(Duration d) {
     final h = d.inHours.toString().padLeft(2, '0');
     final m = (d.inMinutes % 60).toString().padLeft(2, '0');
-    return '$h:$m';
+    final s = (d.inSeconds % 60).toString().padLeft(2, '0');
+    return '$h:$m:$s';
   }
 
   @override
@@ -99,152 +103,229 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        height: 220,
+        decoration: BoxDecoration(
+          color: AppColor.black.withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(24),
+          // border: Border.all(color: AppColor.gold.withValues(alpha: 0.3)),
+        ),
+        // child: const Center(
+        //   child: CircularProgressIndicator(color: AppColor.gold),
+        // ),
+      );
     }
 
     if (_error != null || _model == null) {
-      return Center(child: Text(_error ?? 'حدث خطأ'));
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: AppColor.black.withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(24),
+          // border: Border.all(color: AppColor.gold.withValues(alpha: 0.3)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // const Icon(Icons.error_outline, color: AppColor.gold, size: 36),
+            const SizedBox(height: 10),
+            Text(
+              _error ?? 'تعذر تحميل مواقيت الصلاة',
+              style: const TextStyle(
+                color: AppColor.white,
+                fontFamily: 'Janna',
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: () {
+                setState(() {
+                  _isLoading = true;
+                  _error = null;
+                });
+                _loadPrayerTimes();
+              },
+              style: OutlinedButton.styleFrom(
+                // side: const BorderSide(color: AppColor.gold),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text(
+                'إعادة المحاولة',
+                style: TextStyle(color: AppColor.gold, fontFamily: 'Janna'),
+              ),
+            ),
+          ],
+        ),
+      );
     }
 
     final model = _model!;
     final next = _nextPrayer!;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        // border: Border.all(color: AppColor.gold, width: 1.2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
       child: Stack(
         children: [
-          Image.asset(AppAssets.group1, fit: BoxFit.fill),
           Positioned.fill(
-            child: Image.asset(AppAssets.group2, fit: BoxFit.fill),
+            child: Image.asset(AppAssets.group1, fit: BoxFit.cover),
+          ),
+          Positioned.fill(
+            child: Image.asset(AppAssets.group2, fit: BoxFit.cover),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 14),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        DateFormat('dd MMM,\nyyyy').format(model.gregorianDate),
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                // Header Row: Dates and Title
+                Row(
+                  children: [
+                    // Gregorian Date
+                    Expanded(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          DateFormat(
+                            'dd MMM,\n yyyy',
+                          ).format(model.gregorianDate),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: AppColor.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text(
-                        "Pray Time",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: AppColor.black.withOpacity(0.71),
-                          fontWeight: FontWeight.w700,
+                    const SizedBox(width: 8),
+                    // Title
+                    Column(
+                      children: [
+                        Text(
+                          "Pray Time",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: AppColor.black.withValues(alpha: 0.8),
+                            fontWeight: FontWeight.w800,
+                            fontFamily: 'Janna',
+                          ),
+                        ),
+                        Text(
+                          DateFormat('EEEE').format(model.gregorianDate),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppColor.black.withValues(alpha: 0.95),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 8),
+                    // Hijri Date
+                    Expanded(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          "${model.hijriDay} ${model.hijriMonth}\n${model.hijriYear}",
+                          textAlign: TextAlign.right,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: AppColor.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                // Prayer Cards ListView / Carousel
+                SizedBox(
+                  height: 135,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    itemCount: model.orderedPrayers.length,
+                    itemBuilder: (context, index) {
+                      final prayer = model.orderedPrayers[index];
+                      return _PrayerCard(
+                        name: prayer.key,
+                        time: prayer.value,
+                        isActive: index == next.index,
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Footer: Countdown & Sound
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColor.black.withValues(alpha: 0.25),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       Text(
-                        DateFormat('EEEE').format(model.gregorianDate),
+                        'Next Pray - ',
                         style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black.withOpacity(0.90),
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: AppColor.black.withValues(alpha: 0.8),
+                          fontFamily: 'Janna',
+                        ),
+                      ),
+                      Text(
+                        _formatDuration(next.remaining),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: AppColor.black,
+                        ),
+                      ),
+                      const SizedBox(width: 24),
+                      InkWell(
+                        onTap: () => setState(() => _isMuted = !_isMuted),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Icon(
+                            _isMuted ? Icons.volume_off : Icons.volume_up,
+                            color: AppColor.black,
+                            size: 24,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(width: 40),
-
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    "${model.hijriDay} ${model.hijriMonth.substring(0, model.hijriMonth.length > 6 ? 6 : model.hijriMonth.length)},\n     ${model.hijriYear}",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
               ],
-            ),
-          ),
-          Positioned(
-            top: 90,
-            left: 0,
-            right: 0,
-            child: SizedBox(
-              height: 140,
-              child: CarouselSlider.builder(
-                itemCount: model.orderedPrayers.length,
-                itemBuilder: (context, index, realIndex) {
-                  return _PrayerCard(
-                    name: model.orderedPrayers[index].key,
-                    time: model.orderedPrayers[index].value,
-                    isActive: index == next.index,
-                  );
-                },
-                options: CarouselOptions(
-                  height: 140,
-                  viewportFraction: 0.28,
-                  // اضبطها حسب عدد الكروت اللي عايز تظهر مرة واحدة
-                  initialPage: next.index,
-                  // يبدأ من الصلاة الجاية تلقائيًا (بديل الـ scrollController)
-                  enableInfiniteScroll: false,
-                  enlargeCenterPage: true,
-                  enlargeFactor: 0.25,
-                  scrollDirection: Axis.horizontal,
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 20, // المسافة من تحت الكارت كله
-            left: 0,
-            right: 0,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Next Pray -',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: AppColor.black.withOpacity(0.75),
-                    ),
-                  ),
-                  Text(
-                    " ${_formatDuration(next.remaining)}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: AppColor.black,
-                    ),
-                  ),
-
-                  SizedBox(width: 30),
-                  GestureDetector(
-                    onTap: () => setState(() => _isMuted = !_isMuted),
-                    child: Icon(
-                      _isMuted ? Icons.volume_off : Icons.volume_up,
-                      color: AppColor.black,
-                      size: 25,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ],
@@ -271,45 +352,70 @@ class _PrayerCard extends StatelessWidget {
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      height: isActive ? 128 : 106,
-      width: isActive ? 104 : 86,
-      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      width: isActive ? 96 : 82,
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topLeft,
-          colors: [AppColor.golden, AppColor.black],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: isActive
+              ? [AppColor.gold, AppColor.golden]
+              : [AppColor.gray, AppColor.black],
         ),
-
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: isActive
+              ? AppColor.white
+              : AppColor.gold.withValues(alpha: 0.3),
+          width: isActive ? 1.5 : 1.0,
+        ),
+        boxShadow: isActive
+            ? [
+                BoxShadow(
+                  color: AppColor.gold.withValues(alpha: 0.4),
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                ),
+              ]
+            : null,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: Colors.white,
-              fontSize: isActive ? 16 : 14,
-              fontWeight: FontWeight.w700,
+              color: isActive ? AppColor.black : AppColor.white,
+              fontSize: isActive ? 15 : 13,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'Janna',
             ),
           ),
           const SizedBox(height: 6),
-          Text(
-            timeStr,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: isActive ? 32 : 24,
-              fontWeight: FontWeight.w700,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              timeStr,
+              style: TextStyle(
+                color: isActive ? AppColor.black : AppColor.gold,
+                fontSize: isActive ? 22 : 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
+          const SizedBox(height: 2),
           Text(
             period,
             style: TextStyle(
-              color: Colors.white,
-              fontSize: isActive ? 16 : 14,
-              fontWeight: FontWeight.w700,
+              color: isActive
+                  ? AppColor.black.withValues(alpha: 0.8)
+                  : AppColor.white.withValues(alpha: 0.7),
+              fontSize: isActive ? 12 : 11,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],

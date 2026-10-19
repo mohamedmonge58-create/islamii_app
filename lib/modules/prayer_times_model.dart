@@ -32,7 +32,6 @@ class PrayerTimesModel {
   ) {
     final timings = json['data']['timings'];
     final hijri = json['data']['date']['hijri'];
-    final gregorian = json['data']['date']['gregorian'];
 
     DateTime parseTime(String raw) {
       // raw comes as "04:38 (EET)" or "04:38" -> we only need HH:mm

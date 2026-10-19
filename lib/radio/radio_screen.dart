@@ -14,22 +14,21 @@ class RadioScreen extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(AppAssets.radioBackground),
+          image: const AssetImage(AppAssets.radioBackground),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
-            AppColor.black.withOpacity(0.7),
+            AppColor.black.withValues(alpha: 0.7),
             BlendMode.darken,
           ),
         ),
       ),
-
       child: Column(
         children: [
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Image.asset(AppAssets.logo, width: size.width * .7),
+          const SizedBox(height: 10),
           Expanded(
             child: DefaultTabController(
               length: 2,
@@ -37,13 +36,13 @@ class RadioScreen extends StatelessWidget {
                 children: [
                   Container(
                     height: 46,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
                     decoration: BoxDecoration(
                       color: AppColor.gray,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: TabBar(
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'Janna',
@@ -56,19 +55,15 @@ class RadioScreen extends StatelessWidget {
                       ),
                       labelColor: AppColor.black,
                       unselectedLabelColor: AppColor.white,
-
-                      tabs: [
+                      tabs: const [
                         Tab(text: "Radio"),
                         Tab(text: "Reciters"),
                       ],
                     ),
                   ),
-                  Expanded(
+                  const Expanded(
                     child: TabBarView(
-                      children: [
-                        SingleChildScrollView(child: RadioDetails()),
-                        SingleChildScrollView(child: RecitersDetails()),
-                      ],
+                      children: [RadioDetails(), RecitersDetails()],
                     ),
                   ),
                 ],

@@ -61,7 +61,7 @@ Future<SuraModel?> showSurahPicker({
               Text(
                 'اختر السورة',
                 style: TextStyle(
-                  color: AppColor.white.withOpacity(0.6),
+                  color: AppColor.white.withValues(alpha: 0.6),
                   fontSize: 13,
                 ),
               ),
@@ -97,7 +97,7 @@ Future<SuraModel?> showSurahPicker({
                       subtitle: Text(
                         sura.versesCount,
                         style: TextStyle(
-                          color: AppColor.white.withOpacity(0.5),
+                          color: AppColor.white.withValues(alpha: 0.5),
                         ),
                       ),
                       trailing: Icon(Icons.play_arrow, color: AppColor.gold),

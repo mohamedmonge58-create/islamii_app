@@ -41,7 +41,6 @@ class _AzkarScreenState extends State<AzkarScreen> {
 
     if (!mounted) return;
 
-    // لو التاريخ المحفوظ مش نفس النهاردة، يبقى يوم جديد -> Reset تلقائي
     if (savedDate != today) {
       setState(() {
         _remainingCounts = widget.azkarList.map((a) => a.repeatCount).toList();
@@ -52,7 +51,6 @@ class _AzkarScreenState extends State<AzkarScreen> {
       return;
     }
 
-    // نفس اليوم، نجيب التقدم المحفوظ زي ما هو
     final saved = prefs.getStringList(_progressKey);
     setState(() {
       if (saved != null && saved.length == widget.azkarList.length) {
@@ -91,7 +89,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
   @override
   Widget build(BuildContext context) {
     if (!_isLoaded) {
-      return Scaffold(
+      return const Scaffold(
         backgroundColor: AppColor.black,
         body: Center(child: CircularProgressIndicator(color: AppColor.gold)),
       );
@@ -108,18 +106,18 @@ class _AzkarScreenState extends State<AzkarScreen> {
         centerTitle: true,
         title: Text(
           widget.title,
-          style: TextStyle(
+          style: const TextStyle(
             color: AppColor.gold,
             fontFamily: 'Janna',
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
-        iconTheme: IconThemeData(color: AppColor.gold),
+        iconTheme: const IconThemeData(color: AppColor.gold),
         actions: [
           IconButton(
             onPressed: _resetAll,
-            icon: Icon(Icons.refresh, color: AppColor.gold),
+            icon: const Icon(Icons.refresh, color: AppColor.gold),
             tooltip: 'إعادة تعيين',
           ),
         ],
@@ -143,7 +141,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
                 Text(
                   "$completed من $total ذكر",
                   style: TextStyle(
-                    color: AppColor.white.withOpacity(0.7),
+                    color: AppColor.white.withValues(alpha: 0.7),
                     fontSize: 13,
                   ),
                 ),
@@ -167,12 +165,12 @@ class _AzkarScreenState extends State<AzkarScreen> {
                     padding: const EdgeInsets.all(18),
                     decoration: BoxDecoration(
                       color: isDone
-                          ? AppColor.gold.withOpacity(0.15)
-                          : Colors.white.withOpacity(0.05),
+                          ? AppColor.gold.withValues(alpha: 0.15)
+                          : Colors.white.withValues(alpha: 0.05),
                       borderRadius: BorderRadius.circular(18),
                       border: Border.all(
                         color: isDone
-                            ? AppColor.gold.withOpacity(0.4)
+                            ? AppColor.gold.withValues(alpha: 0.4)
                             : AppColor.gold,
                         width: 1.2,
                       ),
@@ -185,7 +183,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: isDone
-                                ? AppColor.white.withOpacity(0.5)
+                                ? AppColor.white.withValues(alpha: 0.5)
                                 : AppColor.white,
                             fontSize: 19,
                             fontFamily: 'Janna',
@@ -199,7 +197,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
                             azkar.note!,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: AppColor.gold.withOpacity(0.8),
+                              color: AppColor.gold.withValues(alpha: 0.8),
                               fontSize: 13,
                               fontStyle: FontStyle.italic,
                             ),
@@ -215,7 +213,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
                                   : Icons.radio_button_unchecked,
                               color: isDone
                                   ? AppColor.gold
-                                  : AppColor.gold.withOpacity(0.6),
+                                  : AppColor.gold.withValues(alpha: 0.6),
                               size: 20,
                             ),
                             const SizedBox(width: 8),
@@ -230,7 +228,9 @@ class _AzkarScreenState extends State<AzkarScreen> {
                                 shape: BoxShape.circle,
                                 border: isDone
                                     ? Border.all(
-                                        color: AppColor.gold.withOpacity(0.4),
+                                        color: AppColor.gold.withValues(
+                                          alpha: 0.4,
+                                        ),
                                       )
                                     : null,
                               ),

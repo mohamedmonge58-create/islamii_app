@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
-import 'package:islamii_app/home_screen.dart';
 import 'package:islamii_app/modules/sura_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,16 +19,17 @@ class QuranView extends StatefulWidget {
 class _QuranViewState extends State<QuranView> {
   int? _highlightedAyah; // آية واحدة بس، مش Set
   bool _prefsLoaded = false;
-  late final Future<
-      Map<String, dynamic>> _surahFuture; // <-- محسوبة مرة واحدة بس
+  late final Future<Map<String, dynamic>>
+  _surahFuture; // <-- محسوبة مرة واحدة بس
 
   String get _prefsKey => 'highlighted_ayah_${widget.sura.id}';
 
   @override
   void initState() {
     super.initState();
-    _surahFuture =
-        SurahDetails.loadSurah(widget.sura.id); // <-- هنا، مش في build
+    _surahFuture = SurahDetails.loadSurah(
+      widget.sura.id,
+    ); // <-- هنا، مش في build
     _loadHighlight();
   }
 
@@ -70,12 +70,9 @@ class _QuranViewState extends State<QuranView> {
         scrolledUnderElevation: 0,
         leading: IconButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-            );
+            Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back, color: AppColor.gold),
+          icon: const Icon(Icons.arrow_back, color: AppColor.gold),
         ),
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 80),
@@ -126,104 +123,104 @@ class _QuranViewState extends State<QuranView> {
             child: !_prefsLoaded
                 ? Center(child: CircularProgressIndicator(color: AppColor.gold))
                 : FutureBuilder<Map<String, dynamic>>(
-              future: _surahFuture,
-              // <-- بيستخدم النسخة المحفوظة، مش استدعاء جديد
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: AppColor.gold,
-                    ),
-                  );
-                }
+                    future: _surahFuture,
+                    // <-- بيستخدم النسخة المحفوظة، مش استدعاء جديد
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: AppColor.gold,
+                          ),
+                        );
+                      }
 
-                if (snapshot.hasError || snapshot.data == null) {
-                  return Center(
-                    child: Text(
-                      'تعذر تحميل السورة',
-                      style: TextStyle(color: AppColor.gold),
-                    ),
-                  );
-                }
+                      if (snapshot.hasError || snapshot.data == null) {
+                        return Center(
+                          child: Text(
+                            'تعذر تحميل السورة',
+                            style: TextStyle(color: AppColor.gold),
+                          ),
+                        );
+                      }
 
-                final data = snapshot.data!;
-                final Map<String, dynamic> versesMap =
-                    data['verse'] ?? {};
+                      final data = snapshot.data!;
+                      final Map<String, dynamic> versesMap =
+                          data['verse'] ?? {};
 
-                final List<MapEntry<int, String>> ayahs = [];
-                int index = 1;
-                versesMap.forEach((key, value) {
-                  ayahs.add(MapEntry(index, value.toString()));
-                  index++;
-                });
+                      final List<MapEntry<int, String>> ayahs = [];
+                      int index = 1;
+                      versesMap.forEach((key, value) {
+                        ayahs.add(MapEntry(index, value.toString()));
+                        index++;
+                      });
 
-                return Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    itemCount: ayahs.length,
-                    itemBuilder: (context, i) {
-                      final ayahNumber = ayahs[i].key;
-                      final ayahText = ayahs[i].value;
-                      final isHighlighted =
-                          _highlightedAyah == ayahNumber;
-
-                      return GestureDetector(
-                        onTap: () => _toggleHighlight(ayahNumber),
-                        child: Container(
-                          width: double.infinity,
-                          margin: const EdgeInsets.symmetric(vertical: 6),
+                      return Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: ListView.builder(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
-                            vertical: 16,
+                            vertical: 8,
                           ),
-                          decoration: BoxDecoration(
-                            color: isHighlighted
-                                ? AppColor.gold.withOpacity(0.9)
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: AppColor.gold,
-                              width: 1.2,
-                            ),
-                          ),
-                          child: Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: '$ayahText ',
-                                  style: TextStyle(
-                                    color: isHighlighted
-                                        ? AppColor.black
-                                        : AppColor.gold,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                          itemCount: ayahs.length,
+                          itemBuilder: (context, i) {
+                            final ayahNumber = ayahs[i].key;
+                            final ayahText = ayahs[i].value;
+                            final isHighlighted =
+                                _highlightedAyah == ayahNumber;
+
+                            return GestureDetector(
+                              onTap: () => _toggleHighlight(ayahNumber),
+                              child: Container(
+                                width: double.infinity,
+                                margin: const EdgeInsets.symmetric(vertical: 6),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: isHighlighted
+                                      ? AppColor.gold.withValues(alpha: 0.9)
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: AppColor.gold,
+                                    width: 1.2,
                                   ),
                                 ),
-                                TextSpan(
-                                  text: '[$ayahNumber]',
-                                  style: TextStyle(
-                                    color: isHighlighted
-                                        ? AppColor.black
-                                        : AppColor.gold,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                                child: Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: '$ayahText ',
+                                        style: TextStyle(
+                                          color: isHighlighted
+                                              ? AppColor.black
+                                              : AppColor.gold,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '[$ayahNumber]',
+                                        style: TextStyle(
+                                          color: isHighlighted
+                                              ? AppColor.black
+                                              : AppColor.gold,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                  textAlign: TextAlign.center,
                                 ),
-                              ],
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
+                              ),
+                            );
+                          },
                         ),
                       );
                     },
                   ),
-                );
-              },
-            ),
           ),
         ],
       ),

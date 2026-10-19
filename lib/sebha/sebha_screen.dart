@@ -38,21 +38,16 @@ class _SebhaScreenState extends State<SebhaScreen> {
     return SafeArea(
       child: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage(AppAssets.sebhaBackground,),
+          image: DecorationImage(
+            image: AssetImage(AppAssets.sebhaBackground),
             fit: BoxFit.cover,
-
           ),
         ),
         child: Column(
-
-
           children: [
-            SizedBox(height: 20,),
+            SizedBox(height: 20),
 
-            Image.asset(
-              AppAssets.logo,
-              width: size.width * .7,
-            ),
+            Image.asset(AppAssets.logo, width: size.width * .7),
             Align(
               alignment: Alignment.center,
               child: Text(
@@ -76,7 +71,7 @@ class _SebhaScreenState extends State<SebhaScreen> {
                   children: [
                     Positioned(
                       top: 0,
-                      bottom: 335,
+                      bottom: 395,
                       child: Image.asset(
                         AppAssets.partSebha,
                         width: size.width * .25,
@@ -111,7 +106,9 @@ class _SebhaScreenState extends State<SebhaScreen> {
                           Text(
                             "$counter",
                             style: TextStyle(
-                                color: AppColor.white, fontSize: 36),
+                              color: AppColor.white,
+                              fontSize: 36,
+                            ),
                           ),
                         ],
                       ),

@@ -1,5 +1,5 @@
 abstract class AppAssets {
-  static const String background= "assets/images/background_native.png";
+  static const String background = "assets/images/background_native.png";
   static const String glow = "assets/images/Glow.png";
   static const String islamiiLogo = "assets/images/islami_logo.png";
   static const String mosque = "assets/images/Mosque-01 1.png";
@@ -15,8 +15,6 @@ abstract class AppAssets {
   static const String radio = "assets/images/radio.png";
 
   static const String backgroundNative = "assets/images/Background.png";
-
-
 
   static const String quranIcon = "assets/images/quran.svg";
   static const String booksIcon = "assets/images/book.svg";

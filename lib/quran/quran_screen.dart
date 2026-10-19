@@ -8,7 +8,7 @@ import 'package:islamii_app/modules/sura_model.dart';
 import 'package:islamii_app/quran/quran_view.dart';
 
 class QuranScreen extends StatefulWidget {
-  const QuranScreen({super.key,});
+  const QuranScreen({super.key});
 
   @override
   State<QuranScreen> createState() => _QuranScreenState();
@@ -27,9 +27,7 @@ class _QuranScreenState extends State<QuranScreen> {
     final recentList = await RecentSuraCash.getRecentSuras();
     setState(() {
       _recentDataList = recentList.map((id) {
-        return SuraModel.suraList.firstWhere(
-              (sura) => sura.id == id,
-        );
+        return SuraModel.suraList.firstWhere((sura) => sura.id == id);
       }).toList();
     });
   }
@@ -42,8 +40,8 @@ class _QuranScreenState extends State<QuranScreen> {
       } else {
         _filteredList = suraList.where((sura) {
           return (sura.englishName.toLowerCase().contains(
-              query.toLowerCase()) ||
-
+                query.toLowerCase(),
+              ) ||
               sura.arabicName.contains(query.toLowerCase()));
         }).toList();
       }
@@ -67,12 +65,7 @@ class _QuranScreenState extends State<QuranScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Image.asset(
-                AppAssets.logo,
-                height: 120,
-              ),
-            ),
+            Center(child: Image.asset(AppAssets.logo, height: 120)),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -87,9 +80,7 @@ class _QuranScreenState extends State<QuranScreen> {
                   prefixIcon: Padding(
                     padding: const EdgeInsets.all(12),
 
-                    child: SvgPicture.asset(
-                      AppAssets.quranSvgIcon,
-                    ),
+                    child: SvgPicture.asset(AppAssets.quranSvgIcon),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: AppColor.gold),
@@ -102,11 +93,8 @@ class _QuranScreenState extends State<QuranScreen> {
                 ),
               ),
             ),
+            if (_recentDataList.isNotEmpty) SizedBox(height: 20),
             if (_recentDataList.isNotEmpty)
-
-              SizedBox(height: 20),
-            if (_recentDataList.isNotEmpty)
-
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
@@ -118,26 +106,19 @@ class _QuranScreenState extends State<QuranScreen> {
                   ),
                 ),
               ),
-            if (_recentDataList.isNotEmpty)
-
-
-              SizedBox(height: 10),
+            if (_recentDataList.isNotEmpty) SizedBox(height: 10),
 
             if (_recentDataList.isNotEmpty)
-
               SizedBox(
                 height: 150,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   itemCount: _recentDataList.length,
-                  separatorBuilder: (context, index) =>
-                      SizedBox(width: 10),
+                  separatorBuilder: (context, index) => SizedBox(width: 10),
 
                   itemBuilder: (context, index) {
-                    return RecentlyItem(
-                      suraModel: _recentDataList[index],
-                    );
+                    return RecentlyItem(suraModel: _recentDataList[index]);
                   },
                 ),
               ),
@@ -162,13 +143,12 @@ class _QuranScreenState extends State<QuranScreen> {
               child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 itemCount: _filteredList.length,
-                separatorBuilder: (context, index) =>
-                    Divider(
-                      color: AppColor.white,
-                      thickness: .5,
-                      indent: 30,
-                      endIndent: 30,
-                    ),
+                separatorBuilder: (context, index) => Divider(
+                  color: AppColor.white,
+                  thickness: .5,
+                  indent: 30,
+                  endIndent: 30,
+                ),
                 itemBuilder: (context, index) {
                   final sura = _filteredList[index];
 
@@ -177,13 +157,11 @@ class _QuranScreenState extends State<QuranScreen> {
 
                     onTap: () async {
                       await RecentSuraCash.addsura(sura.id);
-                      Navigator.push(
+                      if (!context.mounted) return;
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              QuranView(
-                                sura: sura,
-                              ),
+                          builder: (context) => QuranView(sura: sura),
                         ),
                       );
 
@@ -212,8 +190,7 @@ class _QuranScreenState extends State<QuranScreen> {
                         SizedBox(width: 16),
 
                         Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               sura.englishName,
@@ -225,9 +202,7 @@ class _QuranScreenState extends State<QuranScreen> {
                             ),
                             Text(
                               sura.versesCount,
-                              style: TextStyle(
-                                color: AppColor.white,
-                              ),
+                              style: TextStyle(color: AppColor.white),
                             ),
                           ],
                         ),

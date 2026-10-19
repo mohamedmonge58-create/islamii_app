@@ -17,11 +17,10 @@ class RecentlyItem extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: () async {
         await RecentSuraCash.addsura(suraModel.id);
+        if (!context.mounted) return;
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => QuranView(sura: suraModel),
-          ),
+          MaterialPageRoute(builder: (context) => QuranView(sura: suraModel)),
         );
       },
 
