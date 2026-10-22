@@ -176,6 +176,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                               fontWeight: FontWeight.bold,
                               fontSize: 30,
                               color: Colors.black87,
+                              fontFamily: 'alfont'
                             ),
                           ),
                         ],

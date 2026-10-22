@@ -304,9 +304,9 @@ class _QiblaScreenState extends State<QiblaScreen> {
                               Transform.rotate(
                                 angle: (qiblah * (math.pi / 180) * -1),
                                 child: Image.asset(
-                                  AppAssets.mosque,
-                                  width: 130,
-                                  height: 130,
+                                  AppAssets.qblaBackground,
+                                  width: 280,
+                                  height: 200,
                                   fit: BoxFit.contain,
                                 ),
                               ),

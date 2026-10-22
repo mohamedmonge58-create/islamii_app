@@ -56,6 +56,8 @@ abstract class AppAssets {
   static const String qbla =
       "assets/images/6c3a69fb-80cf-4a72-acd6-828920e786ff.png";
 
+  static const String qblaBackground =
+      "assets/images/Gemini_Generated_Image_w8pz77w8pz77w8pz.png";
   static const String group1 = "assets/images/group_1.png";
   static const String group2 = "assets/images/group_2.png";
 }

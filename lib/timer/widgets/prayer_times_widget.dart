@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
@@ -56,32 +58,45 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
     _loadPrayerTimes();
   }
 
+
+
   Future<String> _reverseGeocode(double lat, double lng) async {
     try {
       final placemarks = await placemarkFromCoordinates(
         lat,
         lng,
-      ).timeout(const Duration(seconds: 3));
+      ).timeout(const Duration(seconds: 10));
+
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
-        final city =
-            place.locality ??
-            place.subAdministrativeArea ??
-            place.administrativeArea ??
-            '';
-        final country = place.country ?? '';
-        if (city.isNotEmpty && country.isNotEmpty) {
-          return '$city، $country (GPS)';
-        } else if (city.isNotEmpty) {
-          return '$city (GPS)';
-        } else if (country.isNotEmpty) {
-          return '$country (GPS)';
+
+        final area = [
+          place.subLocality,
+          place.locality,
+          place.subAdministrativeArea,
+          place.administrativeArea,
+        ].whereType<String>()
+            .map((e) => e.trim())
+            .firstWhere(
+              (e) => e.isNotEmpty,
+          orElse: () => '',
+        );
+
+        final country = place.country?.trim() ?? '';
+
+        if (area.isNotEmpty && country.isNotEmpty) {
+          return '$area، $country';
         }
+
+        if (area.isNotEmpty) return area;
+        if (country.isNotEmpty) return country;
       }
-    } catch (_) {
-      // Reverse geocoding failed or timed out
+    } catch (e) {
+      debugPrint('Reverse geocoding error: $e');
     }
-    return '${lat.toStringAsFixed(2)}°, ${lng.toStringAsFixed(2)}° (GPS)';
+
+    // لا تعرض خطوط الطول والعرض للمستخدم.
+    return 'جارٍ تحديد المنطقة';
   }
 
   Future<void> _loadPrayerTimes() async {
@@ -537,7 +552,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+               SizedBox(height: 12),
               Flexible(
                 child: ListView(
                   shrinkWrap: true,
@@ -667,11 +682,14 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
                         'الموقع الحالي لمواقيت الصلاة',
+
                         style: TextStyle(
+
                           color: AppColor.white.withValues(alpha: 0.6),
                           fontSize: 11,
                           fontFamily: 'Janna',
@@ -679,6 +697,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                       ),
                       Text(
                         _locationName,
+                        textAlign: TextAlign.right,
                         style: const TextStyle(
                           color: AppColor.white,
                           fontSize: 14,
@@ -797,7 +816,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        vertical: 18,
+                        vertical: 16,
                         horizontal: 14,
                       ),
                       child: Column(
@@ -818,27 +837,27 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                       'dd MMM,\nyyyy',
                                     ).format(_model!.gregorianDate),
                                     style: const TextStyle(
-                                      fontSize: 13,
+                                      fontSize: 24,
                                       color: AppColor.white,
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: 'Janna',
+                                      fontFamily: 'alfont',
                                     ),
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: 3),
                               // Title & Day Name
                               Column(
                                 children: [
                                   Text(
                                     _getArabicDayName(_model!.gregorianDate),
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 45,
                                       color: AppColor.black.withValues(
-                                        alpha: 0.9,
+                                        alpha: 1.8,
                                       ),
                                       fontWeight: FontWeight.w800,
-                                      fontFamily: 'Janna',
+                                      fontFamily: 'alfont',
                                     ),
                                   ),
                                 ],
@@ -853,10 +872,10 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                     "${_model!.hijriDay} ${_model!.hijriMonth}\n${_model!.hijriYear} هـ",
                                     textAlign: TextAlign.right,
                                     style: const TextStyle(
-                                      fontSize: 13,
+                                      fontSize: 18,
                                       color: AppColor.white,
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: 'Janna',
+                                      fontFamily: 'alfont',
                                     ),
                                   ),
                                 ),
@@ -905,11 +924,11 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                   'الصلاة القادمة : ',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                    fontSize: 25,
                                     color: AppColor.black.withValues(
-                                      alpha: 0.85,
+                                      alpha: 0.9,
                                     ),
-                                    fontFamily: 'Janna',
+                                    fontFamily: 'alfont',
                                   ),
                                 ),
                                 Text(
@@ -1029,9 +1048,9 @@ class _PrayerCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: isActive ? AppColor.black : AppColor.white,
-              fontSize: isActive ? 15 : 13,
+              fontSize: isActive ? 30 : 20,
               fontWeight: FontWeight.bold,
-              fontFamily: 'Janna',
+              fontFamily: 'alfont',
             ),
           ),
           const SizedBox(height: 6),
