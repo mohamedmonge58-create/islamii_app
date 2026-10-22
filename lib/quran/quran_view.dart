@@ -6,7 +6,7 @@ import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
 import 'package:islamii_app/modules/sura_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class QuranView extends StatefulWidget {
   final SuraModel sura;
 
@@ -20,16 +20,27 @@ class _QuranViewState extends State<QuranView> {
   int? _highlightedAyah;
   bool _prefsLoaded = false;
   late final Future<Map<String, dynamic>> _surahFuture;
-
+  final ItemScrollController _itemScrollController = ItemScrollController();
+  bool _restoredPosition = false;
+  final ScrollController _scrollController = ScrollController();
   String get _prefsKey => 'highlighted_ayah_${widget.sura.id}';
-
   @override
   void initState() {
     super.initState();
     _surahFuture = SurahDetails.loadSurah(widget.sura.id);
     _loadHighlight();
   }
+  void _goToHighlightedAyah() {
+    final ayah = _highlightedAyah;
 
+    if (ayah == null || !_itemScrollController.isAttached) return;
+
+    _itemScrollController.scrollTo(
+      index: ayah - 1,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
   Future<void> _loadHighlight() async {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getInt(_prefsKey);
@@ -42,18 +53,21 @@ class _QuranViewState extends State<QuranView> {
   }
 
   Future<void> _toggleHighlight(int ayahNumber) async {
+    final newHighlight =
+    _highlightedAyah == ayahNumber ? null : ayahNumber;
+
     setState(() {
-      _highlightedAyah = _highlightedAyah == ayahNumber ? null : ayahNumber;
+      _highlightedAyah = newHighlight;
     });
 
     final prefs = await SharedPreferences.getInstance();
-    if (_highlightedAyah == null) {
+
+    if (newHighlight == null) {
       await prefs.remove(_prefsKey);
     } else {
-      await prefs.setInt(_prefsKey, _highlightedAyah!);
+      await prefs.setInt(_prefsKey, newHighlight);
     }
   }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -155,7 +169,10 @@ class _QuranViewState extends State<QuranView> {
 
                       return Directionality(
                         textDirection: TextDirection.rtl,
-                        child: ListView.builder(
+                        child: ScrollablePositionedList.builder(
+                          itemScrollController: _itemScrollController,
+                          initialScrollIndex: ((_highlightedAyah ?? 1) - 1)
+                              .clamp(0, ayahs.length - 1),
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16,
                             vertical: 8,
@@ -164,8 +181,7 @@ class _QuranViewState extends State<QuranView> {
                           itemBuilder: (context, i) {
                             final ayahNumber = ayahs[i].key;
                             final ayahText = ayahs[i].value;
-                            final isHighlighted =
-                                _highlightedAyah == ayahNumber;
+                            final isHighlighted = _highlightedAyah == ayahNumber;
 
                             return GestureDetector(
                               onTap: () => _toggleHighlight(ayahNumber),
