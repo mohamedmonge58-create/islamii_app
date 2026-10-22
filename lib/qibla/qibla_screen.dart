@@ -305,7 +305,7 @@ class _QiblaScreenState extends State<QiblaScreen> {
                                 angle: (qiblah * (math.pi / 180) * -1),
                                 child: Image.asset(
                                   AppAssets.qblaBackground,
-                                  width: 300,
+                                  width: 350,
                                   height: 200,
                                   fit: BoxFit.contain,
                                 ),

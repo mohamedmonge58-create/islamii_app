@@ -59,41 +59,52 @@ class AudioPlayerManager {
   }
 
   /// Plays a general live URL (e.g. Radio)
-  Future<void> playUrl(String id, String url, {String? label}) async {
-    if (_handler != null) {
-      await _handler!.stop();
-    }
 
-    if (currentId == id && url.isEmpty) {
+  Future<void> playUrl(
+      String id,
+      String url, {
+        String? label,
+      }) async {
+    if (url.trim().isEmpty) return;
+
+    // لو نفس المحطة شغالة أو متوقفة مؤقتًا، بدّل التشغيل فقط.
+    if (currentId == id && currentUrl == url) {
       await togglePlayPause();
       return;
     }
 
-    if (currentId == id && url.isNotEmpty && url == currentUrl) {
-      await togglePlayPause();
-      return;
-    }
+    final handler = await audioHandler;
 
-    if (url.isEmpty) return;
+    // أوقف المشغل القديم قبل تشغيل الراديو من AudioService.
+    await _legacyPlayer.stop();
 
     currentId = id;
-    currentLabel = label;
+    currentLabel = label ?? 'إذاعة القرآن الكريم';
     currentUrl = url;
 
-    await _legacyPlayer.stop();
-    await _legacyPlayer.play(ap.UrlSource(url));
+    await handler.playRadio(
+      stationName: currentLabel!,
+      url: url,
+    );
   }
 
+
   Future<void> togglePlayPause() async {
-    if (_handler != null && _handler!.mediaItem.value != null) {
-      if (_handler!.playbackState.value.playing) {
-        await _handler!.pause();
+    final handler = _handler;
+
+    // التحكم في القرآن أو الراديو لو مصدر الصوت الحالي تابع لـ AudioService.
+    if (handler != null &&
+        handler.mediaItem.value != null &&
+        currentUrl == handler.mediaItem.value!.id) {
+      if (handler.playbackState.value.playing) {
+        await handler.pause();
       } else {
-        await _handler!.play();
+        await handler.play();
       }
       return;
     }
 
+    // دعم المشغل القديم مؤقتًا لأي استخدامات أخرى في التطبيق.
     if (_legacyPlayer.state == ap.PlayerState.playing) {
       await _legacyPlayer.pause();
     } else if (_legacyPlayer.state == ap.PlayerState.paused) {

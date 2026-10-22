@@ -695,15 +695,15 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
     final englishDay = DateFormat('EEEE').format(date);
     switch (englishDay) {
       case 'Saturday':
-        return '﴾  السبت ﴿';
+        return '﴾  السبت  ﴿';
       case 'Sunday':
-        return '﴾  الأحد ﴿';
+        return '﴾  الأحد  ﴿';
       case 'Monday':
-        return '﴾  الأثنين ﴿';
+        return '﴾  الأثنين  ﴿';
       case 'Tuesday':
-        return '﴾  الثلاثاء ﴿';
+        return '﴾  الثلاثاء  ﴿';
       case 'Wednesday':
-        return '﴾ الأربعاء  ﴿';
+        return '﴾  الأربعاء  ﴿';
       case 'Thursday':
         return ' ﴾  الخميس  ﴿';
       case 'Friday':
@@ -934,16 +934,18 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                 ),
                               ),
                               // Title & Day Name
+                              const SizedBox(width: 8),
                               Column(
                                 children: [
                                   Text(
+
                                     _getArabicDayName(_model!.gregorianDate),
                                     style: TextStyle(
                                       fontSize: 45,
                                       color: AppColor.black.withValues(
                                         alpha: 1.8,
                                       ),
-                                      fontWeight: FontWeight.w800,
+                                      fontWeight: FontWeight.bold,
                                       fontFamily: 'alfont',
                                     ),
                                   ),
