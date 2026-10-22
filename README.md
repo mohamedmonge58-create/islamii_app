@@ -1,95 +1,65 @@
-# Islamii App 🕌
+Islamii App 🕌
+A Flutter application that brings Islamic resources and daily worship tools together in one place.
+📱 Screenshots
+Screenshots are grouped by the app sections. Images are displayed at a smaller size to keep the README easy to browse.
+🚀 Splash Screen
+<p align="center">
+  <img src="screenshots/splash_screen.png" alt="Splash Screen" width="180">
+</p>
 
-A Flutter-based Islamic application that brings Quran, Hadith, daily Azkar, prayer times, Qibla direction, and Quran audio resources together in one place.
+📖 Quran
+<p align="center">
+  <img src="screenshots/المصحف.png" alt="Quran Mushaf" width="180">
+  <img src="screenshots/صفحه%20القراءة.png" alt="Quran Reading" width="180">
+  <img src="screenshots/القراء.png" alt="Quran Reciters" width="180">
+</p>
 
-## 📱 Screenshots
+📿 Azkar & Duas
+<p align="center">
+  <img src="screenshots/الادعيه%20والاذكار%20اليوميه.png" alt="Daily Azkar and Duas" width="180">
+  <img src="screenshots/الاذكار%20والادعيه.png" alt="Azkar and Duas" width="180">
+  <img src="screenshots/اذكار%20الصباح.png" alt="Morning Azkar" width="180">
+  <img src="screenshots/اذكار%20المساء.png" alt="Evening Azkar" width="180">
+  <img src="screenshots/اذكار%20بعد%20الصلاة.png" alt="Azkar After Prayer" width="180">
+</p>
 
-### 🚀 App Launch
+📚 Hadith
+<p align="center">
+  <img src="screenshots/الاحاديث.png" alt="Hadith" width="180">
+</p>
 
-| Splash Screen |
-|---|
-| ![Splash Screen](screenshots/splash_screen.png) |
+🕌 Prayer Times & Adhan
+<p align="center">
+  <img src="screenshots/المواقيت.png" alt="Prayer Times" width="180">
+  <img src="screenshots/اعدادات%20الاذان.png" alt="Adhan Settings" width="180">
+</p>
 
-### 📖 Quran
+🧭 Qibla
+<p align="center">
+  <img src="screenshots/القبله.jpeg" alt="Qibla Direction" width="180">
+</p>
 
-| Quran Mushaf | Quran Reading | Quran Reciters |
-|---|---|---|
-| ![Quran Mushaf](screenshots/المصحف.png) | ![Quran Reading](screenshots/صفحه%20القراءة.png) | ![Quran Reciters](screenshots/القراء.png) |
+📻 Radio
+<p align="center">
+  <img src="screenshots/الاذاعه.png" alt="Radio" width="180">
+</p>
 
-### 📿 Azkar & Duas
-
-| Daily Azkar & Duas | Azkar & Duas | Morning Azkar |
-|---|---|---|
-| ![Daily Azkar and Duas](screenshots/الادعيه%20والاذكار%20اليوميه.png) | ![Azkar and Duas](screenshots/الاذكار%20والادعيه.png) | ![Morning Azkar](screenshots/اذكار%20الصباح.png) |
-
-| Evening Azkar | After Prayer Azkar |
-|---|---|
-| ![Evening Azkar](screenshots/اذكار%20المساء.png) | ![After Prayer Azkar](screenshots/اذكار%20بعد%20الصلاة.png) |
-
-### 📚 Hadith
-
-| Hadith |
-|---|
-| ![Hadith](screenshots/الاحاديث.png) |
-
-### 🕌 Prayer Times & Adhan
-
-| Prayer Times | Adhan Settings |
-|---|---|
-| ![Prayer Times](screenshots/المواقيت.png) | ![Adhan Settings](screenshots/اعدادات%20الاذان.png) |
-
-### 🧭 Qibla
-
-| Qibla Direction |
-|---|
-| ![Qibla Direction](screenshots/القبله.jpeg) |
-
-### 📻 Quran Radio
-
-| Radio |
-|---|
-| ![Quran Radio](screenshots/الاذاعه.png) |
-
-## 🛠️ Built With
-
+🛠️ Built With
 - Flutter
 - Dart
-
-## 🚀 Getting Started
-
-### Prerequisites
-
+🚀 Getting Started
+Prerequisites
 - Flutter SDK
 - Dart SDK
-
-### Installation
-
+Installation
 1. Clone the repository:
-
-   ```bash
    git clone https://github.com/mohamedmonge58-create/islamii_app.git
-   ```
-
-2. Enter the project directory:
-
-   ```bash
+2. Navigate to the project directory:
    cd islamii_app
-   ```
-
 3. Install dependencies:
-
-   ```bash
    flutter pub get
-   ```
-
-4. Run the application:
-
-   ```bash
+4. Run the app:
    flutter run
-   ```
-
-## 👨‍💻 Author
-
-**Mohamed Ibrahim Monge**
-
-- GitHub: [@mohamedmonge58-create](https://github.com/mohamedmonge58-create)
+👨‍💻 Author
+Mohamed Ibrahim Monge
+- GitHub: @mohamedmonge58-create
