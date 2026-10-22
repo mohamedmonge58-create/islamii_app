@@ -912,7 +912,6 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-
                           Row(
                             children: [
                               // Gregorian Date
@@ -938,7 +937,6 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                               Column(
                                 children: [
                                   Text(
-
                                     _getArabicDayName(_model!.gregorianDate),
                                     style: TextStyle(
                                       fontSize: 45,
@@ -999,7 +997,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                           // Footer: Countdown & Sound Control
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
+                              horizontal: 12,
                               vertical: 8,
                             ),
                             decoration: BoxDecoration(
@@ -1009,15 +1007,20 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  'الصلاة القادمة : ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25,
-                                    color: AppColor.black.withValues(
-                                      alpha: 0.9,
+                                Flexible(
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                      'الصلاة القادمة : ',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22,
+                                        color: AppColor.black.withValues(
+                                          alpha: 0.9,
+                                        ),
+                                        fontFamily: 'alfont',
+                                      ),
                                     ),
-                                    fontFamily: 'alfont',
                                   ),
                                 ),
                                 Text(
@@ -1029,32 +1032,32 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                     fontFamily: 'Janna',
                                   ),
                                 ),
-                                const SizedBox(width: 18),
+                                const SizedBox(width: 12),
                                 InkWell(
                                   onTap: _isStartingAudio ? null : _toggleAdhan,
                                   borderRadius: BorderRadius.circular(20),
                                   child: Padding(
                                     padding: const EdgeInsets.all(4),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          _isPlaying
-                                              ? Icons.volume_up
-                                              : Icons.volume_off,
-                                          color: AppColor.black,
-                                          size: 22,
-                                        ),
-                                        const SizedBox(width: 15),
-                                      ],
+                                    child: Icon(
+                                      _isPlaying
+                                          ? Icons.volume_up
+                                          : Icons.volume_off,
+                                      color: AppColor.black,
+                                      size: 22,
                                     ),
                                   ),
                                 ),
+                                const SizedBox(width: 10),
                                 InkWell(
                                   onTap: _showAdhanSettings,
-                                  child: Icon(
-                                    Icons.notifications_active,
-                                    color: AppColor.black,
-                                    size: 22,
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: Icon(
+                                      Icons.notifications_active,
+                                      color: AppColor.black,
+                                      size: 22,
+                                    ),
                                   ),
                                 ),
                               ],
