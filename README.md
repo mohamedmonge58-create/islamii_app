@@ -47,7 +47,6 @@ Explore the main screens of **Islamii App**.
 ### 🧭 Qibla Direction
 
 <p align="center">
-  <img src="screenshots/القبله.jpeg" alt="Qibla Compass" width="220"/>
   <img src="screenshots/اتجاه%20القبلة.png" alt="Qibla Direction" width="220"/>
 </p>
 
