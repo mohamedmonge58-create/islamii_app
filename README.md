@@ -2,59 +2,60 @@
 
 A Flutter application that brings essential Islamic resources and daily worship tools together in one place, with a clean interface designed to support Muslims in their daily routines.
 
-## 📱 Screenshots
+## 📸 Screenshots
 
-Screenshots are grouped by the app sections. Images are displayed at a smaller size to keep the README easy to browse.
+Explore the main screens of **Islamii App**.
 
 ### 🚀 Splash Screen
 
 <p align="center">
-  <img src="screenshots/splash_screen.png" alt="Splash Screen" width="180">
+  <img src="screenshots/splash_screen.png" alt="Islamii App Splash Screen" width="250"/>
 </p>
 
-### 📖 Quran
+### 📖 Quran & Reciters
 
 <p align="center">
-  <img src="screenshots/المصحف.png" alt="Quran Mushaf" width="180">
-  <img src="screenshots/صفحه%20القراءة.png" alt="Quran Reading" width="180">
-  <img src="screenshots/القراء.png" alt="Quran Reciters" width="180">
+  <img src="screenshots/المصحف.png" alt="Holy Quran" width="220"/>
+  <img src="screenshots/صفحه%20القراءة.png" alt="Quran Reading" width="220"/>
+  <img src="screenshots/القراء.png" alt="Quran Reciters" width="220"/>
+  <img src="screenshots/audio%20screen.png" alt="Audio Player" width="220"/>
 </p>
 
-### 📿 Azkar & Duas
+### 🤲 Azkar & Daily Supplications
 
 <p align="center">
-  <img src="screenshots/الادعيه%20والاذكار%20اليوميه.png" alt="Daily Azkar and Duas" width="180">
-  <img src="screenshots/الاذكار%20والادعيه.png" alt="Azkar and Duas" width="180">
-  <img src="screenshots/اذكار%20الصباح.png" alt="Morning Azkar" width="180">
-  <img src="screenshots/اذكار%20المساء.png" alt="Evening Azkar" width="180">
-  <img src="screenshots/اذكار%20بعد%20الصلاة.png" alt="Azkar After Prayer" width="180">
+  <img src="screenshots/الادعيه%20والاذكار%20اليوميه.png" alt="Daily Azkar and Supplications" width="220"/>
+  <img src="screenshots/الاذكار%20والادعيه.png" alt="Azkar and Duas" width="220"/>
+  <img src="screenshots/اذكار%20الصباح.png" alt="Morning Azkar" width="220"/>
+  <img src="screenshots/اذكار%20المساء.png" alt="Evening Azkar" width="220"/>
+  <img src="screenshots/اذكار%20بعد%20الصلاة.png" alt="After Prayer Azkar" width="220"/>
 </p>
 
 ### 📚 Hadith
 
 <p align="center">
-  <img src="screenshots/الاحاديث.png" alt="Hadith" width="180">
+  <img src="screenshots/الاحاديث.png" alt="Hadith Screen" width="220"/>
 </p>
 
 ### 🕌 Prayer Times & Adhan
 
 <p align="center">
-  <img src="screenshots/المواقيت.png" alt="Prayer Times" width="180">
-  <img src="screenshots/اعدادات%20الاذان.png" alt="Adhan Settings" width="180">
+  <img src="screenshots/المواقيت.png" alt="Prayer Times" width="220"/>
+  <img src="screenshots/اعدادات%20الاذان.png" alt="Adhan Settings" width="220"/>
 </p>
 
-### 🧭 Qibla
+### 🧭 Qibla Direction
 
 <p align="center">
-  <img src="screenshots/القبله.jpeg" alt="Qibla Direction" width="180">
+  <img src="screenshots/القبله.jpeg" alt="Qibla Compass" width="220"/>
+  <img src="screenshots/اتجاه%20القبلة.png" alt="Qibla Direction" width="220"/>
 </p>
 
-### 📻 Radio
+### 📻 Quran Radio
 
 <p align="center">
-  <img src="screenshots/الاذاعه.png" alt="Radio" width="180">
+  <img src="screenshots/الاذاعه.png" alt="Quran Radio" width="220"/>
 </p>
-
 ## ✨ Features
 
 ### 📖 Quran & Recitation
@@ -84,12 +85,17 @@ Screenshots are grouped by the app sections. Images are displayed at a smaller s
 - Select a prayer-time calculation method.
 - Save the selected calculation method using SharedPreferences.
 
-### 🔊 Audio
-- Audio playback support using the `audioplayers` package.
+### 🔊 Audio & Background Playback
+
+- Quran recitation playback using the project's centralized audio player.
+- Background audio playback using `audio_service` and `just_audio`, if verified in the current implementation.
+- Android media notification with playback information and supported playback controls.
+- Lock-screen playback controls, subject to Android system support and device settings.
+- Automatic progression to the next available Surah, if implemented and verified.
 - Quran radio streaming through the available radio feature.
 - Adhan audio player integration in the prayer-times interface.
 
-> Note: Automatic Adhan playback in the background, after app termination, or after device restart should only be claimed after verifying the actual scheduling and background-execution implementation.
+> **Note:** Automatic Adhan scheduling, playback after force-stopping the app, and playback restoration after device restart must be documented separately and only when the relevant implementation has been verified.
 
 ### 🧭 Qibla Direction
 - Calculate the direction of the Qibla using the user's geographic coordinates and the coordinates of Makkah.
