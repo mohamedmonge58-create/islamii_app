@@ -150,7 +150,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                           DateFormat(
                             'dd MMM,\nyyyy',
                           ).format(model.gregorianDate),
-                          style: const TextStyle(
+                          style:  TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                             color: Colors.black87,
@@ -162,7 +162,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                       flex: 2,
                       child: Column(
                         children: [
-                          const Text(
+                           Text(
                             'Pray Time',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -172,9 +172,9 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                           ),
                           Text(
                             DateFormat('EEEE').format(model.gregorianDate),
-                            style: const TextStyle(
+                            style:  TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontSize: 30,
                               color: Colors.black87,
                             ),
                           ),

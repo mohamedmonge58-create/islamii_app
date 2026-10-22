@@ -37,14 +37,8 @@ class _RecitersDetailsState extends State<RecitersDetails> {
   String _normalizeArabic(String text) {
     if (text.isEmpty) return text;
     var normalized = text.toLowerCase();
-    normalized = normalized.replaceAll(
-      RegExp(r'[\u064B-\u0652]'),
-      '',
-    ); // Remove tashkeel
-    normalized = normalized.replaceAll(
-      RegExp(r'[أإآٱ]'),
-      'ا',
-    ); // Normalize Alif
+    normalized = normalized.replaceAll(RegExp(r'[\u064B-\u0652]'), '');
+    normalized = normalized.replaceAll(RegExp(r'[أإآٱ]'), 'ا');
     normalized = normalized.replaceAll('ى', 'ي');
     normalized = normalized.replaceAll('ة', 'ه');
     return normalized;

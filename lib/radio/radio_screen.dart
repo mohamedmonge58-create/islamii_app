@@ -56,8 +56,8 @@ class RadioScreen extends StatelessWidget {
                       labelColor: AppColor.black,
                       unselectedLabelColor: AppColor.white,
                       tabs: const [
-                        Tab(text: "Radio"),
-                        Tab(text: "Reciters"),
+                        Tab(text: "الإذاعة"),
+                        Tab(text: "القراء"),
                       ],
                     ),
                   ),

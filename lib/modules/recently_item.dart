@@ -23,7 +23,6 @@ class RecentlyItem extends StatelessWidget {
           MaterialPageRoute(builder: (context) => QuranView(sura: suraModel)),
         );
       },
-
       child: Container(
         decoration: BoxDecoration(
           color: AppColor.gold,
@@ -32,31 +31,31 @@ class RecentlyItem extends StatelessWidget {
         child: Row(
           children: [
             Padding(
-              padding: EdgeInsets.all(17.0),
+              padding: const EdgeInsets.all(17.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     suraModel.englishName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
                       fontSize: 24,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     suraModel.arabicName,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
                       fontSize: 24,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     suraModel.versesCount,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
                       fontSize: 14,

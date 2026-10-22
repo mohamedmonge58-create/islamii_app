@@ -17,19 +17,16 @@ class QuranView extends StatefulWidget {
 }
 
 class _QuranViewState extends State<QuranView> {
-  int? _highlightedAyah; // آية واحدة بس، مش Set
+  int? _highlightedAyah;
   bool _prefsLoaded = false;
-  late final Future<Map<String, dynamic>>
-  _surahFuture; // <-- محسوبة مرة واحدة بس
+  late final Future<Map<String, dynamic>> _surahFuture;
 
   String get _prefsKey => 'highlighted_ayah_${widget.sura.id}';
 
   @override
   void initState() {
     super.initState();
-    _surahFuture = SurahDetails.loadSurah(
-      widget.sura.id,
-    ); // <-- هنا، مش في build
+    _surahFuture = SurahDetails.loadSurah(widget.sura.id);
     _loadHighlight();
   }
 
@@ -46,7 +43,6 @@ class _QuranViewState extends State<QuranView> {
 
   Future<void> _toggleHighlight(int ayahNumber) async {
     setState(() {
-      // لو دوست على نفس الآية المظللة، بتشيل التظليل؛ غير كده بتحط الجديدة بس
       _highlightedAyah = _highlightedAyah == ayahNumber ? null : ayahNumber;
     });
 
@@ -75,13 +71,16 @@ class _QuranViewState extends State<QuranView> {
           icon: const Icon(Icons.arrow_back, color: AppColor.gold),
         ),
         title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 80),
-          child: Text(
-            widget.sura.englishName,
-            style: TextStyle(
-              color: AppColor.gold,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              widget.sura.englishName,
+              style: const TextStyle(
+                color: AppColor.gold,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
@@ -106,7 +105,7 @@ class _QuranViewState extends State<QuranView> {
                     alignment: Alignment.topCenter,
                     child: Text(
                       widget.sura.arabicName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColor.gold,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -118,16 +117,16 @@ class _QuranViewState extends State<QuranView> {
               ],
             ),
           ),
-
           Expanded(
             child: !_prefsLoaded
-                ? Center(child: CircularProgressIndicator(color: AppColor.gold))
+                ? const Center(
+                    child: CircularProgressIndicator(color: AppColor.gold),
+                  )
                 : FutureBuilder<Map<String, dynamic>>(
                     future: _surahFuture,
-                    // <-- بيستخدم النسخة المحفوظة، مش استدعاء جديد
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(
                             color: AppColor.gold,
                           ),
@@ -135,7 +134,7 @@ class _QuranViewState extends State<QuranView> {
                       }
 
                       if (snapshot.hasError || snapshot.data == null) {
-                        return Center(
+                        return const Center(
                           child: Text(
                             'تعذر تحميل السورة',
                             style: TextStyle(color: AppColor.gold),

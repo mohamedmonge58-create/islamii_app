@@ -17,6 +17,11 @@ dependencies:
   shared_preferences: ^2.2.2
   cupertino_icons: ^1.0.8
   carousel_slider: ^5.1.2
+  flutter_local_notifications: ^22.3.2
+  timezone: ^0.11.0
+  geolocator: ^13.0.2
+  geocoding: ^3.0.0
+  flutter_qiblah: ^3.1.0
 
 dev_dependencies:
   flutter_test:
@@ -37,6 +42,7 @@ flutter:
      - assets/images/
      - assets/files/surah/
      - assets/files/hadith/
+     - assets/audio/a4ab138564ce.mp3
 
   fonts:
     - family: Janna

@@ -50,7 +50,7 @@ Future<SuraModel?> showSurahPicker({
               const SizedBox(height: 12),
               Text(
                 reciterName,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColor.gold,
                   fontFamily: 'Janna',
                   fontWeight: FontWeight.bold,
@@ -79,7 +79,7 @@ Future<SuraModel?> showSurahPicker({
                         radius: 18,
                         child: Text(
                           '${sura.id}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColor.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 13,
@@ -88,7 +88,7 @@ Future<SuraModel?> showSurahPicker({
                       ),
                       title: Text(
                         'سورة ${sura.arabicName}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColor.white,
                           fontFamily: 'Janna',
                           fontSize: 16,
@@ -100,7 +100,10 @@ Future<SuraModel?> showSurahPicker({
                           color: AppColor.white.withValues(alpha: 0.5),
                         ),
                       ),
-                      trailing: Icon(Icons.play_arrow, color: AppColor.gold),
+                      trailing: const Icon(
+                        Icons.play_arrow,
+                        color: AppColor.gold,
+                      ),
                     );
                   },
                 ),

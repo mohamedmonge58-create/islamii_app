@@ -49,6 +49,12 @@ abstract class AppAssets {
   static const String timeBackground = "assets/images/Background_Time.png";
   static const String morningAzkar = "assets/images/morning_azkar.png";
   static const String eveningAzkar = "assets/images/evening_azkar.png";
+  static const String afterPrayer =
+      "assets/images/b2fad111-a0ec-4f61-a89d-77b18337d181.png";
+  static const String dailyDua =
+      "assets/images/52bf1818-987a-4fe3-9324-79e5bd96761c.png";
+  static const String qbla =
+      "assets/images/6c3a69fb-80cf-4a72-acd6-828920e786ff.png";
 
   static const String group1 = "assets/images/group_1.png";
   static const String group2 = "assets/images/group_2.png";

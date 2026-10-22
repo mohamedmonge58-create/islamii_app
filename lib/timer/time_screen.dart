@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
+import 'package:islamii_app/qibla/qibla_screen.dart';
 import 'package:islamii_app/timer/widgets/azkar_card.dart';
 import 'package:islamii_app/timer/widgets/prayer_times_widget.dart';
 
@@ -34,7 +35,7 @@ class TimeScreen extends StatelessWidget {
                 // Logo Header
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
                     child: Image.asset(
                       AppAssets.logo,
                       width: size.width * .45,
@@ -46,13 +47,14 @@ class TimeScreen extends StatelessWidget {
                 // Prayer Times Main Widget
                 const PrayerTimesWidget(),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
 
-                // Azkar Section Header
+
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    'Azkar',
+                    'الأذكار والدعاء',
                     style: TextStyle(
                       color: AppColor.gold,
                       fontSize: 20,
@@ -63,51 +65,103 @@ class TimeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
 
-                // Azkar Cards
+                // Azkar Grid (4 Categories)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    mainAxisSpacing: 14,
+                    crossAxisSpacing: 14,
+                    childAspectRatio: 0.85,
                     children: [
-                      Expanded(
-                        child: AzkarCard(
-                          title: 'Evening Azkar',
-                          imagePath: AppAssets.eveningAzkar,
+
+
+                      // 1. أذكار الصباح
+                      AzkarCard(
+                        title: 'أذكار الصباح',
+                        imagePath: AppAssets.morningAzkar,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AzkarScreen(
+                                title: "أذكار الصباح",
+                                azkarList: AzkarData.morningAzkar,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+
+                      // 2. أذكار المساء
+                      AzkarCard(
+                        title: 'أذكار المساء',
+                        imagePath: AppAssets.eveningAzkar,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AzkarScreen(
+                                title: "أذكار المساء",
+                                azkarList: AzkarData.eveningAzkar,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+
+                      // 3. أذكار بعد الصلاة المفروضة
+                      AzkarCard(
+                        title: 'أذكار بعد الصلاة ',
+                        imagePath: AppAssets.afterPrayer,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AzkarScreen(
+                                title: "أذكار بعد الصلاة ",
+                                azkarList: AzkarData.afterPrayerAzkar,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+
+                      // 4. الأدعية والأذكار اليومية (تجمع الأدعية والتسبيح والاستغفار)
+                      AzkarCard(
+                        title: 'الأدعية والأذكار اليومية',
+                        imagePath: AppAssets.dailyDua,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AzkarScreen(
+                                title: "الأدعية والأذكار اليومية",
+                                azkarList: AzkarData.dailyDuaAzkar,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      AzkarCard(title: 'اتجاه القبلة',
+                          imagePath: AppAssets.qbla,
+
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AzkarScreen(
-                                  title: "أذكار المساء",
-                                  azkarList: AzkarData.eveningAzkar,
-                                ),
+                                builder: (context) => const QiblaScreen(),
                               ),
                             );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: AzkarCard(
-                          title: 'Morning Azkar',
-                          imagePath: AppAssets.morningAzkar,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AzkarScreen(
-                                  title: "أذكار الصباح",
-                                  azkarList: AzkarData.morningAzkar,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                          }),
+
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 28),
+                const SizedBox(height: 32),
               ],
             ),
           ),
