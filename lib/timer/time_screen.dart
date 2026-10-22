@@ -49,8 +49,6 @@ class TimeScreen extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
@@ -76,8 +74,6 @@ class TimeScreen extends StatelessWidget {
                     crossAxisSpacing: 14,
                     childAspectRatio: 0.85,
                     children: [
-
-
                       // 1. أذكار الصباح
                       AzkarCard(
                         title: 'أذكار الصباح',
@@ -145,18 +141,19 @@ class TimeScreen extends StatelessWidget {
                           );
                         },
                       ),
-                      AzkarCard(title: 'اتجاه القبلة',
-                          imagePath: AppAssets.qbla,
+                      AzkarCard(
+                        title: 'اتجاه القبلة',
+                        imagePath: AppAssets.qbla,
 
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const QiblaScreen(),
-                              ),
-                            );
-                          }),
-
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const QiblaScreen(),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

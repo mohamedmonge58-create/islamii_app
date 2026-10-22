@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
@@ -58,31 +56,126 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
     _loadPrayerTimes();
   }
 
+  String _translateToArabic(String input) {
+    if (input.isEmpty) return input;
 
+    const Map<String, String> translations = {
+      'Egypt': 'مصر',
+      'Cairo': 'القاهرة',
+      'Giza': 'الجيزة',
+      'Alexandria': 'الإسكندرية',
+      'Tanta': 'طنطا',
+      'Gharbia': 'الغربية',
+      'Gharbeya': 'الغربية',
+      'Dakahlia': 'الدقهلية',
+      'Mansoura': 'المنصورة',
+      'Sharqia': 'الشرقية',
+      'Zagazig': 'الزقازيق',
+      'Monufia': 'المنوفية',
+      'Shebin El Kom': 'شبين الكوم',
+      'Qalyubia': 'القليوبية',
+      'Banha': 'بنها',
+      'Beheira': 'البحيرة',
+      'Damanhour': 'دمنهور',
+      'Ismailia': 'الإسماعيلية',
+      'Suez': 'السويس',
+      'Port Said': 'بورسعيد',
+      'Faiyum': 'الفيوم',
+      'Beni Suef': 'بني سويف',
+      'Minya': 'المنيا',
+      'Asyut': 'أسيوط',
+      'Sohag': 'سوهاج',
+      'Qena': 'قنا',
+      'Luxor': 'الأقصر',
+      'Aswan': 'أسوان',
+      'Red Sea': 'البحر الأحمر',
+      'Hurghada': 'الغردقة',
+      'South Sinai': 'جنوب سيناء',
+      'Sharm El-Sheikh': 'شرم الشيخ',
+      'Matrouh': 'مطروح',
+      'Saudi Arabia': 'السعودية',
+      'Makkah': 'مكة المكرمة',
+      'Mecca': 'مكة المكرمة',
+      'Madinah': 'المدينة المنورة',
+      'Medina': 'المدينة المنورة',
+      'Riyadh': 'الرياض',
+      'Jeddah': 'جدة',
+      'United Arab Emirates': 'الإمارات العربية المتحدة',
+      'Dubai': 'دبي',
+      'Abu Dhabi': 'أبو ظبي',
+      'Kuwait': 'الكويت',
+      'Qatar': 'قطر',
+      'Doha': 'الدوحة',
+      'Bahrain': 'البحرين',
+      'Manama': 'المنامة',
+      'Oman': 'عُمان',
+      'Muscat': 'مسقط',
+      'Jordan': 'الأردن',
+      'Amman': 'عَمّان',
+      'Palestine': 'فلسطين',
+      'Jerusalem': 'القدس',
+      'Lebanon': 'لبنان',
+      'Beirut': 'بيروت',
+      'Syria': 'سوريا',
+      'Damascus': 'دمشق',
+      'Iraq': 'العراق',
+      'Baghdad': 'بغداد',
+      'Morocco': 'المغرب',
+      'Rabat': 'الرباط',
+      'Casablanca': 'الدار البيضاء',
+      'Algeria': 'الجزائر',
+      'Tunisia': 'تونس',
+      'Libya': 'ليبيا',
+      'Tripoli': 'طرابلس',
+      'Sudan': 'السودان',
+      'Khartoum': 'الخرطوم',
+      'United States': 'الولايات المتحدة',
+      'United Kingdom': 'المملكة المتحدة',
+      'Canada': 'كندا',
+      'Germany': 'ألمانيا',
+      'France': 'فرنسا',
+      'Turkey': 'تركيا',
+      'Istanbul': 'إسطنبول',
+    };
+
+    if (translations.containsKey(input)) {
+      return translations[input]!;
+    }
+
+    for (final entry in translations.entries) {
+      if (entry.key.toLowerCase() == input.toLowerCase()) {
+        return entry.value;
+      }
+    }
+
+    return input;
+  }
 
   Future<String> _reverseGeocode(double lat, double lng) async {
     try {
       final placemarks = await placemarkFromCoordinates(
         lat,
         lng,
-      ).timeout(const Duration(seconds: 10));
+      ).timeout(const Duration(seconds: 5));
 
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
 
-        final area = [
-          place.subLocality,
-          place.locality,
-          place.subAdministrativeArea,
-          place.administrativeArea,
-        ].whereType<String>()
-            .map((e) => e.trim())
-            .firstWhere(
-              (e) => e.isNotEmpty,
-          orElse: () => '',
-        );
+        final rawArea =
+            [
+                  place.subLocality,
+                  place.locality,
+                  place.subAdministrativeArea,
+                  place.administrativeArea,
+                ]
+                .whereType<String>()
+                .map((e) => e.trim())
+                .firstWhere((e) => e.isNotEmpty, orElse: () => '');
 
-        final country = place.country?.trim() ?? '';
+        final rawCountry = place.country?.trim() ?? '';
+
+        final area = _translateToArabic(rawArea);
+        final country = _translateToArabic(rawCountry);
 
         if (area.isNotEmpty && country.isNotEmpty) {
           return '$area، $country';
@@ -95,8 +188,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
       debugPrint('Reverse geocoding error: $e');
     }
 
-    // لا تعرض خطوط الطول والعرض للمستخدم.
-    return 'جارٍ تحديد المنطقة';
+    return 'القاهرة، مصر (افتراضي)';
   }
 
   Future<void> _loadPrayerTimes() async {
@@ -552,7 +644,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                   ),
                 ],
               ),
-               SizedBox(height: 12),
+              SizedBox(height: 12),
               Flexible(
                 child: ListView(
                   shrinkWrap: true,
@@ -613,7 +705,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
       case 'Wednesday':
         return 'الأربعاء';
       case 'Thursday':
-        return 'الخميس';
+        return ' ﴾  الخميس  ﴿';
       case 'Friday':
         return 'الجمعة';
       default:
@@ -682,14 +774,12 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
-
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
                         'الموقع الحالي لمواقيت الصلاة',
 
                         style: TextStyle(
-
                           color: AppColor.white.withValues(alpha: 0.6),
                           fontSize: 11,
                           fontFamily: 'Janna',
@@ -822,9 +912,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Method Settings Bar
 
-                          // Header Row: Dates and Title
                           Row(
                             children: [
                               // Gregorian Date
@@ -845,7 +933,6 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 3),
                               // Title & Day Name
                               Column(
                                 children: [
@@ -862,7 +949,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                   ),
                                 ],
                               ),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: 19),
                               // Hijri Date
                               Expanded(
                                 child: FittedBox(
@@ -956,21 +1043,18 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                           size: 22,
                                         ),
                                         const SizedBox(width: 15),
-
-
-
                                       ],
                                     ),
-
                                   ),
                                 ),
-                                 InkWell (
-                                   onTap: _showAdhanSettings,
-                                   child :Icon(Icons.notifications_active,
-                                  color: AppColor.black,
-                                  size: 22,
+                                InkWell(
+                                  onTap: _showAdhanSettings,
+                                  child: Icon(
+                                    Icons.notifications_active,
+                                    color: AppColor.black,
+                                    size: 22,
+                                  ),
                                 ),
-                                 )
                               ],
                             ),
                           ),

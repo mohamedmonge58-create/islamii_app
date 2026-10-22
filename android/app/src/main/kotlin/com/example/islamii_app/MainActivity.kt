@@ -1,12 +1,12 @@
 package com.example.islamii_app
 
 import android.content.Intent
-import io.flutter.embedding.android.FlutterActivity
+import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import org.json.JSONArray
 
-class MainActivity : FlutterActivity() {
+class MainActivity : AudioServiceActivity() {
 
     companion object {
         private const val CHANNEL = "com.example.islamii_app/adhan"
