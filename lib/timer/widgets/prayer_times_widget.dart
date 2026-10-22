@@ -695,19 +695,19 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
     final englishDay = DateFormat('EEEE').format(date);
     switch (englishDay) {
       case 'Saturday':
-        return 'السبت';
+        return '﴾  السبت ﴿';
       case 'Sunday':
-        return 'الأحد';
+        return '﴾  الأحد ﴿';
       case 'Monday':
-        return 'الإثنين';
+        return '﴾  الأثنين ﴿';
       case 'Tuesday':
-        return 'الثلاثاء';
+        return '﴾  الثلاثاء ﴿';
       case 'Wednesday':
-        return 'الأربعاء';
+        return '﴾ الأربعاء  ﴿';
       case 'Thursday':
         return ' ﴾  الخميس  ﴿';
       case 'Friday':
-        return 'الجمعة';
+        return '﴾  الجمعة  ﴿';
       default:
         return englishDay;
     }
