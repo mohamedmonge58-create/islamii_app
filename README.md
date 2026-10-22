@@ -2,6 +2,7 @@ Islamii App 🕌
 A Flutter application that brings Islamic resources and daily worship tools together in one place.
 📱 Screenshots
 Screenshots are grouped by the app sections. Images are displayed at a smaller size to keep the README easy to browse.
+
 🚀 Splash Screen
 <p align="center">
   <img src="screenshots/splash_screen.png" alt="Splash Screen" width="180">
