@@ -1042,7 +1042,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                       fontSize: 45,
                                       color: isLight
                                           ? AppColor.lightPrimaryEmerald
-                                          : AppColor.lightGoldAccent,
+                                          : AppColor.black,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'alfont',
                                     ),
@@ -1129,7 +1129,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                         fontSize: 22,
                                         color: isLight
                                             ? AppColor.lightPrimaryEmerald
-                                            : AppColor.white,
+                                            : AppColor.black,
                                         fontFamily: 'alfont',
                                       ),
                                     ),
@@ -1142,7 +1142,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                     fontSize: 16,
                                     color: isLight
                                         ? AppColor.lightPrimaryDark
-                                        : AppColor.white,
+                                        : AppColor.black,
                                     fontFamily: 'Janna',
                                   ),
                                 ),
@@ -1158,7 +1158,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                           : Icons.volume_off,
                                       color: isLight
                                           ? AppColor.lightPrimaryEmerald
-                                          : AppColor.white,
+                                          : AppColor.black,
                                       size: 22,
                                     ),
                                   ),
@@ -1173,7 +1173,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                       Icons.notifications_active,
                                       color: isLight
                                           ? AppColor.lightPrimaryEmerald
-                                          : AppColor.white,
+                                          : AppColor.black,
                                       size: 22,
                                     ),
                                   ),
