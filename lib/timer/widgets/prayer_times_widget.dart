@@ -1042,7 +1042,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                       fontSize: 45,
                                       color: isLight
                                           ? AppColor.lightPrimaryEmerald
-                                          : AppColor.white,
+                                          : AppColor.lightGoldAccent,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'alfont',
                                     ),
