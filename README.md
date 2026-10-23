@@ -50,7 +50,6 @@ Explore **Islamii App** in both Dark Mode and Light Mode.
 
 <p align="center">
   <img src="screenshots/dark%20screens/اتجاه%20القبلة.png" alt="Qibla Direction" width="220"/>
-  <img src="screenshots/dark%20screens/القبله.jpeg" alt="Qibla Screen" width="220"/>
 </p>
 
 #### 📻 Quran Radio
