@@ -113,11 +113,7 @@ Explore **Islamii App** in both Dark Mode and Light Mode.
   <img src="screenshots/light%20screens/radio%20audio%20light.png" alt="Radio Audio Player Light Mode" width="220"/>
 </p>
 
-#### 🔔 Notifications
 
-<p align="center">
-  <img src="screenshots/light%20screens/تنبيهات%20نهاري.png" alt="Notifications Light Mode" width="220"/>
-</p>
 
 ## ✨ Features
 
