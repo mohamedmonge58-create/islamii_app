@@ -77,11 +77,14 @@ Explore **Islamii App** in both Dark Mode and Light Mode.
   <img src="screenshots/light%20screens/audio%20light.png" alt="Audio Player Light Mode" width="220"/>
 </p>
 
-#### 📻 Quran Radio
+#### 🤲 Azkar & Daily Supplications
 
 <p align="center">
-  <img src="screenshots/light%20screens/radio%20light.png" alt="Quran Radio Light Mode" width="220"/>
-  <img src="screenshots/light%20screens/radio%20audio%20light.png" alt="Radio Audio Player Light Mode" width="220"/>
+  <img src="screenshots/light%20screens/الادعيه%20والاذكار%20اليوميه%20نهاري.png" alt="Daily Azkar and Supplications Light Mode" width="220"/>
+  <img src="screenshots/light%20screens/الاذكار%20والادعيه.png" alt="Azkar and Duas Light Mode" width="220"/>
+  <img src="screenshots/light%20screens/اذكار%20الصباح%20نهاري.png" alt="Morning Azkar Light Mode" width="220"/>
+  <img src="screenshots/light%20screens/اذكار%20المساء%20نهاري.png" alt="Evening Azkar Light Mode" width="220"/>
+  <img src="screenshots/light%20screens/اذكار%20بعد%20الصلاة%20نهاري.jpeg" alt="After Prayer Azkar Light Mode" width="220"/>
 </p>
 
 #### 📚 Hadith
@@ -90,20 +93,24 @@ Explore **Islamii App** in both Dark Mode and Light Mode.
   <img src="screenshots/light%20screens/hadith%20light.png" alt="Hadith Light Mode" width="220"/>
 </p>
 
-#### 🤲 Azkar & Daily Supplications
+#### 🕌 Prayer Times & Adhan
 
 <p align="center">
-  <img src="screenshots/light%20screens/اذكار%20الصباح%20نهاري.png" alt="Morning Azkar Light Mode" width="220"/>
-  <img src="screenshots/light%20screens/اذكار%20المساء%20نهاري.png" alt="Evening Azkar Light Mode" width="220"/>
-  <img src="screenshots/light%20screens/اذكار%20بعد%20الصلاة%20نهاري.jpeg" alt="After Prayer Azkar Light Mode" width="220"/>
-  <img src="screenshots/light%20screens/الادعيه%20والاذكار%20اليوميه%20نهاري.png" alt="Daily Azkar and Supplications Light Mode" width="220"/>
-  <img src="screenshots/light%20screens/الاذكار%20والادعيه.png" alt="Azkar and Duas Light Mode" width="220"/>
+  <img src="screenshots/light%20screens/time%20light.png" alt="Prayer Times Light Mode" width="220"/>
+  <img src="screenshots/light%20screens/تنبيهات%20نهاري.png" alt="Adhan Notifications Light Mode" width="220"/>
 </p>
 
 #### 🧭 Qibla Direction
 
 <p align="center">
   <img src="screenshots/light%20screens/القبلة%20نهاري.png" alt="Qibla Direction Light Mode" width="220"/>
+</p>
+
+#### 📻 Quran Radio
+
+<p align="center">
+  <img src="screenshots/light%20screens/radio%20light.png" alt="Quran Radio Light Mode" width="220"/>
+  <img src="screenshots/light%20screens/radio%20audio%20light.png" alt="Radio Audio Player Light Mode" width="220"/>
 </p>
 
 #### 🔔 Notifications
