@@ -5,8 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
 import 'package:islamii_app/modules/sura_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class QuranView extends StatefulWidget {
   final SuraModel sura;
 
@@ -21,26 +22,16 @@ class _QuranViewState extends State<QuranView> {
   bool _prefsLoaded = false;
   late final Future<Map<String, dynamic>> _surahFuture;
   final ItemScrollController _itemScrollController = ItemScrollController();
-  bool _restoredPosition = false;
-  final ScrollController _scrollController = ScrollController();
+
   String get _prefsKey => 'highlighted_ayah_${widget.sura.id}';
+
   @override
   void initState() {
     super.initState();
     _surahFuture = SurahDetails.loadSurah(widget.sura.id);
     _loadHighlight();
   }
-  void _goToHighlightedAyah() {
-    final ayah = _highlightedAyah;
 
-    if (ayah == null || !_itemScrollController.isAttached) return;
-
-    _itemScrollController.scrollTo(
-      index: ayah - 1,
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-    );
-  }
   Future<void> _loadHighlight() async {
     final prefs = await SharedPreferences.getInstance();
     final saved = prefs.getInt(_prefsKey);
@@ -53,8 +44,7 @@ class _QuranViewState extends State<QuranView> {
   }
 
   Future<void> _toggleHighlight(int ayahNumber) async {
-    final newHighlight =
-    _highlightedAyah == ayahNumber ? null : ayahNumber;
+    final newHighlight = _highlightedAyah == ayahNumber ? null : ayahNumber;
 
     setState(() {
       _highlightedAyah = newHighlight;
@@ -68,11 +58,15 @@ class _QuranViewState extends State<QuranView> {
       await prefs.setInt(_prefsKey, newHighlight);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isLight = AppColor.isLight(context);
+    final accentColor = AppColor.primary(context);
+
     return Scaffold(
-      backgroundColor: AppColor.black,
+      backgroundColor: AppColor.background(context),
       appBar: AppBar(
         toolbarHeight: size.height * .1,
         backgroundColor: Colors.transparent,
@@ -82,7 +76,7 @@ class _QuranViewState extends State<QuranView> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back, color: AppColor.gold),
+          icon: Icon(Icons.arrow_back, color: accentColor),
         ),
         title: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -90,8 +84,8 @@ class _QuranViewState extends State<QuranView> {
             fit: BoxFit.scaleDown,
             child: Text(
               widget.sura.englishName,
-              style: const TextStyle(
-                color: AppColor.gold,
+              style: TextStyle(
+                color: accentColor,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -108,7 +102,7 @@ class _QuranViewState extends State<QuranView> {
               children: [
                 Align(
                   child: Image.asset(
-                    AppAssets.leftCorner,
+                    isLight ? AppAssets.leftCornerBlack : AppAssets.leftCorner,
                     width: 90,
                     height: 90,
                   ),
@@ -119,39 +113,39 @@ class _QuranViewState extends State<QuranView> {
                     alignment: Alignment.topCenter,
                     child: Text(
                       widget.sura.arabicName,
-                      style: const TextStyle(
-                        color: AppColor.gold,
+                      style: TextStyle(
+                        color: accentColor,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ),
-                Image.asset(AppAssets.rightCorner, width: 90, height: 90),
+                Image.asset(
+                  isLight ? AppAssets.rightCornerBlack : AppAssets.rightCorner,
+                  width: 90,
+                  height: 90,
+                ),
               ],
             ),
           ),
           Expanded(
             child: !_prefsLoaded
-                ? const Center(
-                    child: CircularProgressIndicator(color: AppColor.gold),
-                  )
+                ? Center(child: CircularProgressIndicator(color: accentColor))
                 : FutureBuilder<Map<String, dynamic>>(
                     future: _surahFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(
-                            color: AppColor.gold,
-                          ),
+                        return Center(
+                          child: CircularProgressIndicator(color: accentColor),
                         );
                       }
 
                       if (snapshot.hasError || snapshot.data == null) {
-                        return const Center(
+                        return Center(
                           child: Text(
                             'تعذر تحميل السورة',
-                            style: TextStyle(color: AppColor.gold),
+                            style: TextStyle(color: accentColor),
                           ),
                         );
                       }
@@ -181,7 +175,17 @@ class _QuranViewState extends State<QuranView> {
                           itemBuilder: (context, i) {
                             final ayahNumber = ayahs[i].key;
                             final ayahText = ayahs[i].value;
-                            final isHighlighted = _highlightedAyah == ayahNumber;
+                            final isHighlighted =
+                                _highlightedAyah == ayahNumber;
+
+                            final activeColor = accentColor;
+                            final highlightedBg = isLight
+                                ? AppColor.lightPrimaryEmerald
+                                : AppColor.gold.withValues(alpha: 0.9);
+                            final highlightedText = isLight
+                                ? AppColor.white
+                                : AppColor.black;
+                            final normalText = AppColor.primaryText(context);
 
                             return GestureDetector(
                               onTap: () => _toggleHighlight(ayahNumber),
@@ -194,13 +198,26 @@ class _QuranViewState extends State<QuranView> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: isHighlighted
-                                      ? AppColor.gold.withValues(alpha: 0.9)
-                                      : Colors.transparent,
+                                      ? highlightedBg
+                                      : (isLight
+                                            ? AppColor.lightCardBg
+                                            : Colors.transparent),
                                   borderRadius: BorderRadius.circular(16),
                                   border: Border.all(
-                                    color: AppColor.gold,
+                                    color: activeColor,
                                     width: 1.2,
                                   ),
+                                  boxShadow: isLight && !isHighlighted
+                                      ? [
+                                          BoxShadow(
+                                            color: Colors.black.withValues(
+                                              alpha: 0.05,
+                                            ),
+                                            blurRadius: 4,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ]
+                                      : null,
                                 ),
                                 child: Text.rich(
                                   TextSpan(
@@ -209,8 +226,8 @@ class _QuranViewState extends State<QuranView> {
                                         text: '$ayahText ',
                                         style: TextStyle(
                                           color: isHighlighted
-                                              ? AppColor.black
-                                              : AppColor.gold,
+                                              ? highlightedText
+                                              : normalText,
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -219,8 +236,8 @@ class _QuranViewState extends State<QuranView> {
                                         text: '[$ayahNumber]',
                                         style: TextStyle(
                                           color: isHighlighted
-                                              ? AppColor.black
-                                              : AppColor.gold,
+                                              ? highlightedText
+                                              : activeColor,
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                         ),

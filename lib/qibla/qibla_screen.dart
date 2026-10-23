@@ -89,22 +89,27 @@ class _QiblaScreenState extends State<QiblaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = AppColor.isLight(context);
+    final accentColor = AppColor.primary(context);
+    final primaryTextColor = AppColor.primaryText(context);
+    final secondaryTextColor = AppColor.secondaryText(context);
+
     return Scaffold(
-      backgroundColor: AppColor.black,
+      backgroundColor: AppColor.background(context),
       appBar: AppBar(
-        backgroundColor: AppColor.black,
+        backgroundColor: AppColor.background(context),
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'اتجاه القبلة',
           style: TextStyle(
-            color: AppColor.gold,
+            color: accentColor,
             fontFamily: 'Janna',
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
-        iconTheme: const IconThemeData(color: AppColor.gold),
+        iconTheme: IconThemeData(color: accentColor),
       ),
       body: Container(
         width: double.infinity,
@@ -113,25 +118,28 @@ class _QiblaScreenState extends State<QiblaScreen> {
           image: DecorationImage(
             image: const AssetImage(AppAssets.backgroundNative),
             fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              AppColor.black.withValues(alpha: 0.8),
-              BlendMode.darken,
-            ),
+            colorFilter: isLight
+                ? ColorFilter.mode(
+                    AppColor.lightBackgroundWarmIvory.withValues(alpha: 0.88),
+                    BlendMode.screen,
+                  )
+                : ColorFilter.mode(
+                    AppColor.black.withValues(alpha: 0.8),
+                    BlendMode.darken,
+                  ),
           ),
         ),
         child: SafeArea(
           child: _isLoadingPermission
-              ? const Center(
-                  child: CircularProgressIndicator(color: AppColor.gold),
-                )
+              ? Center(child: CircularProgressIndicator(color: accentColor))
               : _errorMessage != null
               ? _buildErrorWidget()
               : StreamBuilder<QiblahDirection>(
                   stream: FlutterQiblah.qiblahStream,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(color: AppColor.gold),
+                      return Center(
+                        child: CircularProgressIndicator(color: accentColor),
                       );
                     }
 
@@ -166,13 +174,15 @@ class _QiblaScreenState extends State<QiblaScreen> {
                             ),
                             decoration: BoxDecoration(
                               color: isFacingQibla
-                                  ? AppColor.gold.withValues(alpha: 0.2)
-                                  : AppColor.gray.withValues(alpha: 0.4),
+                                  ? accentColor.withValues(alpha: 0.2)
+                                  : (isLight
+                                        ? AppColor.lightCardBg
+                                        : AppColor.gray.withValues(alpha: 0.4)),
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color: isFacingQibla
-                                    ? AppColor.gold
-                                    : Colors.white24,
+                                    ? accentColor
+                                    : AppColor.border(context),
                                 width: isFacingQibla ? 1.8 : 1.0,
                               ),
                             ),
@@ -183,7 +193,7 @@ class _QiblaScreenState extends State<QiblaScreen> {
                                   isFacingQibla
                                       ? Icons.stars_rounded
                                       : Icons.explore_outlined,
-                                  color: AppColor.gold,
+                                  color: accentColor,
                                   size: 24,
                                 ),
                                 const SizedBox(width: 10),
@@ -193,8 +203,8 @@ class _QiblaScreenState extends State<QiblaScreen> {
                                         ? 'أنت الآن باتجاه القبلة الشريفة ✨'
                                         : 'قم بتدوير الهاتف حتى يتطابق المؤشر مع القبلة',
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: AppColor.white,
+                                    style: TextStyle(
+                                      color: primaryTextColor,
                                       fontFamily: 'Janna',
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -220,7 +230,7 @@ class _QiblaScreenState extends State<QiblaScreen> {
                                     shape: BoxShape.circle,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColor.gold.withValues(
+                                        color: accentColor.withValues(
                                           alpha: 0.4,
                                         ),
                                         blurRadius: 30,
@@ -238,20 +248,22 @@ class _QiblaScreenState extends State<QiblaScreen> {
                                   height: 270,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: AppColor.black.withValues(
-                                      alpha: 0.7,
-                                    ),
+                                    color: isLight
+                                        ? AppColor.lightCardBg
+                                        : AppColor.black.withValues(alpha: 0.7),
                                     border: Border.all(
                                       color: isFacingQibla
-                                          ? AppColor.gold
-                                          : AppColor.golden,
+                                          ? accentColor
+                                          : (isLight
+                                                ? AppColor.lightPrimaryDark
+                                                : AppColor.golden),
                                       width: 3,
                                     ),
                                   ),
                                   child: Stack(
                                     alignment: Alignment.center,
-                                    children: const [
-                                      Positioned(
+                                    children: [
+                                      const Positioned(
                                         top: 10,
                                         child: Text(
                                           'N',
@@ -267,7 +279,7 @@ class _QiblaScreenState extends State<QiblaScreen> {
                                         child: Text(
                                           'S',
                                           style: TextStyle(
-                                            color: AppColor.white,
+                                            color: primaryTextColor,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 14,
                                           ),
@@ -278,7 +290,7 @@ class _QiblaScreenState extends State<QiblaScreen> {
                                         child: Text(
                                           'E',
                                           style: TextStyle(
-                                            color: AppColor.white,
+                                            color: primaryTextColor,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 14,
                                           ),
@@ -289,7 +301,7 @@ class _QiblaScreenState extends State<QiblaScreen> {
                                         child: Text(
                                           'W',
                                           style: TextStyle(
-                                            color: AppColor.white,
+                                            color: primaryTextColor,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 14,
                                           ),
@@ -315,9 +327,9 @@ class _QiblaScreenState extends State<QiblaScreen> {
                               Container(
                                 width: 14,
                                 height: 14,
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: AppColor.gold,
+                                  color: accentColor,
                                 ),
                               ),
                             ],
@@ -346,25 +358,27 @@ class _QiblaScreenState extends State<QiblaScreen> {
                           Container(
                             padding: const EdgeInsets.all(14),
                             decoration: BoxDecoration(
-                              color: AppColor.black.withValues(alpha: 0.5),
+                              color: isLight
+                                  ? AppColor.lightCardBg
+                                  : AppColor.black.withValues(alpha: 0.5),
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
-                                color: AppColor.gold.withValues(alpha: 0.2),
+                                color: AppColor.border(context),
                               ),
                             ),
                             child: Row(
-                              children: const [
+                              children: [
                                 Icon(
                                   Icons.info_outline_rounded,
-                                  color: AppColor.gold,
+                                  color: accentColor,
                                   size: 20,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
                                     'حرّك الهاتف على شكل رقم 8 لمعايرة البوصلة',
                                     style: TextStyle(
-                                      color: Colors.white70,
+                                      color: secondaryTextColor,
                                       fontFamily: 'Janna',
                                       fontSize: 12,
                                     ),
@@ -384,19 +398,24 @@ class _QiblaScreenState extends State<QiblaScreen> {
   }
 
   Widget _buildInfoBadge({required String title, required String value}) {
+    final isLight = AppColor.isLight(context);
+    final accentColor = AppColor.primary(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColor.black.withValues(alpha: 0.6),
+        color: isLight
+            ? AppColor.lightCardBg
+            : AppColor.black.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColor.gold.withValues(alpha: 0.4)),
+        border: Border.all(color: AppColor.border(context)),
       ),
       child: Column(
         children: [
           Text(
             title,
-            style: const TextStyle(
-              color: Colors.white70,
+            style: TextStyle(
+              color: AppColor.secondaryText(context),
               fontFamily: 'Janna',
               fontSize: 12,
             ),
@@ -404,8 +423,8 @@ class _QiblaScreenState extends State<QiblaScreen> {
           const SizedBox(height: 4),
           Text(
             value,
-            style: const TextStyle(
-              color: AppColor.gold,
+            style: TextStyle(
+              color: accentColor,
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
@@ -416,23 +435,22 @@ class _QiblaScreenState extends State<QiblaScreen> {
   }
 
   Widget _buildErrorWidget() {
+    final isLight = AppColor.isLight(context);
+    final accentColor = AppColor.primary(context);
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.location_off_rounded,
-              color: AppColor.gold,
-              size: 48,
-            ),
+            Icon(Icons.location_off_rounded, color: accentColor, size: 48),
             const SizedBox(height: 16),
             Text(
               _errorMessage ?? 'تعذر تحديد الموقع',
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: AppColor.white,
+              style: TextStyle(
+                color: AppColor.primaryText(context),
                 fontFamily: 'Janna',
                 fontSize: 15,
               ),
@@ -440,17 +458,20 @@ class _QiblaScreenState extends State<QiblaScreen> {
             const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: _checkPermissions,
-              icon: const Icon(Icons.refresh, color: AppColor.black),
-              label: const Text(
+              icon: Icon(
+                Icons.refresh,
+                color: isLight ? AppColor.white : AppColor.black,
+              ),
+              label: Text(
                 'إعادة المحاولة / منح الإذن',
                 style: TextStyle(
-                  color: AppColor.black,
+                  color: isLight ? AppColor.white : AppColor.black,
                   fontFamily: 'Janna',
                   fontWeight: FontWeight.bold,
                 ),
               ),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.gold,
+                backgroundColor: accentColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -468,6 +489,7 @@ class _QiblaScreenState extends State<QiblaScreen> {
 
   Widget _buildManualFallbackWidget() {
     final double cairoQiblaBearing = calculateQiblaBearing(30.0444, 31.2357);
+    final accentColor = AppColor.primary(context);
 
     return Center(
       child: Padding(
@@ -475,17 +497,17 @@ class _QiblaScreenState extends State<QiblaScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Icons.compass_calibration_outlined,
-              color: AppColor.gold,
+              color: accentColor,
               size: 48,
             ),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'مستشعر البوصلة غير متوفر على هذا الجهاز',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: AppColor.white,
+                color: AppColor.primaryText(context),
                 fontFamily: 'Janna',
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -495,8 +517,8 @@ class _QiblaScreenState extends State<QiblaScreen> {
             Text(
               'زاوية اتجاه القبلة المحسوبة لمنطقتك هي: ${cairoQiblaBearing.toStringAsFixed(1)}° من الشمال الجغرافي (الكعبة المشرفة: $kaabaLat° N, $kaabaLng° E)',
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white70,
+              style: TextStyle(
+                color: AppColor.secondaryText(context),
                 fontFamily: 'Janna',
                 fontSize: 13,
               ),
@@ -505,14 +527,14 @@ class _QiblaScreenState extends State<QiblaScreen> {
             OutlinedButton(
               onPressed: _checkPermissions,
               style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppColor.gold),
+                side: BorderSide(color: accentColor),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text(
+              child: Text(
                 'إعادة فحص المستشعرات',
-                style: TextStyle(color: AppColor.gold, fontFamily: 'Janna'),
+                style: TextStyle(color: accentColor, fontFamily: 'Janna'),
               ),
             ),
           ],

@@ -33,13 +33,23 @@ class _SebhaScreenState extends State<SebhaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = AppColor.isLight(context);
+    final textColor = isLight ? AppColor.lightPrimaryText : AppColor.white;
+
     return SafeArea(
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
+          color: AppColor.background(context),
           image: DecorationImage(
-            image: AssetImage(AppAssets.sebhaBackground),
+            image: const AssetImage(AppAssets.sebhaBackground),
             fit: BoxFit.cover,
+            colorFilter: isLight
+                ? ColorFilter.mode(
+                    AppColor.lightBackgroundWarmIvory.withValues(alpha: 0.88),
+                    BlendMode.screen,
+                  )
+                : null,
           ),
         ),
         child: LayoutBuilder(
@@ -60,7 +70,7 @@ class _SebhaScreenState extends State<SebhaScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: width * 0.075,
-                    color: AppColor.white,
+                    color: textColor,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Janna',
                   ),
@@ -86,6 +96,9 @@ class _SebhaScreenState extends State<SebhaScreen> {
                                 width: sebhaWidth * 0.25,
                                 height: sebhaHeight * 0.20,
                                 fit: BoxFit.contain,
+                                color: isLight
+                                    ? AppColor.lightPrimaryEmerald
+                                    : null,
                               ),
                             ),
 
@@ -97,6 +110,9 @@ class _SebhaScreenState extends State<SebhaScreen> {
                                   width: sebhaWidth * 0.9,
                                   height: sebhaHeight * 0.88,
                                   fit: BoxFit.contain,
+                                  color: isLight
+                                      ? AppColor.lightPrimaryEmerald
+                                      : null,
                                 ),
                               ),
                             ),
@@ -116,7 +132,9 @@ class _SebhaScreenState extends State<SebhaScreen> {
                                         sebhaList[currentIndex].arabicName,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          color: AppColor.white,
+                                          color: isLight
+                                              ? AppColor.white
+                                              : AppColor.white,
                                           fontSize: width * 0.075,
                                           fontFamily: 'Janna',
                                         ),
@@ -128,7 +146,9 @@ class _SebhaScreenState extends State<SebhaScreen> {
                                     Text(
                                       '$counter',
                                       style: TextStyle(
-                                        color: AppColor.white,
+                                        color: isLight
+                                            ? AppColor.white
+                                            : AppColor.white,
                                         fontSize: width * 0.075,
                                       ),
                                     ),

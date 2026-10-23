@@ -69,44 +69,46 @@ class _RadioDetailsState extends State<RadioDetails> {
   }
 
   Widget _buildSearchBar() {
+    final borderAccent = AppColor.searchBarBorder(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       child: TextField(
         controller: _searchController,
         onChanged: _onSearchChanged,
-        style: const TextStyle(
-          color: AppColor.white,
+        style: TextStyle(
+          color: AppColor.primaryText(context),
           fontFamily: 'Janna',
           fontSize: 15,
         ),
-        cursorColor: AppColor.gold,
+        cursorColor: borderAccent,
         decoration: InputDecoration(
           hintText: 'بحث عن إذاعة...',
           hintStyle: TextStyle(
-            color: AppColor.white.withValues(alpha: 0.5),
+            color: AppColor.secondaryText(context),
             fontFamily: 'Janna',
             fontSize: 14,
           ),
-          prefixIcon: const Icon(Icons.search, color: AppColor.gold, size: 22),
+          prefixIcon: Icon(Icons.search, color: borderAccent, size: 22),
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
-                  icon: const Icon(Icons.clear, color: AppColor.gold, size: 20),
+                  icon: Icon(Icons.clear, color: borderAccent, size: 20),
                   onPressed: _clearSearch,
                   tooltip: 'مسح',
                 )
               : null,
           filled: true,
-          fillColor: AppColor.black.withValues(alpha: 0.55),
+          fillColor: AppColor.searchBarFill(context),
           contentPadding: const EdgeInsets.symmetric(
             vertical: 12,
             horizontal: 16,
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColor.gold, width: 1.2),
+            borderSide: BorderSide(color: borderAccent, width: 1.2),
             borderRadius: BorderRadius.circular(16),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColor.gold, width: 1.8),
+            borderSide: BorderSide(color: borderAccent, width: 1.8),
             borderRadius: BorderRadius.circular(16),
           ),
         ),
@@ -655,6 +657,12 @@ class _RadioCardState extends State<_RadioCard> {
             final isPlaying =
                 isActive && (playbackSnapshot.data?.playing ?? false);
 
+            final isLight = AppColor.isLight(context);
+            final cardBgColor = isLight
+                ? AppColor.lightPrimaryEmerald
+                : AppColor.gold;
+            final fgColor = isLight ? AppColor.white : AppColor.black;
+
             return Container(
               width: double.infinity,
               height: 138,
@@ -662,7 +670,16 @@ class _RadioCardState extends State<_RadioCard> {
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: AppColor.gold,
+                color: cardBgColor,
+                boxShadow: isLight
+                    ? [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ]
+                    : null,
               ),
               child: Stack(
                 children: [
@@ -703,8 +720,8 @@ class _RadioCardState extends State<_RadioCard> {
                               widget.radio.name,
                               maxLines: 1,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: AppColor.black,
+                              style: TextStyle(
+                                color: fgColor,
                                 fontSize: 18,
                                 height: 1,
                                 fontWeight: FontWeight.bold,
@@ -724,7 +741,7 @@ class _RadioCardState extends State<_RadioCard> {
                                     ? Icons.pause_circle_filled
                                     : Icons.play_circle_fill,
                                 size: 42,
-                                color: AppColor.black,
+                                color: fgColor,
                               ),
                             ),
                             const SizedBox(width: 24),
@@ -747,7 +764,7 @@ class _RadioCardState extends State<_RadioCard> {
                                         ? Icons.volume_off
                                         : Icons.volume_up,
                                     size: 28,
-                                    color: AppColor.black,
+                                    color: fgColor,
                                   );
                                 },
                               ),

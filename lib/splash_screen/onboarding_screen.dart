@@ -48,10 +48,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isLight = AppColor.isLight(context);
+    final accentColor = AppColor.primary(context);
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColor.black,
+        backgroundColor: AppColor.background(context),
         body: SafeArea(
           child: Column(
             children: [
@@ -91,7 +93,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
-                              color: AppColor.gold,
+                              color: accentColor,
                             ),
                           ),
                         ),
@@ -107,7 +109,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           height: 8,
                           width: isActive ? 24 : 8,
                           decoration: BoxDecoration(
-                            color: isActive ? AppColor.gold : AppColor.gray,
+                            color: isActive
+                                ? accentColor
+                                : (isLight
+                                      ? AppColor.lightBordersDividers
+                                      : AppColor.gray),
                             borderRadius: BorderRadius.circular(10),
                           ),
                         );
@@ -134,7 +140,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
-                            color: AppColor.gold,
+                            color: accentColor,
                           ),
                         ),
                       ),

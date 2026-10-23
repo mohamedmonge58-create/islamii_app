@@ -13,6 +13,10 @@ class RecentlyItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = AppColor.isLight(context);
+    final cardColor = isLight ? AppColor.lightPrimaryEmerald : AppColor.gold;
+    final textColor = isLight ? AppColor.white : Colors.black;
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () async {
@@ -25,8 +29,33 @@ class RecentlyItem extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: AppColor.gold,
+          gradient: isLight
+              ? const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColor.lightPrimaryEmerald,
+                    AppColor.lightPrimaryDark,
+                  ],
+                )
+              : null,
+          color: isLight ? null : cardColor,
           borderRadius: BorderRadius.circular(20),
+          border: isLight
+              ? Border.all(
+                  color: AppColor.lightGoldAccent.withValues(alpha: 0.4),
+                  width: 1.2,
+                )
+              : null,
+          boxShadow: isLight
+              ? [
+                  BoxShadow(
+                    color: AppColor.lightPrimaryEmerald.withValues(alpha: 0.3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
+              : null,
         ),
         child: Row(
           children: [
@@ -37,8 +66,8 @@ class RecentlyItem extends StatelessWidget {
                 children: [
                   Text(
                     suraModel.englishName,
-                    style: const TextStyle(
-                      color: Colors.black,
+                    style: TextStyle(
+                      color: textColor,
                       fontWeight: FontWeight.w700,
                       fontSize: 24,
                     ),
@@ -46,8 +75,8 @@ class RecentlyItem extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     suraModel.arabicName,
-                    style: const TextStyle(
-                      color: Colors.black,
+                    style: TextStyle(
+                      color: textColor,
                       fontWeight: FontWeight.w700,
                       fontSize: 24,
                     ),
@@ -55,8 +84,8 @@ class RecentlyItem extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     suraModel.versesCount,
-                    style: const TextStyle(
-                      color: Colors.black,
+                    style: TextStyle(
+                      color: textColor,
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
                     ),

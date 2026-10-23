@@ -15,6 +15,16 @@ class AzkarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = AppColor.isLight(context);
+    final borderColor = isLight ? AppColor.lightPrimaryEmerald : AppColor.gold;
+    final cardBg = isLight
+        ? AppColor.lightCardBg
+        : AppColor.black.withValues(alpha: 0.6);
+    final textBarBg = isLight
+        ? AppColor.lightPrimaryEmerald
+        : AppColor.gold.withValues(alpha: 0.15);
+    final textColor = isLight ? AppColor.white : AppColor.white;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20),
@@ -22,11 +32,11 @@ class AzkarCard extends StatelessWidget {
         height: 220,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColor.gold, width: 1.5),
-          color: AppColor.black.withValues(alpha: 0.6),
+          border: Border.all(color: borderColor, width: 1.5),
+          color: cardBg,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
+              color: Colors.black.withValues(alpha: isLight ? 0.08 : 0.2),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),
@@ -45,14 +55,14 @@ class AzkarCard extends StatelessWidget {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-              color: AppColor.gold.withValues(alpha: 0.15),
+              color: textBarBg,
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: AppColor.white,
+                  style: TextStyle(
+                    color: textColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                     fontFamily: 'Janna',

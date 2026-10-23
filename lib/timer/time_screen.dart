@@ -14,16 +14,24 @@ class TimeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isLight = AppColor.isLight(context);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
+          color: AppColor.background(context),
           image: DecorationImage(
-            image: AssetImage(AppAssets.timeBackground),
+            image: const AssetImage(AppAssets.timeBackground),
             fit: BoxFit.cover,
+            colorFilter: isLight
+                ? ColorFilter.mode(
+                    AppColor.lightBackgroundWarmIvory.withValues(alpha: 0.88),
+                    BlendMode.screen,
+                  )
+                : null,
           ),
         ),
         child: SafeArea(
@@ -54,7 +62,7 @@ class TimeScreen extends StatelessWidget {
                   child: Text(
                     'الأذكار والدعاء',
                     style: TextStyle(
-                      color: AppColor.gold,
+                      color: AppColor.primaryText(context),
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Janna',
@@ -125,7 +133,7 @@ class TimeScreen extends StatelessWidget {
                         },
                       ),
 
-                      // 4. الأدعية والأذكار اليومية (تجمع الأدعية والتسبيح والاستغفار)
+                      // 4. الأدعية والأذكار اليومية
                       AzkarCard(
                         title: 'الأدعية والأذكار اليومية',
                         imagePath: AppAssets.dailyDua,
@@ -144,7 +152,6 @@ class TimeScreen extends StatelessWidget {
                       AzkarCard(
                         title: 'اتجاه القبلة',
                         imagePath: AppAssets.qbla,
-
                         onTap: () {
                           Navigator.push(
                             context,

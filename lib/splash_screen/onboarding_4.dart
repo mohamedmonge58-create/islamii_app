@@ -8,7 +8,7 @@ class Onboarding4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.black,
+      backgroundColor: AppColor.background(context),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -40,7 +40,7 @@ class Onboarding4 extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
-                        color: AppColor.gold,
+                        color: AppColor.primary(context),
                       ),
                     ),
                   ),
@@ -53,7 +53,7 @@ class Onboarding4 extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
-                        color: AppColor.gold,
+                        color: AppColor.primary(context),
                       ),
                     ),
                   ),

@@ -61,5 +61,4 @@ abstract class AppAssets {
   static const String group1 = "assets/images/group_1.png";
   static const String group2 = "assets/images/group_2.png";
   static const String audioCover = "assets/images/unnamed.png";
-
 }

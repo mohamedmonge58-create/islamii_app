@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:islamii_app/core/app_assets.dart';
 import 'package:islamii_app/core/app_color.dart';
+import 'package:islamii_app/core/theme_controller.dart';
 import 'package:islamii_app/hadith/hadith_screen.dart';
 import 'package:islamii_app/quran/quran_screen.dart';
 import 'package:islamii_app/radio/radio_screen.dart';
@@ -34,10 +35,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.black,
+      backgroundColor: AppColor.background(context),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: IndexedStack(index: _selectedIndex, children: _pages),
+        child: Stack(
+          children: [
+            IndexedStack(index: _selectedIndex, children: _pages),
+            const Positioned(top: 10, left: 16, child: ThemeToggleButton()),
+          ],
+        ),
       ),
       bottomNavigationBar: CustomBottomNavBar(
         selectedIndex: _selectedIndex,
@@ -46,6 +52,57 @@ class _HomeScreenState extends State<HomeScreen> {
             _selectedIndex = index;
           });
         },
+      ),
+    );
+  }
+}
+
+class ThemeToggleButton extends StatelessWidget {
+  const ThemeToggleButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isLight = AppColor.isLight(context);
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => ThemeController.instance.toggleTheme(),
+        borderRadius: BorderRadius.circular(20),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            color: isLight
+                ? AppColor.lightPrimaryEmerald.withValues(alpha: 0.15)
+                : AppColor.gold.withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: isLight ? AppColor.lightPrimaryEmerald : AppColor.gold,
+              width: 1.2,
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                isLight ? Icons.wb_sunny_rounded : Icons.nightlight_round,
+                size: 18,
+                color: isLight ? AppColor.lightPrimaryEmerald : AppColor.gold,
+              ),
+              const SizedBox(width: 6),
+              Text(
+                isLight ? "نهاري" : "ليلي",
+                style: TextStyle(
+                  color: isLight ? AppColor.lightPrimaryEmerald : AppColor.gold,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Janna',
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -70,18 +127,17 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = AppColor.isLight(context);
+
     return Container(
       decoration: BoxDecoration(
-        color: AppColor.black,
+        color: AppColor.navBarBg(context),
         border: Border(
-          top: BorderSide(
-            color: AppColor.gold.withValues(alpha: 0.3),
-            width: 1.0,
-          ),
+          top: BorderSide(color: AppColor.border(context), width: 1.0),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.5),
+            color: Colors.black.withValues(alpha: isLight ? 0.08 : 0.5),
             blurRadius: 10,
             offset: const Offset(0, -3),
           ),
@@ -106,10 +162,17 @@ class CustomBottomNavBar extends StatelessWidget {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColor.gold : Colors.transparent,
+                  color: isSelected
+                      ? AppColor.navBarSelected(context)
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(20),
                   border: isSelected
-                      ? Border.all(color: AppColor.white, width: 1)
+                      ? Border.all(
+                          color: isLight
+                              ? AppColor.lightPrimaryDark
+                              : AppColor.white,
+                          width: 1,
+                        )
                       : null,
                 ),
                 child: Row(
@@ -121,8 +184,8 @@ class CustomBottomNavBar extends StatelessWidget {
                       height: 22,
                       colorFilter: ColorFilter.mode(
                         isSelected
-                            ? AppColor.black
-                            : AppColor.white.withValues(alpha: 0.7),
+                            ? AppColor.navBarSelectedText(context)
+                            : AppColor.navBarUnselected(context),
                         BlendMode.srcIn,
                       ),
                     ),
@@ -130,8 +193,8 @@ class CustomBottomNavBar extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         _items[index].title,
-                        style: const TextStyle(
-                          color: AppColor.black,
+                        style: TextStyle(
+                          color: AppColor.navBarSelectedText(context),
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Janna',

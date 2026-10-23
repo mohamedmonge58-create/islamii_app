@@ -218,45 +218,45 @@ class _RecitersDetailsState extends State<RecitersDetails> {
   }
 
   Widget _buildSearchBar() {
+    final borderAccent = AppColor.searchBarBorder(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       child: TextField(
         controller: _searchController,
         onChanged: _onSearchChanged,
-        style: const TextStyle(
-          color: AppColor.white,
+        style: TextStyle(
+          color: AppColor.primaryText(context),
           fontFamily: 'Janna',
           fontSize: 15,
         ),
-        cursorColor: AppColor.gold,
+        cursorColor: borderAccent,
         decoration: InputDecoration(
           hintText: 'بحث عن قارئ...',
           hintStyle: TextStyle(
-            color: AppColor.white.withValues(alpha: 0.55),
+            color: AppColor.secondaryText(context),
             fontFamily: 'Janna',
             fontSize: 14,
           ),
-          prefixIcon: const Icon(Icons.search_rounded, color: AppColor.gold),
+          prefixIcon: Icon(Icons.search_rounded, color: borderAccent),
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
                   onPressed: _clearSearch,
-                  icon: const Icon(Icons.close_rounded, color: AppColor.gold),
+                  icon: Icon(Icons.close_rounded, color: borderAccent),
                 )
               : null,
           filled: true,
-          fillColor: const Color(0xFF171A18),
+          fillColor: AppColor.searchBarFill(context),
           contentPadding: const EdgeInsets.symmetric(
             vertical: 14,
             horizontal: 16,
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: AppColor.gold.withValues(alpha: 0.45),
-            ),
+            borderSide: BorderSide(color: borderAccent.withValues(alpha: 0.6)),
             borderRadius: BorderRadius.circular(18),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: AppColor.gold, width: 1.5),
+            borderSide: BorderSide(color: borderAccent, width: 1.5),
             borderRadius: BorderRadius.circular(18),
           ),
         ),
@@ -265,6 +265,8 @@ class _RecitersDetailsState extends State<RecitersDetails> {
   }
 
   Widget _buildEmptyState() {
+    final accentColor = AppColor.primary(context);
+
     return Expanded(
       child: Center(
         child: Padding(
@@ -274,15 +276,15 @@ class _RecitersDetailsState extends State<RecitersDetails> {
             children: [
               Icon(
                 Icons.person_search_rounded,
-                color: AppColor.gold.withValues(alpha: 0.8),
+                color: accentColor.withValues(alpha: 0.8),
                 size: 58,
               ),
               const SizedBox(height: 16),
-              const Text(
+              Text(
                 'لا يوجد قارئ بهذا الاسم',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: AppColor.white,
+                  color: AppColor.primaryText(context),
                   fontFamily: 'Janna',
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
@@ -292,7 +294,7 @@ class _RecitersDetailsState extends State<RecitersDetails> {
               Text(
                 'جرّب البحث باستخدام اسم آخر',
                 style: TextStyle(
-                  color: AppColor.white.withValues(alpha: 0.6),
+                  color: AppColor.secondaryText(context),
                   fontFamily: 'Janna',
                 ),
               ),
@@ -302,8 +304,8 @@ class _RecitersDetailsState extends State<RecitersDetails> {
                 icon: const Icon(Icons.refresh_rounded),
                 label: const Text('عرض كل القراء'),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColor.gold,
-                  side: const BorderSide(color: AppColor.gold),
+                  foregroundColor: accentColor,
+                  side: BorderSide(color: accentColor),
                 ),
               ),
             ],
@@ -421,12 +423,20 @@ class _RecitersDetailsState extends State<RecitersDetails> {
                 final isPlaying = playbackState?.playing ?? false;
                 final position = playbackState?.position ?? Duration.zero;
                 final duration = mediaItem?.duration ?? Duration.zero;
-
+                final handler = snapshot.data!;
                 final hasPrevious = handler.currentSurahIndex > 0;
                 final hasNext =
                     handler.currentSurahIndex <
                     handler.currentSurahsList.length - 1;
+                final isLight = AppColor.isLight(context);
 
+                final playerTextColor = isLight ? AppColor.black : AppColor.white;
+                final playerSecondaryColor = isLight
+                    ? AppColor.lightPrimaryDark
+                    : AppColor.white.withValues(alpha: 0.75);
+
+                final playerDividerColor = (isLight ? AppColor.black : AppColor.white)
+                    .withValues(alpha: 0.10);
                 return SafeArea(
                   top: false,
                   child: Stack(
@@ -436,10 +446,24 @@ class _RecitersDetailsState extends State<RecitersDetails> {
                         margin: const EdgeInsets.fromLTRB(12, 8, 12, 10),
                         padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(
+                          gradient: AppColor.isLight(context)
+                              ? const LinearGradient(
                             begin: Alignment.topRight,
                             end: Alignment.bottomLeft,
-                            colors: [Color(0xFF242922), Color(0xFF111411)],
+                            colors: [
+                              Color(0xFFF0F7F2),
+                              Color(0xFFDCECE1),
+                              Color(0xFFC5DFCE),
+                            ],
+                          )
+                              : const LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              Color(0xFF173D32),
+                              Color(0xFF102F27),
+                              Color(0xFF0B241E),
+                            ],
                           ),
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
@@ -464,7 +488,7 @@ class _RecitersDetailsState extends State<RecitersDetails> {
                                   height: 48,
                                   decoration: BoxDecoration(
                                     color: AppColor.gold.withValues(
-                                      alpha: 0.13,
+                                      alpha: isLight ? 0.18 : 0.13,
                                     ),
                                     borderRadius: BorderRadius.circular(16),
                                   ),
@@ -696,11 +720,11 @@ class _RecitersDetailsState extends State<RecitersDetails> {
                                     horizontal: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF1F231F),
-                                    borderRadius: BorderRadius.circular(22),
+                                    color: isLight
+                                        ? const Color(0xFFE0F0E7)
+                                        : const Color(0xFF1F231F),                                    borderRadius: BorderRadius.circular(22),
                                     border: Border.all(
-                                      color: AppColor.gold,
-                                      width: 1.5,
+                                      color: isLight ? AppColor.lightPrimaryEmerald : AppColor.gold,
                                     ),
                                     boxShadow: [
                                       BoxShadow(
@@ -740,8 +764,8 @@ class _RecitersDetailsState extends State<RecitersDetails> {
                                                     overlayRadius: 10,
                                                   ),
                                               activeTrackColor: AppColor.gold,
-                                              inactiveTrackColor: AppColor.white
-                                                  .withValues(alpha: 0.2),
+                                              inactiveTrackColor: (isLight ? AppColor.black : AppColor.white)
+                                                  .withValues(alpha: 0.16),
                                               thumbColor: AppColor.gold,
                                             ),
                                             child: Slider(
@@ -926,6 +950,10 @@ class _ReciterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasAudio = reciter.defaultMoshaf != null;
+    final isLight = AppColor.isLight(context);
+    final cardBg = isLight ? AppColor.lightPrimaryEmerald : AppColor.gold;
+    final fgColor = isLight ? AppColor.white : AppColor.black;
+    final iconColor = hasAudio ? fgColor : Colors.grey;
 
     return Container(
       height: 140,
@@ -933,14 +961,16 @@ class _ReciterCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(22),
-        color: AppColor.gold,
+        color: cardBg,
         border: Border.all(
-          color: isActive ? AppColor.gold : AppColor.gold.withValues(alpha: 1),
+          color: isActive
+              ? (isLight ? AppColor.lightGoldAccent : AppColor.gold)
+              : cardBg,
           width: isActive ? 2 : 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColor.black.withValues(alpha: 0.16),
+            color: AppColor.black.withValues(alpha: isLight ? 0.1 : 0.16),
             blurRadius: 12,
             offset: const Offset(0, 5),
           ),
@@ -972,8 +1002,8 @@ class _ReciterCard extends StatelessWidget {
                           reciter.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            color: AppColor.black,
+                          style: TextStyle(
+                            color: fgColor,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Janna',
@@ -982,11 +1012,7 @@ class _ReciterCard extends StatelessWidget {
                       ),
                     ),
                     if (isActive)
-                      const Icon(
-                        Icons.graphic_eq_rounded,
-                        color: AppColor.black,
-                        size: 22,
-                      ),
+                      Icon(Icons.graphic_eq_rounded, color: fgColor, size: 22),
                   ],
                 ),
                 const Spacer(),
@@ -1001,7 +1027,7 @@ class _ReciterCard extends StatelessWidget {
                             ? Icons.pause_circle_filled_rounded
                             : Icons.play_circle_fill_rounded,
                         size: 43,
-                        color: hasAudio ? AppColor.black : Colors.grey,
+                        color: iconColor,
                       ),
                     ),
                     const SizedBox(width: 14),

@@ -60,11 +60,7 @@ class AudioPlayerManager {
 
   /// Plays a general live URL (e.g. Radio)
 
-  Future<void> playUrl(
-      String id,
-      String url, {
-        String? label,
-      }) async {
+  Future<void> playUrl(String id, String url, {String? label}) async {
     if (url.trim().isEmpty) return;
 
     // لو نفس المحطة شغالة أو متوقفة مؤقتًا، بدّل التشغيل فقط.
@@ -82,12 +78,8 @@ class AudioPlayerManager {
     currentLabel = label ?? 'إذاعة القرآن الكريم';
     currentUrl = url;
 
-    await handler.playRadio(
-      stationName: currentLabel!,
-      url: url,
-    );
+    await handler.playRadio(stationName: currentLabel!, url: url);
   }
-
 
   Future<void> togglePlayPause() async {
     final handler = _handler;

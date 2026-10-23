@@ -50,15 +50,28 @@ class _QuranScreenState extends State<QuranScreen> {
 
   List<SuraModel> _filteredList = SuraModel.suraList;
   List<SuraModel> _recentDataList = [];
+
   @override
   Widget build(BuildContext context) {
+    final isLight = AppColor.isLight(context);
+    final primaryTextColor = AppColor.primaryText(context);
+    final secondaryTextColor = AppColor.secondaryText(context);
+    final borderAccent = AppColor.searchBarBorder(context);
+
     return Container(
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
+        color: AppColor.background(context),
         image: DecorationImage(
-          image: AssetImage(AppAssets.backgroundNative),
+          image: const AssetImage(AppAssets.backgroundNative),
           fit: BoxFit.cover,
+          colorFilter: isLight
+              ? ColorFilter.mode(
+                  AppColor.lightBackgroundWarmIvory.withValues(alpha: 0.88),
+                  BlendMode.screen,
+                )
+              : null,
         ),
       ),
       child: SafeArea(
@@ -70,43 +83,49 @@ class _QuranScreenState extends State<QuranScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
-                cursorColor: AppColor.gold,
+                cursorColor: borderAccent,
                 onChanged: _onSearchChanged,
-                style: TextStyle(color: AppColor.white),
+                style: TextStyle(color: primaryTextColor),
                 decoration: InputDecoration(
                   hintText: "Surah Name",
-                  hintStyle: TextStyle(color: AppColor.white),
-
+                  hintStyle: TextStyle(color: secondaryTextColor),
+                  filled: true,
+                  fillColor: AppColor.searchBarFill(context),
                   prefixIcon: Padding(
                     padding: const EdgeInsets.all(12),
-
-                    child: SvgPicture.asset(AppAssets.quranSvgIcon),
+                    child: SvgPicture.asset(
+                      AppAssets.quranSvgIcon,
+                      colorFilter: ColorFilter.mode(
+                        borderAccent,
+                        BlendMode.srcIn,
+                      ),
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.gold),
+                    borderSide: BorderSide(color: borderAccent),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.gold),
+                    borderSide: BorderSide(color: borderAccent, width: 1.5),
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ),
             ),
-            if (_recentDataList.isNotEmpty) SizedBox(height: 20),
+            if (_recentDataList.isNotEmpty) const SizedBox(height: 20),
             if (_recentDataList.isNotEmpty)
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   "Most Recently",
                   style: TextStyle(
-                    color: AppColor.white,
+                    color: primaryTextColor,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            if (_recentDataList.isNotEmpty) SizedBox(height: 10),
+            if (_recentDataList.isNotEmpty) const SizedBox(height: 10),
 
             if (_recentDataList.isNotEmpty)
               SizedBox(
@@ -115,37 +134,39 @@ class _QuranScreenState extends State<QuranScreen> {
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   itemCount: _recentDataList.length,
-                  separatorBuilder: (context, index) => SizedBox(width: 10),
-
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 10),
                   itemBuilder: (context, index) {
                     return RecentlyItem(suraModel: _recentDataList[index]);
                   },
                 ),
               ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 "Surahs List",
                 style: TextStyle(
-                  color: AppColor.white,
+                  color: primaryTextColor,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
 
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
 
             Expanded(
               child: ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 itemCount: _filteredList.length,
                 separatorBuilder: (context, index) => Divider(
-                  color: AppColor.white,
-                  thickness: .5,
+                  color: isLight
+                      ? AppColor.lightPrimaryEmerald.withValues(alpha: 0.35)
+                      : AppColor.border(context),
+                  thickness: .7,
                   indent: 30,
                   endIndent: 30,
                 ),
@@ -154,7 +175,6 @@ class _QuranScreenState extends State<QuranScreen> {
 
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
-
                     onTap: () async {
                       await RecentSuraCash.addsura(sura.id);
                       if (!context.mounted) return;
@@ -179,7 +199,9 @@ class _QuranScreenState extends State<QuranScreen> {
                               Text(
                                 "${sura.id}",
                                 style: TextStyle(
-                                  color: AppColor.white,
+                                  color: isLight
+                                      ? AppColor.lightPrimaryEmerald
+                                      : AppColor.white,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -187,7 +209,7 @@ class _QuranScreenState extends State<QuranScreen> {
                           ),
                         ),
 
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
 
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,24 +217,24 @@ class _QuranScreenState extends State<QuranScreen> {
                             Text(
                               sura.englishName,
                               style: TextStyle(
-                                color: AppColor.white,
+                                color: primaryTextColor,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
                               sura.versesCount,
-                              style: TextStyle(color: AppColor.white),
+                              style: TextStyle(color: secondaryTextColor),
                             ),
                           ],
                         ),
 
-                        Spacer(),
+                        const Spacer(),
 
                         Text(
                           sura.arabicName,
                           style: TextStyle(
-                            color: AppColor.white,
+                            color: primaryTextColor,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),

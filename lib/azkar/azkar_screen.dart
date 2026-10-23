@@ -1,4 +1,3 @@
-// lib/azkar/azkar_screen.dart
 import 'package:flutter/material.dart';
 import 'package:islamii_app/core/app_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -88,10 +87,13 @@ class _AzkarScreenState extends State<AzkarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = AppColor.isLight(context);
+    final accentColor = AppColor.primary(context);
+
     if (!_isLoaded) {
-      return const Scaffold(
-        backgroundColor: AppColor.black,
-        body: Center(child: CircularProgressIndicator(color: AppColor.gold)),
+      return Scaffold(
+        backgroundColor: AppColor.background(context),
+        body: Center(child: CircularProgressIndicator(color: accentColor)),
       );
     }
 
@@ -99,25 +101,25 @@ class _AzkarScreenState extends State<AzkarScreen> {
     final completed = _remainingCounts.where((c) => c == 0).length;
 
     return Scaffold(
-      backgroundColor: AppColor.black,
+      backgroundColor: AppColor.background(context),
       appBar: AppBar(
-        backgroundColor: AppColor.black,
+        backgroundColor: AppColor.background(context),
         elevation: 0,
         centerTitle: true,
         title: Text(
           widget.title,
-          style: const TextStyle(
-            color: AppColor.gold,
+          style: TextStyle(
+            color: accentColor,
             fontFamily: 'Janna',
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
-        iconTheme: const IconThemeData(color: AppColor.gold),
+        iconTheme: IconThemeData(color: accentColor),
         actions: [
           IconButton(
             onPressed: _resetAll,
-            icon: const Icon(Icons.refresh, color: AppColor.gold),
+            icon: Icon(Icons.refresh, color: accentColor),
             tooltip: 'إعادة تعيين',
           ),
         ],
@@ -132,8 +134,10 @@ class _AzkarScreenState extends State<AzkarScreen> {
                   borderRadius: BorderRadius.circular(10),
                   child: LinearProgressIndicator(
                     value: total == 0 ? 0 : completed / total,
-                    backgroundColor: Colors.white12,
-                    color: AppColor.gold,
+                    backgroundColor: isLight
+                        ? AppColor.lightBordersDividers
+                        : Colors.white12,
+                    color: accentColor,
                     minHeight: 8,
                   ),
                 ),
@@ -141,7 +145,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
                 Text(
                   "$completed من $total ذكر",
                   style: TextStyle(
-                    color: AppColor.white.withValues(alpha: 0.7),
+                    color: AppColor.secondaryText(context),
                     fontSize: 13,
                   ),
                 ),
@@ -157,6 +161,31 @@ class _AzkarScreenState extends State<AzkarScreen> {
                 final remaining = _remainingCounts[index];
                 final isDone = remaining == 0;
 
+                final cardBg = isLight
+                    ? (isDone
+                          ? AppColor.lightPrimaryEmerald.withValues(alpha: 0.1)
+                          : AppColor.lightCardBg)
+                    : (isDone
+                          ? AppColor.gold.withValues(alpha: 0.15)
+                          : Colors.white.withValues(alpha: 0.05));
+
+                final cardBorder = isLight
+                    ? AppColor.lightPrimaryEmerald
+                    : AppColor.gold;
+
+                final textColor = isLight
+                    ? (isDone
+                          ? AppColor.lightSecondaryText
+                          : AppColor.lightPrimaryText)
+                    : (isDone
+                          ? AppColor.white.withValues(alpha: 0.5)
+                          : AppColor.white);
+
+                final circleBg = isDone ? Colors.transparent : accentColor;
+                final circleText = isDone
+                    ? accentColor
+                    : (isLight ? AppColor.white : AppColor.black);
+
                 return GestureDetector(
                   onTap: () => _decrementCount(index),
                   child: AnimatedContainer(
@@ -164,16 +193,23 @@ class _AzkarScreenState extends State<AzkarScreen> {
                     margin: const EdgeInsets.symmetric(vertical: 8),
                     padding: const EdgeInsets.all(18),
                     decoration: BoxDecoration(
-                      color: isDone
-                          ? AppColor.gold.withValues(alpha: 0.15)
-                          : Colors.white.withValues(alpha: 0.05),
+                      color: cardBg,
                       borderRadius: BorderRadius.circular(18),
                       border: Border.all(
                         color: isDone
-                            ? AppColor.gold.withValues(alpha: 0.4)
-                            : AppColor.gold,
+                            ? cardBorder.withValues(alpha: 0.4)
+                            : cardBorder,
                         width: 1.2,
                       ),
+                      boxShadow: isLight && !isDone
+                          ? [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.05),
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                              ),
+                            ]
+                          : null,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -182,9 +218,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
                           azkar.text,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: isDone
-                                ? AppColor.white.withValues(alpha: 0.5)
-                                : AppColor.white,
+                            color: textColor,
                             fontSize: 19,
                             fontFamily: 'Janna',
                             fontWeight: FontWeight.w600,
@@ -197,7 +231,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
                             azkar.note!,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: AppColor.gold.withValues(alpha: 0.8),
+                              color: accentColor.withValues(alpha: 0.85),
                               fontSize: 13,
                               fontStyle: FontStyle.italic,
                             ),
@@ -212,8 +246,8 @@ class _AzkarScreenState extends State<AzkarScreen> {
                                   ? Icons.check_circle
                                   : Icons.radio_button_unchecked,
                               color: isDone
-                                  ? AppColor.gold
-                                  : AppColor.gold.withValues(alpha: 0.6),
+                                  ? accentColor
+                                  : accentColor.withValues(alpha: 0.6),
                               size: 20,
                             ),
                             const SizedBox(width: 8),
@@ -222,13 +256,11 @@ class _AzkarScreenState extends State<AzkarScreen> {
                               height: 46,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: isDone
-                                    ? Colors.transparent
-                                    : AppColor.gold,
+                                color: circleBg,
                                 shape: BoxShape.circle,
                                 border: isDone
                                     ? Border.all(
-                                        color: AppColor.gold.withValues(
+                                        color: accentColor.withValues(
                                           alpha: 0.4,
                                         ),
                                       )
@@ -237,9 +269,7 @@ class _AzkarScreenState extends State<AzkarScreen> {
                               child: Text(
                                 "$remaining",
                                 style: TextStyle(
-                                  color: isDone
-                                      ? AppColor.gold
-                                      : AppColor.black,
+                                  color: circleText,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),

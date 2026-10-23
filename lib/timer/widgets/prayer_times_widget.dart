@@ -362,6 +362,10 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
   }
 
   void _showAdhanSettings() async {
+    final isLight = AppColor.isLight(context);
+    final accentColor = AppColor.primary(context);
+    final primaryTextColor = AppColor.primaryText(context);
+
     final prefs = await SharedPreferences.getInstance();
     bool adhanEnabled = prefs.getBool('adhan_enabled') ?? true;
     bool adhanFajr = prefs.getBool('adhan_fajr') ?? true;
@@ -374,7 +378,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColor.black,
+      backgroundColor: isLight ? AppColor.lightCardBg : AppColor.black,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -391,15 +395,15 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                       width: 40,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: AppColor.gold,
+                        color: accentColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
+                    Text(
                       'إعدادات تنبيهات الأذان',
                       style: TextStyle(
-                        color: AppColor.gold,
+                        color: accentColor,
                         fontFamily: 'Janna',
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -408,11 +412,11 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                     const SizedBox(height: 12),
 
                     SwitchListTile(
-                      activeThumbColor: AppColor.gold,
-                      title: const Text(
+                      activeThumbColor: accentColor,
+                      title: Text(
                         'تفعيل تنبيهات الأذان تلقائياً',
                         style: TextStyle(
-                          color: AppColor.white,
+                          color: primaryTextColor,
                           fontFamily: 'Janna',
                         ),
                       ),
@@ -427,14 +431,14 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                         }
                       },
                     ),
-                    const Divider(color: Colors.white24),
+                    Divider(color: AppColor.border(context)),
 
                     SwitchListTile(
-                      activeThumbColor: AppColor.gold,
-                      title: const Text(
+                      activeThumbColor: accentColor,
+                      title: Text(
                         'أذان صلاة الفجر',
                         style: TextStyle(
-                          color: AppColor.white,
+                          color: primaryTextColor,
                           fontFamily: 'Janna',
                         ),
                       ),
@@ -453,11 +457,11 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                     ),
 
                     SwitchListTile(
-                      activeThumbColor: AppColor.gold,
-                      title: const Text(
+                      activeThumbColor: accentColor,
+                      title: Text(
                         'أذان صلاة الظهر',
                         style: TextStyle(
-                          color: AppColor.white,
+                          color: primaryTextColor,
                           fontFamily: 'Janna',
                         ),
                       ),
@@ -476,11 +480,11 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                     ),
 
                     SwitchListTile(
-                      activeThumbColor: AppColor.gold,
-                      title: const Text(
+                      activeThumbColor: accentColor,
+                      title: Text(
                         'أذان صلاة العصر',
                         style: TextStyle(
-                          color: AppColor.white,
+                          color: primaryTextColor,
                           fontFamily: 'Janna',
                         ),
                       ),
@@ -499,11 +503,11 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                     ),
 
                     SwitchListTile(
-                      activeThumbColor: AppColor.gold,
-                      title: const Text(
+                      activeThumbColor: accentColor,
+                      title: Text(
                         'أذان صلاة المغرب',
                         style: TextStyle(
-                          color: AppColor.white,
+                          color: primaryTextColor,
                           fontFamily: 'Janna',
                         ),
                       ),
@@ -522,11 +526,11 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                     ),
 
                     SwitchListTile(
-                      activeThumbColor: AppColor.gold,
-                      title: const Text(
+                      activeThumbColor: accentColor,
+                      title: Text(
                         'أذان صلاة العشاء',
                         style: TextStyle(
-                          color: AppColor.white,
+                          color: primaryTextColor,
                           fontFamily: 'Janna',
                         ),
                       ),
@@ -544,6 +548,27 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                             },
                     ),
 
+                    Divider(color: AppColor.border(context)),
+
+                    ListTile(
+                      title: Text(
+                        'طريقة حساب مواقيت الصلاة',
+                        style: TextStyle(
+                          color: primaryTextColor,
+                          fontFamily: 'Janna',
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: accentColor,
+                        size: 16,
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                        _showMethodSelector();
+                      },
+                    ),
+
                     const SizedBox(height: 12),
 
                     OutlinedButton.icon(
@@ -557,15 +582,15 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                           );
                         }
                       },
-                      label: const Text(
+                      label: Text(
                         'طلب أذونات التنبيهات والأذان',
                         style: TextStyle(
-                          color: AppColor.gold,
+                          color: accentColor,
                           fontFamily: 'Janna',
                         ),
                       ),
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: AppColor.gold),
+                        side: BorderSide(color: accentColor),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -591,9 +616,12 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
       8: 'منطقة الخليج العربي',
     };
 
+    final isLight = AppColor.isLight(context);
+    final accentColor = AppColor.primary(context);
+
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColor.black,
+      backgroundColor: isLight ? AppColor.lightCardBg : AppColor.black,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -607,7 +635,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: AppColor.gold,
+                  color: accentColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -615,10 +643,10 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'طريقة الحساب',
                     style: TextStyle(
-                      color: AppColor.gold,
+                      color: accentColor,
                       fontFamily: 'Janna',
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
@@ -629,22 +657,15 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                       Navigator.pop(context);
                       _showAdhanSettings();
                     },
-                    icon: const Icon(
-                      Icons.tune,
-                      color: AppColor.gold,
-                      size: 18,
-                    ),
-                    label: const Text(
+                    icon: Icon(Icons.tune, color: accentColor, size: 18),
+                    label: Text(
                       'إعدادات الأذان',
-                      style: TextStyle(
-                        color: AppColor.gold,
-                        fontFamily: 'Janna',
-                      ),
+                      style: TextStyle(color: accentColor, fontFamily: 'Janna'),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               Flexible(
                 child: ListView(
                   shrinkWrap: true,
@@ -663,7 +684,9 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                       title: Text(
                         entry.value,
                         style: TextStyle(
-                          color: isSelected ? AppColor.gold : AppColor.white,
+                          color: isSelected
+                              ? accentColor
+                              : AppColor.primaryText(context),
                           fontFamily: 'Janna',
                           fontWeight: isSelected
                               ? FontWeight.bold
@@ -671,7 +694,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                         ),
                       ),
                       trailing: isSelected
-                          ? const Icon(Icons.check_circle, color: AppColor.gold)
+                          ? Icon(Icons.check_circle, color: accentColor)
                           : null,
                     );
                   }).toList(),
@@ -744,6 +767,9 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
 
   @override
   Widget build(BuildContext context) {
+    final isLight = AppColor.isLight(context);
+    final accentColor = AppColor.primary(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -753,14 +779,27 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              color: AppColor.black.withValues(alpha: 0.65),
+              color: isLight
+                  ? AppColor.lightCardBg
+                  : AppColor.black.withValues(alpha: 0.65),
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
                 color: _isFallbackLocation
-                    ? AppColor.golden.withValues(alpha: 0.5)
-                    : AppColor.gold,
+                    ? (isLight
+                          ? AppColor.lightSecondaryText
+                          : AppColor.golden.withValues(alpha: 0.5))
+                    : accentColor,
                 width: 1.2,
               ),
+              boxShadow: isLight
+                  ? [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.05),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : null,
             ),
             child: Row(
               children: [
@@ -768,7 +807,11 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                   _isFallbackLocation
                       ? Icons.location_off_outlined
                       : Icons.my_location_rounded,
-                  color: _isFallbackLocation ? AppColor.golden : AppColor.gold,
+                  color: _isFallbackLocation
+                      ? (isLight
+                            ? AppColor.lightSecondaryText
+                            : AppColor.golden)
+                      : accentColor,
                   size: 22,
                 ),
                 const SizedBox(width: 12),
@@ -778,9 +821,8 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                     children: [
                       Text(
                         'الموقع الحالي لمواقيت الصلاة',
-
                         style: TextStyle(
-                          color: AppColor.white.withValues(alpha: 0.6),
+                          color: AppColor.secondaryText(context),
                           fontSize: 11,
                           fontFamily: 'Janna',
                         ),
@@ -788,8 +830,8 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                       Text(
                         _locationName,
                         textAlign: TextAlign.right,
-                        style: const TextStyle(
-                          color: AppColor.white,
+                        style: TextStyle(
+                          color: AppColor.primaryText(context),
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Janna',
@@ -799,9 +841,9 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.refresh_rounded,
-                    color: AppColor.gold,
+                    color: accentColor,
                     size: 22,
                   ),
                   onPressed: () {
@@ -825,11 +867,24 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 height: 220,
                 decoration: BoxDecoration(
-                  color: AppColor.black.withValues(alpha: 0.5),
+                  color: isLight
+                      ? AppColor.lightPrimaryLight
+                      : AppColor.black.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(24),
+                  border: isLight
+                      ? Border.all(
+                          color: AppColor.lightPrimaryEmerald.withValues(
+                            alpha: 0.25,
+                          ),
+                        )
+                      : null,
                 ),
-                child: const Center(
-                  child: CircularProgressIndicator(color: AppColor.gold),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: isLight
+                        ? AppColor.lightPrimaryEmerald
+                        : AppColor.gold,
+                  ),
                 ),
               )
             : _error != null || _model == null
@@ -837,22 +892,35 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: AppColor.black.withValues(alpha: 0.5),
+                  color: isLight
+                      ? AppColor.lightCardBg
+                      : AppColor.black.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(24),
+                  border: isLight
+                      ? Border.all(
+                          color: AppColor.lightPrimaryEmerald.withValues(
+                            alpha: 0.25,
+                          ),
+                        )
+                      : null,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.error_outline,
-                      color: AppColor.gold,
+                      color: isLight
+                          ? AppColor.lightPrimaryEmerald
+                          : AppColor.gold,
                       size: 36,
                     ),
                     const SizedBox(height: 10),
                     Text(
                       _error ?? 'تعذر تحميل مواقيت الصلاة',
-                      style: const TextStyle(
-                        color: AppColor.white,
+                      style: TextStyle(
+                        color: isLight
+                            ? AppColor.lightPrimaryDark
+                            : AppColor.white,
                         fontFamily: 'Janna',
                         fontSize: 14,
                       ),
@@ -867,17 +935,21 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                         _loadPrayerTimes();
                       },
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: AppColor.gold),
+                        foregroundColor: isLight
+                            ? AppColor.lightPrimaryEmerald
+                            : AppColor.gold,
+                        side: BorderSide(
+                          color: isLight
+                              ? AppColor.lightPrimaryEmerald
+                              : AppColor.gold,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                       child: const Text(
                         'إعادة المحاولة',
-                        style: TextStyle(
-                          color: AppColor.gold,
-                          fontFamily: 'Janna',
-                        ),
+                        style: TextStyle(fontFamily: 'Janna'),
                       ),
                     ),
                   ],
@@ -886,10 +958,34 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
             : Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
+                  // اللون الجديد للكارد الكبير في Light Mode
+                  gradient: isLight
+                      ? const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFF0F8F3),
+                            Color(0xFFE0F0E7),
+                            Color(0xFFD2E8DC),
+                          ],
+                          stops: [0.0, 0.55, 1.0],
+                        )
+                      : null,
+                  color: isLight ? null : AppColor.black,
                   borderRadius: BorderRadius.circular(24),
+                  border: isLight
+                      ? Border.all(
+                          color: AppColor.lightPrimaryEmerald.withValues(
+                            alpha: 0.3,
+                          ),
+                          width: 1.2,
+                        )
+                      : null,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.3),
+                      color: Colors.black.withValues(
+                        alpha: isLight ? 0.08 : 0.3,
+                      ),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -898,12 +994,16 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                 clipBehavior: Clip.antiAlias,
                 child: Stack(
                   children: [
-                    Positioned.fill(
-                      child: Image.asset(AppAssets.group1, fit: BoxFit.cover),
-                    ),
-                    Positioned.fill(
-                      child: Image.asset(AppAssets.group2, fit: BoxFit.cover),
-                    ),
+                    // صور الخلفية تظهر في Dark Mode فقط
+                    if (!isLight) ...[
+                      Positioned.fill(
+                        child: Image.asset(AppAssets.group1, fit: BoxFit.cover),
+                      ),
+                      Positioned.fill(
+                        child: Image.asset(AppAssets.group2, fit: BoxFit.cover),
+                      ),
+                    ],
+
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 16,
@@ -914,7 +1014,6 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                         children: [
                           Row(
                             children: [
-                              // Gregorian Date
                               Expanded(
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
@@ -923,16 +1022,17 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                     DateFormat(
                                       'dd MMM,\nyyyy',
                                     ).format(_model!.gregorianDate),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 24,
-                                      color: AppColor.white,
+                                      color: isLight
+                                          ? AppColor.lightPrimaryDark
+                                          : AppColor.white,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'alfont',
                                     ),
                                   ),
                                 ),
                               ),
-                              // Title & Day Name
                               const SizedBox(width: 8),
                               Column(
                                 children: [
@@ -940,9 +1040,9 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                     _getArabicDayName(_model!.gregorianDate),
                                     style: TextStyle(
                                       fontSize: 45,
-                                      color: AppColor.black.withValues(
-                                        alpha: 1.8,
-                                      ),
+                                      color: isLight
+                                          ? AppColor.lightPrimaryEmerald
+                                          : AppColor.white,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'alfont',
                                     ),
@@ -950,17 +1050,20 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                 ],
                               ),
                               const SizedBox(width: 19),
-                              // Hijri Date
                               Expanded(
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   alignment: Alignment.centerRight,
                                   child: Text(
-                                    "${_model!.hijriDay} ${_model!.hijriMonth}\n${_model!.hijriYear} هـ",
+                                    '${_model!.hijriDay} '
+                                    '${_model!.hijriMonth}\n'
+                                    '${_model!.hijriYear} هـ',
                                     textAlign: TextAlign.right,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 18,
-                                      color: AppColor.white,
+                                      color: isLight
+                                          ? AppColor.lightPrimaryDark
+                                          : AppColor.white,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'alfont',
                                     ),
@@ -971,7 +1074,6 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                           ),
                           const SizedBox(height: 16),
 
-                          // Prayer Cards ListView
                           SizedBox(
                             height: 135,
                             child: ListView.builder(
@@ -984,6 +1086,7 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                               itemCount: _model!.orderedPrayers.length,
                               itemBuilder: (context, index) {
                                 final prayer = _model!.orderedPrayers[index];
+
                                 return _PrayerCard(
                                   name: _getArabicPrayerName(prayer.key),
                                   time: prayer.value,
@@ -994,15 +1097,24 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                           ),
                           const SizedBox(height: 16),
 
-                          // Footer: Countdown & Sound Control
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 8,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColor.black.withValues(alpha: 0.25),
+                              color: isLight
+                                  ? AppColor.lightPrimaryEmerald.withValues(
+                                      alpha: 0.10,
+                                    )
+                                  : AppColor.black.withValues(alpha: 0.25),
                               borderRadius: BorderRadius.circular(16),
+                              border: isLight
+                                  ? Border.all(
+                                      color: AppColor.lightPrimaryEmerald
+                                          .withValues(alpha: 0.22),
+                                    )
+                                  : null,
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -1015,9 +1127,9 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 22,
-                                        color: AppColor.black.withValues(
-                                          alpha: 0.9,
-                                        ),
+                                        color: isLight
+                                            ? AppColor.lightPrimaryEmerald
+                                            : AppColor.white,
                                         fontFamily: 'alfont',
                                       ),
                                     ),
@@ -1025,10 +1137,12 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                 ),
                                 Text(
                                   _formatDuration(_nextPrayer!.remaining),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
-                                    color: AppColor.black,
+                                    color: isLight
+                                        ? AppColor.lightPrimaryDark
+                                        : AppColor.white,
                                     fontFamily: 'Janna',
                                   ),
                                 ),
@@ -1042,7 +1156,9 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                       _isPlaying
                                           ? Icons.volume_up
                                           : Icons.volume_off,
-                                      color: AppColor.black,
+                                      color: isLight
+                                          ? AppColor.lightPrimaryEmerald
+                                          : AppColor.white,
                                       size: 22,
                                     ),
                                   ),
@@ -1055,7 +1171,9 @@ class _PrayerTimesWidgetState extends State<PrayerTimesWidget>
                                     padding: const EdgeInsets.all(4),
                                     child: Icon(
                                       Icons.notifications_active,
-                                      color: AppColor.black,
+                                      color: isLight
+                                          ? AppColor.lightPrimaryEmerald
+                                          : AppColor.white,
                                       size: 22,
                                     ),
                                   ),
@@ -1096,6 +1214,31 @@ class _PrayerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final period = _getArabicPeriod(DateFormat('a').format(time));
     final timeStr = DateFormat('hh:mm').format(time);
+    final isLight = AppColor.isLight(context);
+
+    final activeGradient = isLight
+        ? [AppColor.lightPrimaryEmerald, AppColor.lightPrimaryDark]
+        : [AppColor.gold, AppColor.golden];
+
+    final inactiveGradient = isLight
+        ? [AppColor.lightCardBg, AppColor.lightPrimaryLight]
+        : [AppColor.gray, AppColor.black];
+
+    final activeNameColor = isLight ? AppColor.lightGoldAccent : AppColor.black;
+    final activeTimeColor = isLight ? AppColor.white : AppColor.black;
+    final activePeriodColor = isLight
+        ? AppColor.white.withValues(alpha: 0.9)
+        : AppColor.black.withValues(alpha: 0.8);
+
+    final inactiveNameColor = isLight
+        ? AppColor.lightPrimaryDark
+        : AppColor.white;
+    final inactiveTimeColor = isLight
+        ? AppColor.lightPrimaryEmerald
+        : AppColor.gold;
+    final inactivePeriodColor = isLight
+        ? AppColor.lightSecondaryText
+        : AppColor.white.withValues(alpha: 0.7);
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -1106,26 +1249,30 @@ class _PrayerCard extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: isActive
-              ? [AppColor.gold, AppColor.golden]
-              : [AppColor.gray, AppColor.black],
+          colors: isActive ? activeGradient : inactiveGradient,
         ),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
           color: isActive
-              ? AppColor.white
-              : AppColor.gold.withValues(alpha: 0.3),
-          width: isActive ? 1.5 : 1.0,
+              ? (isLight ? AppColor.lightGoldAccent : AppColor.white)
+              : (isLight
+                    ? AppColor.lightPrimaryEmerald.withValues(alpha: 0.25)
+                    : AppColor.gold.withValues(alpha: 0.3)),
+          width: isActive ? 1.8 : 1.0,
         ),
-        boxShadow: isActive
-            ? [
-                BoxShadow(
-                  color: AppColor.gold.withValues(alpha: 0.4),
-                  blurRadius: 10,
-                  spreadRadius: 1,
-                ),
-              ]
-            : null,
+        boxShadow: [
+          BoxShadow(
+            color: isActive
+                ? (isLight ? AppColor.lightPrimaryEmerald : AppColor.gold)
+                      .withValues(alpha: 0.45)
+                : (isLight
+                      ? Colors.black.withValues(alpha: 0.05)
+                      : Colors.transparent),
+            blurRadius: isActive ? 12 : 6,
+            spreadRadius: isActive ? 1 : 0,
+            offset: isActive ? const Offset(0, 3) : const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -1136,7 +1283,7 @@ class _PrayerCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: isActive ? AppColor.black : AppColor.white,
+              color: isActive ? activeNameColor : inactiveNameColor,
               fontSize: isActive ? 30 : 20,
               fontWeight: FontWeight.bold,
               fontFamily: 'alfont',
@@ -1148,7 +1295,7 @@ class _PrayerCard extends StatelessWidget {
             child: Text(
               timeStr,
               style: TextStyle(
-                color: isActive ? AppColor.black : AppColor.gold,
+                color: isActive ? activeTimeColor : inactiveTimeColor,
                 fontSize: isActive ? 22 : 18,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Janna',
@@ -1159,9 +1306,7 @@ class _PrayerCard extends StatelessWidget {
           Text(
             period,
             style: TextStyle(
-              color: isActive
-                  ? AppColor.black.withValues(alpha: 0.8)
-                  : AppColor.white.withValues(alpha: 0.7),
+              color: isActive ? activePeriodColor : inactivePeriodColor,
               fontSize: isActive ? 12 : 11,
               fontWeight: FontWeight.w600,
               fontFamily: 'Janna',

@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islamii_app/core/app_assets.dart';
+import 'package:islamii_app/core/app_color.dart';
 import 'package:islamii_app/hadith/hadith_card.dart';
 import 'package:islamii_app/modules/hadith_model.dart';
 
@@ -31,7 +32,7 @@ class _HadithScreenState extends State<HadithScreen> {
           "assets/files/hadith/h$i.txt",
         );
         final titleLength = content.indexOf("\n");
-        if (titleLength == -1) continue; // ملف بدون سطر جديد، تجاهله بأمان
+        if (titleLength == -1) continue;
 
         final hadithTitle = content.substring(0, titleLength);
         final titleContent = content.substring(titleLength);
@@ -41,7 +42,6 @@ class _HadithScreenState extends State<HadithScreen> {
         );
       } catch (e) {
         debugPrint('Failed to load hadith file h$i.txt: $e');
-        // كمّل باقي الملفات حتى لو واحد فشل
       }
     }
 
@@ -55,14 +55,22 @@ class _HadithScreenState extends State<HadithScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isLight = AppColor.isLight(context);
 
     return Container(
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
+        color: AppColor.background(context),
         image: DecorationImage(
-          image: AssetImage(AppAssets.hadithBackground),
+          image: const AssetImage(AppAssets.hadithBackground),
           fit: BoxFit.cover,
+          colorFilter: isLight
+              ? ColorFilter.mode(
+                  AppColor.lightBackgroundWarmIvory.withValues(alpha: 0.88),
+                  BlendMode.screen,
+                )
+              : null,
         ),
       ),
       child: SafeArea(
@@ -82,12 +90,19 @@ class _HadithScreenState extends State<HadithScreen> {
 
                 Expanded(
                   child: _isLoading
-                      ? const Center(child: CircularProgressIndicator())
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: AppColor.primary(context),
+                          ),
+                        )
                       : _hadithList.isEmpty
-                      ? const Center(
+                      ? Center(
                           child: Text(
                             'لا توجد أحاديث متاحة حاليًا',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(
+                              color: AppColor.primaryText(context),
+                              fontFamily: 'Janna',
+                            ),
                           ),
                         )
                       : CarouselSlider(

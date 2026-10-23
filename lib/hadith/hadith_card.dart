@@ -12,16 +12,35 @@ class HadithCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLight = AppColor.isLight(context);
+    final cardBgColor = isLight ? AppColor.lightPrimaryEmerald : AppColor.gold;
+    final textColor = isLight ? AppColor.white : AppColor.black;
+
     return Container(
       width: double.infinity,
-      height: double.infinity, // ياخد كل المساحة المتاحة من الأب (الكاروسيل)
+      height: double.infinity,
       decoration: BoxDecoration(
-        color: AppColor.gold,
+        color: cardBgColor,
         borderRadius: BorderRadius.circular(20),
         image: DecorationImage(
-          image: AssetImage(AppAssets.hadithCardBackground),
+          image: const AssetImage(AppAssets.hadithCardBackground),
           fit: BoxFit.cover,
+          colorFilter: isLight
+              ? ColorFilter.mode(
+                  AppColor.lightPrimaryDark.withValues(alpha: 0.15),
+                  BlendMode.srcATop,
+                )
+              : null,
         ),
+        boxShadow: isLight
+            ? [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
       ),
       child: Stack(
         children: [
@@ -42,7 +61,7 @@ class HadithCard extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 22,
-                      color: AppColor.black,
+                      color: textColor,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -52,7 +71,7 @@ class HadithCard extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
-                      color: AppColor.black,
+                      color: textColor,
                       fontWeight: FontWeight.w700,
                     ),
                   ),

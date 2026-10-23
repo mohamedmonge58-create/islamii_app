@@ -12,6 +12,11 @@ Future<SuraModel?> showSurahPicker({
   required String reciterName,
   required MoshafModel moshaf,
 }) {
+  final isLight = AppColor.isLight(context);
+  final accentColor = AppColor.primary(context);
+  final primaryTextColor = AppColor.primaryText(context);
+  final secondaryTextColor = AppColor.secondaryText(context);
+
   final availableIds = moshaf.surahList
       .split(',')
       .where((e) => e.trim().isNotEmpty)
@@ -24,7 +29,7 @@ Future<SuraModel?> showSurahPicker({
 
   return showModalBottomSheet<SuraModel>(
     context: context,
-    backgroundColor: AppColor.black,
+    backgroundColor: isLight ? AppColor.lightCardBg : AppColor.black,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -43,15 +48,15 @@ Future<SuraModel?> showSurahPicker({
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: AppColor.gold,
+                  color: accentColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
               const SizedBox(height: 12),
               Text(
                 reciterName,
-                style: const TextStyle(
-                  color: AppColor.gold,
+                style: TextStyle(
+                  color: accentColor,
                   fontFamily: 'Janna',
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
@@ -60,12 +65,9 @@ Future<SuraModel?> showSurahPicker({
               const SizedBox(height: 4),
               Text(
                 'اختر السورة',
-                style: TextStyle(
-                  color: AppColor.white.withValues(alpha: 0.6),
-                  fontSize: 13,
-                ),
+                style: TextStyle(color: secondaryTextColor, fontSize: 13),
               ),
-              const Divider(color: Colors.white24, height: 20),
+              Divider(color: AppColor.border(context), height: 20),
               Expanded(
                 child: ListView.builder(
                   controller: scrollController,
@@ -75,12 +77,12 @@ Future<SuraModel?> showSurahPicker({
                     return ListTile(
                       onTap: () => Navigator.pop(context, sura),
                       leading: CircleAvatar(
-                        backgroundColor: AppColor.gold,
+                        backgroundColor: accentColor,
                         radius: 18,
                         child: Text(
                           '${sura.id}',
-                          style: const TextStyle(
-                            color: AppColor.black,
+                          style: TextStyle(
+                            color: isLight ? AppColor.white : AppColor.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 13,
                           ),
@@ -88,22 +90,17 @@ Future<SuraModel?> showSurahPicker({
                       ),
                       title: Text(
                         'سورة ${sura.arabicName}',
-                        style: const TextStyle(
-                          color: AppColor.white,
+                        style: TextStyle(
+                          color: primaryTextColor,
                           fontFamily: 'Janna',
                           fontSize: 16,
                         ),
                       ),
                       subtitle: Text(
                         sura.versesCount,
-                        style: TextStyle(
-                          color: AppColor.white.withValues(alpha: 0.5),
-                        ),
+                        style: TextStyle(color: secondaryTextColor),
                       ),
-                      trailing: const Icon(
-                        Icons.play_arrow,
-                        color: AppColor.gold,
-                      ),
+                      trailing: Icon(Icons.play_arrow, color: accentColor),
                     );
                   },
                 ),
