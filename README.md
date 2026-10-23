@@ -8,11 +8,10 @@ Explore **Islamii App** in both Dark Mode and Light Mode.
 
 ### 🌙 Dark Mode
 
-#### 🚀 Splash Screen & Home
+#### 🚀 Splash Screen
 
 <p align="center">
   <img src="screenshots/dark%20screens/splash_screen.png" alt="Islamii App Splash Screen" width="250"/>
-  <img src="screenshots/dark%20screens/mark%20screen.png" alt="Islamii App Home Screen" width="220"/>
 </p>
 
 #### 📖 Quran & Reciters
