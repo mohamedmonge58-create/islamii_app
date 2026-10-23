@@ -1,3 +1,4 @@
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:islamii_app/core/app_assets.dart';
@@ -89,13 +90,21 @@ class _RadioDetailsState extends State<RadioDetails> {
             fontFamily: 'Janna',
             fontSize: 14,
           ),
-          prefixIcon: Icon(Icons.search, color: borderAccent, size: 22),
+          prefixIcon: Icon(
+            Icons.search,
+            color: borderAccent,
+            size: 22,
+          ),
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
-                  icon: Icon(Icons.clear, color: borderAccent, size: 20),
-                  onPressed: _clearSearch,
-                  tooltip: 'مسح',
-                )
+            icon: Icon(
+              Icons.clear,
+              color: borderAccent,
+              size: 20,
+            ),
+            onPressed: _clearSearch,
+            tooltip: 'مسح',
+          )
               : null,
           filled: true,
           fillColor: AppColor.searchBarFill(context),
@@ -104,11 +113,17 @@ class _RadioDetailsState extends State<RadioDetails> {
             horizontal: 16,
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: borderAccent, width: 1.2),
+            borderSide: BorderSide(
+              color: borderAccent,
+              width: 1.2,
+            ),
             borderRadius: BorderRadius.circular(16),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: borderAccent, width: 1.8),
+            borderSide: BorderSide(
+              color: borderAccent,
+              width: 1.8,
+            ),
             borderRadius: BorderRadius.circular(16),
           ),
         ),
@@ -117,6 +132,8 @@ class _RadioDetailsState extends State<RadioDetails> {
   }
 
   Widget _buildEmptyState() {
+    final isLight = AppColor.isLight(context);
+
     return Expanded(
       child: Center(
         child: SingleChildScrollView(
@@ -141,11 +158,11 @@ class _RadioDetailsState extends State<RadioDetails> {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
+              Text(
                 'لا توجد إذاعة بهذا الاسم',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: AppColor.white,
+                  color: isLight ? AppColor.black : AppColor.white,
                   fontFamily: 'Janna',
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -156,7 +173,9 @@ class _RadioDetailsState extends State<RadioDetails> {
                 'تأكد من كتابة الاسم بشكل صحيح أو جرب كلمة بحث أخرى',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: AppColor.white.withValues(alpha: 0.6),
+                  color: isLight
+                      ? AppColor.black.withValues(alpha: 0.6)
+                      : AppColor.white.withValues(alpha: 0.6),
                   fontFamily: 'Janna',
                   fontSize: 13,
                 ),
@@ -164,7 +183,11 @@ class _RadioDetailsState extends State<RadioDetails> {
               const SizedBox(height: 20),
               OutlinedButton.icon(
                 onPressed: _clearSearch,
-                icon: const Icon(Icons.refresh, color: AppColor.gold, size: 18),
+                icon: const Icon(
+                  Icons.refresh,
+                  color: AppColor.gold,
+                  size: 18,
+                ),
                 label: const Text(
                   'إعادة عرض كل الإذاعات',
                   style: TextStyle(
@@ -195,21 +218,33 @@ class _RadioDetailsState extends State<RadioDetails> {
     required IconData icon,
     required String tooltip,
     required VoidCallback? onPressed,
+    required bool isLight,
     bool primary = false,
   }) {
+    final secondaryIconColor = isLight
+        ? AppColor.lightPrimaryDark
+        : AppColor.white;
+
     return Tooltip(
       message: tooltip,
       child: Material(
-        color: primary ? AppColor.gold : AppColor.white.withValues(alpha: 0.07),
+        color: primary
+            ? AppColor.gold
+            : (isLight
+            ? AppColor.lightPrimaryEmerald.withValues(alpha: 0.12)
+            : AppColor.white.withValues(alpha: 0.07)),
         shape: const CircleBorder(),
         child: IconButton(
           onPressed: onPressed,
+          tooltip: tooltip,
           icon: Icon(
             icon,
             size: primary ? 29 : 24,
             color: primary
                 ? AppColor.black
-                : AppColor.white.withValues(alpha: onPressed == null ? 0.3 : 1),
+                : secondaryIconColor.withValues(
+              alpha: onPressed == null ? 0.3 : 1,
+            ),
           ),
         ),
       ),
@@ -222,6 +257,38 @@ class _RadioDetailsState extends State<RadioDetails> {
     if (activeRadioId == null) {
       return const SizedBox.shrink();
     }
+
+    final isLight = AppColor.isLight(context);
+
+    final playerGradient = isLight
+        ? const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [
+        Color(0xFFF0F7F2),
+        Color(0xFFDCECE1),
+        Color(0xFFC5DFCE),
+      ],
+    )
+        : const LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [
+        Color(0xFF173D32),
+        Color(0xFF102F27),
+        Color(0xFF0B241E),
+      ],
+    );
+
+    final playerTextColor = isLight ? AppColor.black : AppColor.white;
+
+    final playerSecondaryColor = isLight
+        ? AppColor.lightPrimaryDark
+        : AppColor.white.withValues(alpha: 0.75);
+
+    final playerDividerColor =
+    (isLight ? AppColor.black : AppColor.white)
+        .withValues(alpha: 0.10);
 
     return FutureBuilder<QuranAudioHandler>(
       future: _manager.audioHandler,
@@ -237,8 +304,6 @@ class _RadioDetailsState extends State<RadioDetails> {
           builder: (context, mediaSnapshot) {
             final mediaItem = mediaSnapshot.data;
 
-            // لا تعرض مشغل الإذاعة إذا أصبح مصدر الصوت قرآنًا
-            // أو تم اختيار مصدر صوت مختلف.
             if (_manager.currentId != activeRadioId ||
                 mediaItem == null ||
                 mediaItem.id != _manager.currentUrl) {
@@ -248,7 +313,8 @@ class _RadioDetailsState extends State<RadioDetails> {
             return StreamBuilder<PlaybackState>(
               stream: handler.playbackState,
               builder: (context, playbackSnapshot) {
-                final isPlaying = playbackSnapshot.data?.playing ?? false;
+                final isPlaying =
+                    playbackSnapshot.data?.playing ?? false;
 
                 return SafeArea(
                   top: false,
@@ -259,18 +325,20 @@ class _RadioDetailsState extends State<RadioDetails> {
                         margin: const EdgeInsets.fromLTRB(12, 8, 12, 10),
                         padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [Color(0xFF242922), Color(0xFF111411)],
-                          ),
+                          gradient: playerGradient,
                           borderRadius: BorderRadius.circular(24),
                           border: Border.all(
-                            color: AppColor.gold.withValues(alpha: 0.65),
+                            color: isLight
+                                ? AppColor.lightPrimaryEmerald.withValues(
+                              alpha: 0.45,
+                            )
+                                : AppColor.gold.withValues(alpha: 0.65),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColor.black.withValues(alpha: 0.25),
+                              color: AppColor.black.withValues(
+                                alpha: isLight ? 0.08 : 0.25,
+                              ),
                               blurRadius: 18,
                               offset: const Offset(0, 6),
                             ),
@@ -286,7 +354,7 @@ class _RadioDetailsState extends State<RadioDetails> {
                                   height: 48,
                                   decoration: BoxDecoration(
                                     color: AppColor.gold.withValues(
-                                      alpha: 0.13,
+                                      alpha: isLight ? 0.18 : 0.13,
                                     ),
                                     borderRadius: BorderRadius.circular(16),
                                   ),
@@ -300,15 +368,15 @@ class _RadioDetailsState extends State<RadioDetails> {
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.center,
+                                    CrossAxisAlignment.center,
                                     children: [
                                       Text(
                                         _activeRadioName ?? mediaItem.title,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          color: AppColor.white,
+                                        style: TextStyle(
+                                          color: playerTextColor,
                                           fontFamily: 'Janna',
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14,
@@ -317,7 +385,7 @@ class _RadioDetailsState extends State<RadioDetails> {
                                       const SizedBox(height: 3),
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           const Icon(
@@ -332,9 +400,7 @@ class _RadioDetailsState extends State<RadioDetails> {
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                color: AppColor.gold.withValues(
-                                                  alpha: 0.95,
-                                                ),
+                                                color: playerSecondaryColor,
                                                 fontFamily: 'Janna',
                                                 fontSize: 12,
                                               ),
@@ -351,7 +417,7 @@ class _RadioDetailsState extends State<RadioDetails> {
                             const SizedBox(height: 12),
                             Container(
                               height: 1,
-                              color: AppColor.white.withValues(alpha: 0.09),
+                              color: playerDividerColor,
                             ),
                             const SizedBox(height: 8),
                             Row(
@@ -361,8 +427,11 @@ class _RadioDetailsState extends State<RadioDetails> {
                                   icon: isPlaying
                                       ? Icons.pause_rounded
                                       : Icons.play_arrow_rounded,
-                                  tooltip: isPlaying ? 'إيقاف مؤقت' : 'تشغيل',
+                                  tooltip: isPlaying
+                                      ? 'إيقاف مؤقت'
+                                      : 'تشغيل',
                                   primary: true,
+                                  isLight: isLight,
                                   onPressed: () async {
                                     if (isPlaying) {
                                       await handler.pause();
@@ -377,7 +446,8 @@ class _RadioDetailsState extends State<RadioDetails> {
                                   initialData: handler.volume,
                                   builder: (context, volumeSnapshot) {
                                     final volume =
-                                        volumeSnapshot.data ?? handler.volume;
+                                        volumeSnapshot.data ??
+                                            handler.volume;
 
                                     return _miniPlayerControl(
                                       icon: volume == 0
@@ -386,10 +456,11 @@ class _RadioDetailsState extends State<RadioDetails> {
                                           ? Icons.volume_down_rounded
                                           : Icons.volume_up_rounded,
                                       tooltip: 'مستوى الصوت',
+                                      isLight: isLight,
                                       onPressed: () {
                                         setState(() {
                                           _showVolumeSlider =
-                                              !_showVolumeSlider;
+                                          !_showVolumeSlider;
                                         });
                                       },
                                     );
@@ -411,8 +482,10 @@ class _RadioDetailsState extends State<RadioDetails> {
                               initialData: handler.volume,
                               builder: (context, volumeSnapshot) {
                                 final volume =
-                                    volumeSnapshot.data ?? handler.volume;
-                                final volumePercent = (volume * 100).round();
+                                    volumeSnapshot.data ??
+                                        handler.volume;
+                                final volumePercent =
+                                (volume * 100).round();
 
                                 return Container(
                                   width: 52,
@@ -422,16 +495,20 @@ class _RadioDetailsState extends State<RadioDetails> {
                                     horizontal: 4,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF1F231F),
+                                    color: isLight
+                                        ? const Color(0xFFE0F0E7)
+                                        : const Color(0xFF1F231F),
                                     borderRadius: BorderRadius.circular(22),
                                     border: Border.all(
-                                      color: AppColor.gold,
+                                      color: isLight
+                                          ? AppColor.lightPrimaryEmerald
+                                          : AppColor.gold,
                                       width: 1.5,
                                     ),
                                     boxShadow: [
                                       BoxShadow(
                                         color: Colors.black.withValues(
-                                          alpha: 0.5,
+                                          alpha: isLight ? 0.15 : 0.3,
                                         ),
                                         blurRadius: 14,
                                         offset: const Offset(0, 4),
@@ -454,19 +531,26 @@ class _RadioDetailsState extends State<RadioDetails> {
                                         child: RotatedBox(
                                           quarterTurns: 3,
                                           child: SliderTheme(
-                                            data: SliderTheme.of(context).copyWith(
+                                            data: SliderTheme.of(context)
+                                                .copyWith(
                                               trackHeight: 4,
                                               thumbShape:
-                                                  const RoundSliderThumbShape(
-                                                    enabledThumbRadius: 6,
-                                                  ),
+                                              const RoundSliderThumbShape(
+                                                enabledThumbRadius: 6,
+                                              ),
                                               overlayShape:
-                                                  const RoundSliderOverlayShape(
-                                                    overlayRadius: 10,
-                                                  ),
-                                              activeTrackColor: AppColor.gold,
-                                              inactiveTrackColor: AppColor.white
-                                                  .withValues(alpha: 0.2),
+                                              const RoundSliderOverlayShape(
+                                                overlayRadius: 10,
+                                              ),
+                                              activeTrackColor:
+                                              AppColor.gold,
+                                              inactiveTrackColor:
+                                              (isLight
+                                                  ? AppColor.black
+                                                  : AppColor.white)
+                                                  .withValues(
+                                                alpha: 0.16,
+                                              ),
                                               thumbColor: AppColor.gold,
                                             ),
                                             child: Slider(
@@ -481,7 +565,9 @@ class _RadioDetailsState extends State<RadioDetails> {
                                       const SizedBox(height: 6),
                                       GestureDetector(
                                         onTap: () {
-                                          handler.setVolume(volume > 0 ? 0 : 1);
+                                          handler.setVolume(
+                                            volume > 0 ? 0 : 1,
+                                          );
                                         },
                                         child: Icon(
                                           volume == 0
@@ -526,6 +612,8 @@ class _RadioDetailsState extends State<RadioDetails> {
         }
 
         if (snapshot.hasError) {
+          final isLight = AppColor.isLight(context);
+
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(24),
@@ -538,10 +626,10 @@ class _RadioDetailsState extends State<RadioDetails> {
                     size: 42,
                   ),
                   const SizedBox(height: 12),
-                  const Text(
+                  Text(
                     'حدث خطأ أثناء تحميل الإذاعات',
                     style: TextStyle(
-                      color: AppColor.white,
+                      color: isLight ? AppColor.black : AppColor.white,
                       fontFamily: 'Janna',
                     ),
                   ),
@@ -569,8 +657,8 @@ class _RadioDetailsState extends State<RadioDetails> {
         final filteredRadios = query.isEmpty
             ? radios
             : radios.where((radio) {
-                return _normalizeArabic(radio.name).contains(query);
-              }).toList();
+          return _normalizeArabic(radio.name).contains(query);
+        }).toList();
 
         return Column(
           children: [
@@ -580,9 +668,13 @@ class _RadioDetailsState extends State<RadioDetails> {
             else
               Expanded(
                 child: ListView.separated(
-                  padding: const EdgeInsets.only(bottom: 12, top: 6),
+                  padding: const EdgeInsets.only(
+                    bottom: 12,
+                    top: 6,
+                  ),
                   itemCount: filteredRadios.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 18),
+                  separatorBuilder: (_, _) =>
+                  const SizedBox(height: 18),
                   itemBuilder: (context, index) {
                     final radio = filteredRadios[index];
 
@@ -625,7 +717,11 @@ class _RadioCardState extends State<_RadioCard> {
     widget.onRadioSelected(widget.radio);
 
     try {
-      await _manager.playUrl(_id, widget.radio.url, label: widget.radio.name);
+      await _manager.playUrl(
+        _id,
+        widget.radio.url,
+        label: widget.radio.name,
+      );
     } catch (_) {
       if (!mounted) return;
 
@@ -673,12 +769,12 @@ class _RadioCardState extends State<_RadioCard> {
                 color: cardBgColor,
                 boxShadow: isLight
                     ? [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ]
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ]
                     : null,
               ),
               child: Stack(
@@ -692,7 +788,8 @@ class _RadioCardState extends State<_RadioCard> {
                         AppAssets.voice,
                         width: 520,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                        errorBuilder: (_, _, _) =>
+                        const SizedBox.shrink(),
                       ),
                     )
                   else
@@ -702,7 +799,8 @@ class _RadioCardState extends State<_RadioCard> {
                         AppAssets.mosqueRadio,
                         width: double.infinity,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                        errorBuilder: (_, _, _) =>
+                        const SizedBox.shrink(),
                       ),
                     ),
                   Padding(
@@ -757,7 +855,8 @@ class _RadioCardState extends State<_RadioCard> {
                                 stream: handler?.volumeStream,
                                 initialData: handler?.volume ?? 1,
                                 builder: (context, volumeSnapshot) {
-                                  final volume = volumeSnapshot.data ?? 1;
+                                  final volume =
+                                      volumeSnapshot.data ?? 1;
 
                                   return Icon(
                                     volume == 0

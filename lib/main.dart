@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:islamii_app/core/app_color.dart';
 import 'package:islamii_app/core/recent_sura_cash.dart';
 import 'package:islamii_app/core/theme_controller.dart';
+import 'package:islamii_app/splash_screen/onboarding_screen.dart';
 import 'package:islamii_app/splash_screen/splash_screen.dart';
 
 void main() async {
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
             ),
             fontFamily: 'Janna',
           ),
-          home: const SplashScreen(),
+          home: const SplashScreen (),
         );
       },
     );
