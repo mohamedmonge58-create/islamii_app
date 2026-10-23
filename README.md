@@ -8,54 +8,56 @@ Explore **Islamii App** in both Dark Mode and Light Mode.
 
 ### 🌙 Dark Mode
 
-#### 🚀 Splash Screen
+#### 🚀 Splash Screen & Home
 
 <p align="center">
-  <img src="screenshots/splash_screen.png" alt="Islamii App Splash Screen" width="250"/>
+  <img src="screenshots/dark%20screens/splash_screen.png" alt="Islamii App Splash Screen" width="250"/>
+  <img src="screenshots/dark%20screens/mark%20screen.png" alt="Islamii App Home Screen" width="220"/>
 </p>
 
 #### 📖 Quran & Reciters
 
 <p align="center">
-  <img src="screenshots/المصحف.png" alt="Holy Quran" width="220"/>
-  <img src="screenshots/صفحه%20القراءة.png" alt="Quran Reading" width="220"/>
-  <img src="screenshots/القراء.png" alt="Quran Reciters" width="220"/>
-  <img src="screenshots/audio%20screen.png" alt="Quran Audio Player" width="220"/>
+  <img src="screenshots/dark%20screens/المصحف.png" alt="Holy Quran" width="220"/>
+  <img src="screenshots/dark%20screens/صفحه%20القراءة.png" alt="Quran Reading" width="220"/>
+  <img src="screenshots/dark%20screens/القراء.png" alt="Quran Reciters" width="220"/>
+  <img src="screenshots/dark%20screens/audio%20screen.png" alt="Quran Audio Player" width="220"/>
 </p>
 
 #### 🤲 Azkar & Daily Supplications
 
 <p align="center">
-  <img src="screenshots/الادعيه%20والاذكار%20اليوميه.png" alt="Daily Azkar and Supplications" width="220"/>
-  <img src="screenshots/الاذكار%20والادعيه.png" alt="Azkar and Duas" width="220"/>
-  <img src="screenshots/اذكار%20الصباح.png" alt="Morning Azkar" width="220"/>
-  <img src="screenshots/اذكار%20المساء.png" alt="Evening Azkar" width="220"/>
-  <img src="screenshots/اذكار%20بعد%20الصلاة.png" alt="After Prayer Azkar" width="220"/>
+  <img src="screenshots/dark%20screens/الادعيه%20والاذكار%20اليوميه.png" alt="Daily Azkar and Supplications" width="220"/>
+  <img src="screenshots/dark%20screens/الاذكار%20والادعيه.png" alt="Azkar and Duas" width="220"/>
+  <img src="screenshots/dark%20screens/اذكار%20الصباح.png" alt="Morning Azkar" width="220"/>
+  <img src="screenshots/dark%20screens/اذكار%20المساء.png" alt="Evening Azkar" width="220"/>
+  <img src="screenshots/dark%20screens/اذكار%20بعد%20الصلاة.png" alt="After Prayer Azkar" width="220"/>
 </p>
 
 #### 📚 Hadith
 
 <p align="center">
-  <img src="screenshots/الاحاديث.png" alt="Hadith Screen" width="220"/>
+  <img src="screenshots/dark%20screens/الاحاديث.png" alt="Hadith Screen" width="220"/>
 </p>
 
 #### 🕌 Prayer Times & Adhan
 
 <p align="center">
-  <img src="screenshots/المواقيت.png" alt="Prayer Times" width="220"/>
-  <img src="screenshots/اعدادات%20الاذان.png" alt="Adhan Settings" width="220"/>
+  <img src="screenshots/dark%20screens/المواقيت.png" alt="Prayer Times" width="220"/>
+  <img src="screenshots/dark%20screens/اعدادات%20الاذان.png" alt="Adhan Settings" width="220"/>
 </p>
 
 #### 🧭 Qibla Direction
 
 <p align="center">
-  <img src="screenshots/اتجاه%20القبلة.png" alt="Qibla Direction" width="220"/>
+  <img src="screenshots/dark%20screens/اتجاه%20القبلة.png" alt="Qibla Direction" width="220"/>
+  <img src="screenshots/dark%20screens/القبله.jpeg" alt="Qibla Screen" width="220"/>
 </p>
 
 #### 📻 Quran Radio
 
 <p align="center">
-  <img src="screenshots/الاذاعه.png" alt="Quran Radio" width="220"/>
+  <img src="screenshots/dark%20screens/الاذاعه.png" alt="Quran Radio" width="220"/>
 </p>
 
 ---
